@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import logo from "/FISRTOPTION-LOGO-removebg-preview (1).png";
+import flutterwaveLogo from "/Flutterwave_whitebg.svg";
 
 function App() {
   const [showToast, setShowToast] = useState(false);
@@ -17,52 +18,57 @@ function App() {
     const failed = status && status !== "successful" && status !== "completed";
 
     return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "100vh",
-          background: "#0a0a0a",
-          color: "white",
-          textAlign: "center",
-          padding: "2rem",
-          fontFamily: "Inter, sans-serif",
-        }}
-      >
-        <img
-          src={logo}
-          alt="FirstOption"
-          style={{ width: "100px", marginBottom: "1.5rem" }}
-        />
-        {failed ? (
-          <>
-            <h1 style={{ fontSize: "2rem", marginBottom: "0.75rem" }}>
-              ❌ Payment Unsuccessful
-            </h1>
-            <p style={{ color: "#aaa", marginBottom: "2rem", maxWidth: "360px" }}>
-              Something went wrong with your payment. Please return to WhatsApp
-              and try again.
-            </p>
-          </>
-        ) : (
-          <>
-            <h1 style={{ fontSize: "2rem", marginBottom: "0.75rem" }}>
-              ✅ Payment Successful!
-            </h1>
-            <p style={{ color: "#aaa", marginBottom: "2rem", maxWidth: "360px" }}>
-              Your FirstOption wallet has been funded. Return to WhatsApp to
-              continue.
-            </p>
-          </>
-        )}
-        <p style={{ color: "#555", fontSize: "0.8rem", marginTop: "2rem" }}>
-          You can close this tab and return to your WhatsApp chat.
-        </p>
-        <p style={{ color: "#333", fontSize: "0.75rem", marginTop: "0.5rem" }}>
-          Powered by FirstOption &bull; Secured by Flutterwave 🦋
-        </p>
+      <div className="payment-result-page">
+        <div className="payment-result-glow payment-result-glow-left" />
+        <div className="payment-result-glow payment-result-glow-right" />
+        <div className="payment-result-card">
+          <div className="payment-brand-strip">
+            <div className="payment-brand-panel">
+              <img src={logo} alt="FirstOption" className="payment-brand-logo payment-brand-logo-firstoption" />
+            </div>
+            <span className="payment-brand-divider">+</span>
+            <div className="payment-brand-panel">
+              <img src={flutterwaveLogo} alt="Flutterwave" className="payment-brand-logo payment-brand-logo-flutterwave" />
+            </div>
+          </div>
+
+          <div className={`payment-status-badge ${failed ? "payment-status-failed" : "payment-status-success"}`}>
+            {failed ? "Payment Not Completed" : "Payment Confirmed"}
+          </div>
+
+          <h1 className="payment-result-title">
+            {failed ? "Return to WhatsApp and try again" : "Payment successful"}
+          </h1>
+
+          <p className="payment-result-copy">
+            {failed
+              ? "Your checkout did not complete. Go back to the same WhatsApp chat and start the funding flow again."
+              : "Your payment has been received. Go back to the same WhatsApp chat yourself and type wallet to confirm the updated balance."}
+          </p>
+
+          <div className="payment-result-steps">
+            <div className="payment-result-step">
+              <span>1</span>
+              <p>Return to the same WhatsApp app you used for checkout.</p>
+            </div>
+            <div className="payment-result-step">
+              <span>2</span>
+              <p>Open your FirstOption chat manually.</p>
+            </div>
+            <div className="payment-result-step">
+              <span>3</span>
+              <p>Type wallet to check your balance.</p>
+            </div>
+          </div>
+
+          <div className="payment-result-note">
+            We do not auto-redirect to WhatsApp because phones with both WhatsApp and WhatsApp Business can open the wrong app.
+          </div>
+
+          <a href="/" className="payment-result-link">
+            Back to FirstOption
+          </a>
+        </div>
       </div>
     );
   }
