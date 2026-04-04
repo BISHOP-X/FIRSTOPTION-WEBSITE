@@ -10,6 +10,63 @@ function App() {
     setTimeout(() => setShowToast(false), 3000);
   };
 
+  // Payment success redirect page
+  if (window.location.pathname === "/payment-success") {
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get("status");
+    const failed = status && status !== "successful" && status !== "completed";
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+          background: "#0a0a0a",
+          color: "white",
+          textAlign: "center",
+          padding: "2rem",
+          fontFamily: "Inter, sans-serif",
+        }}
+      >
+        <img
+          src={logo}
+          alt="FirstOption"
+          style={{ width: "100px", marginBottom: "1.5rem" }}
+        />
+        {failed ? (
+          <>
+            <h1 style={{ fontSize: "2rem", marginBottom: "0.75rem" }}>
+              ❌ Payment Unsuccessful
+            </h1>
+            <p style={{ color: "#aaa", marginBottom: "2rem", maxWidth: "360px" }}>
+              Something went wrong with your payment. Please return to WhatsApp
+              and try again.
+            </p>
+          </>
+        ) : (
+          <>
+            <h1 style={{ fontSize: "2rem", marginBottom: "0.75rem" }}>
+              ✅ Payment Successful!
+            </h1>
+            <p style={{ color: "#aaa", marginBottom: "2rem", maxWidth: "360px" }}>
+              Your FirstOption wallet has been funded. Return to WhatsApp to
+              continue.
+            </p>
+          </>
+        )}
+        <p style={{ color: "#555", fontSize: "0.8rem", marginTop: "2rem" }}>
+          You can close this tab and return to your WhatsApp chat.
+        </p>
+        <p style={{ color: "#333", fontSize: "0.75rem", marginTop: "0.5rem" }}>
+          Powered by FirstOption &bull; Secured by Flutterwave 🦋
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="app">
       {/* Toast */}
