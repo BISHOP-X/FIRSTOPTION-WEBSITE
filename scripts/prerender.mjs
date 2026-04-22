@@ -19,6 +19,81 @@ const HOME_DESCRIPTION = 'FirstOption Digital Services helps Nigerians buy airti
 const HOME_OG_DESCRIPTION = 'Buy airtime, data, electricity, cable TV, exam pins and more through one official WhatsApp chat with FirstOption Digital Services.'
 const HOME_TWITTER_DESCRIPTION = 'Official WhatsApp digital services for Nigerians: airtime, data, bills, wallet funding and everyday payments in one chat.'
 
+const SERVICE_ROUTE_METADATA = [
+  {
+    url: 'https://www.thefirstoption.com.ng/services/airtime',
+    output: path.join(distDir, 'services', 'airtime', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/services/airtime',
+    title: 'Buy Airtime on WhatsApp in Nigeria | FirstOption',
+    description: 'Buy MTN, Airtel, Glo and 9mobile airtime through FirstOption on WhatsApp in Nigeria. Use one official chat, wallet funding and clear support.',
+    ogDescription: 'Buy airtime on WhatsApp in Nigeria with FirstOption across major networks and one verified support flow.',
+    twitterDescription: 'Buy airtime in Nigeria through the official FirstOption WhatsApp chat.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/services/data-bundles',
+    output: path.join(distDir, 'services', 'data-bundles', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/services/data-bundles',
+    title: 'Buy Data Bundles on WhatsApp in Nigeria | FirstOption',
+    description: 'Buy data bundles through FirstOption on WhatsApp in Nigeria with one official support path, faster repeat payments and a trust-first service flow.',
+    ogDescription: 'Buy data bundles on WhatsApp in Nigeria through the verified FirstOption channel.',
+    twitterDescription: 'Buy data bundles in Nigeria through the official FirstOption WhatsApp route.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/services/electricity',
+    output: path.join(distDir, 'services', 'electricity', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/services/electricity',
+    title: 'Pay Electricity Bills on WhatsApp in Nigeria | FirstOption',
+    description: 'Handle electricity bill and token payments through FirstOption on WhatsApp in Nigeria using one official support path and a wallet-first flow.',
+    ogDescription: 'Pay electricity-related bills in Nigeria through the official FirstOption WhatsApp service flow.',
+    twitterDescription: 'Use the verified FirstOption chat for electricity bill and token requests in Nigeria.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/services/cable-tv',
+    output: path.join(distDir, 'services', 'cable-tv', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/services/cable-tv',
+    title: 'Renew Cable TV on WhatsApp in Nigeria | FirstOption',
+    description: 'Use FirstOption on WhatsApp in Nigeria for cable TV renewals through one official route with visible support and trust pages.',
+    ogDescription: 'Handle cable TV renewals in Nigeria through the verified FirstOption WhatsApp channel.',
+    twitterDescription: 'Renew cable TV in Nigeria through the official FirstOption chat.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/services/betting-funding',
+    output: path.join(distDir, 'services', 'betting-funding', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/services/betting-funding',
+    title: 'Fund Betting Wallets on WhatsApp in Nigeria | FirstOption',
+    description: 'Fund betting wallets through FirstOption on WhatsApp in Nigeria using one official support path instead of random forwarded payment instructions.',
+    ogDescription: 'Use the official FirstOption WhatsApp route for betting wallet funding in Nigeria.',
+    twitterDescription: 'Fund betting wallets in Nigeria through the verified FirstOption chat.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/services/airtime-to-cash',
+    output: path.join(distDir, 'services', 'airtime-to-cash', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/services/airtime-to-cash',
+    title: 'Convert Airtime to Cash on WhatsApp in Nigeria | FirstOption',
+    description: 'Handle airtime-to-cash requests through FirstOption on WhatsApp in Nigeria with one visible verification path and public trust signals.',
+    ogDescription: 'Use the official FirstOption route when handling airtime-to-cash requests in Nigeria.',
+    twitterDescription: 'Verify the FirstOption support path before any airtime-to-cash request in Nigeria.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/services/exam-pins',
+    output: path.join(distDir, 'services', 'exam-pins', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/services/exam-pins',
+    title: 'Buy Exam Pins on WhatsApp in Nigeria | FirstOption',
+    description: 'Use FirstOption on WhatsApp in Nigeria for exam pin requests through one official support path with clear public verification details.',
+    ogDescription: 'Handle exam pin requests in Nigeria through the official FirstOption WhatsApp route.',
+    twitterDescription: 'Buy exam pins in Nigeria through the verified FirstOption chat and support path.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/services/internet',
+    output: path.join(distDir, 'services', 'internet', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/services/internet',
+    title: 'Pay for Internet Subscriptions on WhatsApp in Nigeria | FirstOption',
+    description: 'Handle internet subscription requests through FirstOption on WhatsApp in Nigeria with one public, verifiable support path.',
+    ogDescription: 'Use the official FirstOption route for internet subscriptions in Nigeria.',
+    twitterDescription: 'Handle internet subscription requests in Nigeria through the verified FirstOption chat.',
+  },
+]
+
 function escapeHtml(value) {
   return value
     .replaceAll('&', '&amp;')
@@ -135,6 +210,16 @@ const routes = [
     ogDescription: 'Learn the public checks users should use to verify FirstOption and avoid impersonation scams.',
     twitterDescription: 'FirstOption anti-scam guide with official verification checks for WhatsApp, website and support channels.',
   },
+  {
+    url: 'https://www.thefirstoption.com.ng/wallet-funding',
+    output: path.join(distDir, 'wallet-funding', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/wallet-funding',
+    title: 'Fund Your Wallet Before Paying Bills on WhatsApp | FirstOption',
+    description: 'Learn how FirstOption uses a wallet-first model in Nigeria so repeat service purchases on WhatsApp move faster through one official support path.',
+    ogDescription: 'Understand the FirstOption wallet-first payment flow for WhatsApp-based digital services in Nigeria.',
+    twitterDescription: 'See how wallet funding works through the official FirstOption WhatsApp service flow in Nigeria.',
+  },
+  ...SERVICE_ROUTE_METADATA,
 ]
 
 for (const route of routes) {

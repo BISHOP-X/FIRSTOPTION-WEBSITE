@@ -732,6 +732,8 @@ a { text-decoration: none; color: inherit; }
   display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px;
 }
 .service-card {
+  display: block;
+  height: 100%;
   background: #fff; border: 1px solid var(--border);
   border-radius: var(--radius); padding: 32px 24px; text-align: center;
   transition: transform 0.25s, box-shadow 0.25s;
