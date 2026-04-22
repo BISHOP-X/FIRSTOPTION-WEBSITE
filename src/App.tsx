@@ -1,19 +1,36 @@
-import { useState } from "react";
 import "./App.css";
 import logo from "/FISRTOPTION-LOGO-removebg-preview (1).png";
 import flutterwaveLogo from "/Flutterwave_whitebg.svg";
 
-function App() {
-  const [showToast, setShowToast] = useState(false);
+type AppProps = {
+  initialPath?: string;
+  initialSearch?: string;
+};
 
-  const handleLaunchClick = () => {
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
+const PRODUCTION_WHATSAPP_NUMBER = "2349060689011";
+const WHATSAPP_GREETING = "Hi";
+const WHATSAPP_START_URL = `https://wa.me/${PRODUCTION_WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_GREETING)}`;
+
+function resolveLocation(initialPath = "/", initialSearch = "") {
+  if (typeof window !== "undefined") {
+    return {
+      pathname: window.location.pathname,
+      search: window.location.search,
+    };
+  }
+
+  return {
+    pathname: initialPath,
+    search: initialSearch,
   };
+}
+
+function App({ initialPath = "/", initialSearch = "" }: AppProps) {
+  const { pathname, search } = resolveLocation(initialPath, initialSearch);
 
   // Payment success redirect page
-  if (window.location.pathname === "/payment-success") {
-    const params = new URLSearchParams(window.location.search);
+  if (pathname === "/payment-success") {
+    const params = new URLSearchParams(search);
     const status = params.get("status");
     const failed = status && status !== "successful" && status !== "completed";
 
@@ -75,13 +92,6 @@ function App() {
 
   return (
     <div className="app">
-      {/* Toast */}
-      {showToast && (
-        <div className="toast">
-          🚀 We haven't launched yet — anticipate our launch!
-        </div>
-      )}
-
       {/* Nav */}
       <nav className="nav">
         <div className="nav-inner">
@@ -93,9 +103,9 @@ function App() {
             <a href="#how">How It Works</a>
             <a href="#about">About</a>
           </div>
-          <button onClick={handleLaunchClick} className="nav-cta">
+          <a href={WHATSAPP_START_URL} className="nav-cta" target="_blank" rel="noreferrer">
             Get Started
-          </button>
+          </a>
         </div>
       </nav>
 
@@ -117,9 +127,9 @@ function App() {
             and get airtime, data, electricity, cable &amp; more — instantly.
           </p>
           <div className="hero-btns">
-            <button onClick={handleLaunchClick} className="cta-btn">
+            <a href={WHATSAPP_START_URL} className="cta-btn" target="_blank" rel="noreferrer">
               Get Started
-            </button>
+            </a>
             <a href="#how" className="cta-outline">
               Learn More
             </a>
@@ -252,10 +262,10 @@ function App() {
       <section className="final-cta">
         <div className="final-cta-inner">
           <h2>Ready to Get Started?</h2>
-          <p>We're launching soon. Be the first to know.</p>
-          <button onClick={handleLaunchClick} className="cta-btn cta-big">
-            🚀 Notify Me at Launch
-          </button>
+          <p>Start the chat with a simple Hi and the bot will guide you from there.</p>
+          <a href={WHATSAPP_START_URL} className="cta-btn cta-big" target="_blank" rel="noreferrer">
+            Message FirstOption on WhatsApp
+          </a>
         </div>
       </section>
 
