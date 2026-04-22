@@ -7,9 +7,43 @@ type AppProps = {
   initialSearch?: string;
 };
 
+type FooterLink = {
+  label: string;
+  href: string;
+  external?: boolean;
+};
+
 const PRODUCTION_WHATSAPP_NUMBER = "2349060689011";
+const OFFICIAL_WHATSAPP_DISPLAY = "+234 906 068 9011";
 const WHATSAPP_GREETING = "Hi";
 const WHATSAPP_START_URL = `https://wa.me/${PRODUCTION_WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_GREETING)}`;
+const WEBSITE_URL = "https://www.thefirstoption.com.ng";
+const BACKEND_BASE_URL = "https://firstoption.onrender.com";
+const LEGAL_NAME = "FIRSTOPTION DIGITAL SERVICES";
+const SUPPORT_EMAIL = "support@thefirstoption.com.ng";
+const SUPPORT_EMAIL_LINK = `mailto:${SUPPORT_EMAIL}`;
+const CAC_BUSINESS_NUMBER = "9443317";
+const REGISTERED_ADDRESS = "No. 4, God of Mercy Avenue, Oyigbo, Rivers State, Nigeria";
+
+const SOCIAL_LINKS: FooterLink[] = [
+  { label: "Instagram", href: "https://www.instagram.com/firstoptionng", external: true },
+  { label: "X / Twitter", href: "https://x.com/firstoptionng", external: true },
+  { label: "TikTok", href: "https://www.tiktok.com/@firstoptionng", external: true },
+  { label: "Telegram", href: "https://t.me/firstoptionng", external: true },
+];
+
+const LEGAL_LINKS: FooterLink[] = [
+  { label: "Privacy Policy", href: `${BACKEND_BASE_URL}/privacy`, external: true },
+  { label: "Terms of Service", href: `${BACKEND_BASE_URL}/terms`, external: true },
+  { label: "Data Deletion", href: `${BACKEND_BASE_URL}/data-deletion`, external: true },
+];
+
+const LIVE_SERVICES = [
+  "Airtime top-up across major Nigerian networks",
+  "Data bundles and internet subscriptions",
+  "Electricity token payments and cable TV renewals",
+  "Betting wallet funding, exam pins and airtime to cash",
+];
 
 function resolveLocation(initialPath = "/", initialSearch = "") {
   if (typeof window !== "undefined") {
@@ -101,7 +135,7 @@ function App({ initialPath = "/", initialSearch = "" }: AppProps) {
           <div className="nav-links">
             <a href="#services">Services</a>
             <a href="#how">How It Works</a>
-            <a href="#about">About</a>
+            <a href="#trust">Official</a>
           </div>
           <a href={WHATSAPP_START_URL} className="nav-cta" target="_blank" rel="noreferrer">
             Get Started
@@ -115,16 +149,16 @@ function App({ initialPath = "/", initialSearch = "" }: AppProps) {
         <div className="hero-content">
           <div className="hero-badge">
             <span className="badge-dot">✦</span>
-            YOUR WHATSAPP FINANCIAL HUB
+            OFFICIAL WHATSAPP DIGITAL SERVICES BUSINESS
           </div>
           <h1>
-            Pay Bills &amp; Buy <em>Airtime</em> with
+            Buy Airtime, Pay Bills &amp;
             <br />
-            Just a Chat
+            <em>Fund Your Wallet</em> on WhatsApp
           </h1>
           <p className="hero-sub">
-            No app to download. No forms to fill. Just message us on WhatsApp
-            and get airtime, data, electricity, cable &amp; more — instantly.
+            {LEGAL_NAME} helps Nigerians buy airtime, data, electricity, cable TV,
+            exam pins and more through one official WhatsApp chat. No app to download.
           </p>
           <div className="hero-btns">
             <a href={WHATSAPP_START_URL} className="cta-btn" target="_blank" rel="noreferrer">
@@ -134,14 +168,23 @@ function App({ initialPath = "/", initialSearch = "" }: AppProps) {
               Learn More
             </a>
           </div>
+          <div className="hero-trust-strip">
+            <span className="hero-trust-item">CAC BN {CAC_BUSINESS_NUMBER}</span>
+            <a href={WHATSAPP_START_URL} className="hero-trust-item hero-trust-link" target="_blank" rel="noreferrer">
+              Official WhatsApp {OFFICIAL_WHATSAPP_DISPLAY}
+            </a>
+            <a href={SUPPORT_EMAIL_LINK} className="hero-trust-item hero-trust-link">
+              {SUPPORT_EMAIL}
+            </a>
+          </div>
         </div>
 
         {/* Floating Cards */}
         <div className="hero-cards">
           <div className="float-card card-left">
-            <p className="card-label">Transactions</p>
-            <p className="card-big">85%</p>
-            <span className="card-tag green">+12%</span>
+            <p className="card-label">CAC Business Number</p>
+            <p className="card-big">{CAC_BUSINESS_NUMBER}</p>
+            <span className="card-tag green">Registered</span>
           </div>
           <div className="float-card card-center">
             <div className="card-header">
@@ -155,14 +198,14 @@ function App({ initialPath = "/", initialSearch = "" }: AppProps) {
                   strokeDasharray="251.3" strokeDashoffset="50.3" strokeLinecap="round"
                   transform="rotate(-90 60 60)" />
               </svg>
-              <span className="ring-pct">80%</span>
+              <span className="ring-pct">8+</span>
             </div>
-            <p className="card-note">Success this month</p>
+            <p className="card-note">Services live now</p>
           </div>
           <div className="float-card card-right">
-            <p className="card-label">Wallet</p>
-            <p className="card-big">₦0.00</p>
-            <span className="card-tag blue">Ready</span>
+            <p className="card-label">Wallet Funding</p>
+            <p className="card-big">Ready</p>
+            <span className="card-tag blue">Virtual Account</span>
           </div>
         </div>
       </section>
@@ -171,13 +214,98 @@ function App({ initialPath = "/", initialSearch = "" }: AppProps) {
       <section className="about" id="about">
         <div className="about-badge">
           <span className="badge-dot">✦</span>
-          ABOUT US
+          ABOUT FIRSTOPTION
         </div>
         <p className="about-text">
-          We are passionate about empowering everyday Nigerians to handle airtime,
-          data, bills &amp; more — without leaving WhatsApp. No app, no stress,
-          just chat.
+          {LEGAL_NAME} is a CAC-registered Nigerian business built for fast,
+          everyday digital services through one official WhatsApp number. We help
+          customers fund a wallet, buy airtime and data, pay bills, and handle
+          routine digital payments without leaving chat.
         </p>
+        <div className="about-facts">
+          <span>Registered in Nigeria</span>
+          <span>{REGISTERED_ADDRESS}</span>
+          <a href={SUPPORT_EMAIL_LINK}>{SUPPORT_EMAIL}</a>
+        </div>
+      </section>
+
+      <section className="trust-section" id="trust">
+        <div className="section-header">
+          <div className="about-badge">
+            <span className="badge-dot">✦</span>
+            OFFICIAL CHANNELS &amp; SAFETY
+          </div>
+          <h2>Trust the details that are <em>public and verifiable</em></h2>
+        </div>
+        <div className="trust-grid">
+          <article className="trust-card trust-card-highlight">
+            <h3>Official Channels</h3>
+            <p>
+              Use only the contacts below for support, funding help and transaction
+              issues. If a link, page or number is not listed here, do not use it.
+            </p>
+            <div className="trust-pairs">
+              <a href={WHATSAPP_START_URL} className="trust-pair" target="_blank" rel="noreferrer">
+                <span className="trust-item-label">WhatsApp</span>
+                <span className="trust-item-value">{OFFICIAL_WHATSAPP_DISPLAY}</span>
+              </a>
+              <a href={SUPPORT_EMAIL_LINK} className="trust-pair">
+                <span className="trust-item-label">Support Email</span>
+                <span className="trust-item-value">{SUPPORT_EMAIL}</span>
+              </a>
+              <a href={WEBSITE_URL} className="trust-pair" target="_blank" rel="noreferrer">
+                <span className="trust-item-label">Website</span>
+                <span className="trust-item-value">www.thefirstoption.com.ng</span>
+              </a>
+            </div>
+            <div className="trust-link-pills">
+              {SOCIAL_LINKS.map((link) => (
+                <a key={link.label} href={link.href} className="trust-link-pill" target="_blank" rel="noreferrer">
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </article>
+
+          <article className="trust-card">
+            <h3>Registered Nigerian Business</h3>
+            <p>
+              FirstOption operates under one public identity across its website,
+              WhatsApp channel and official social profiles.
+            </p>
+            <ul className="trust-list">
+              <li>Legal name: {LEGAL_NAME}</li>
+              <li>CAC business number: {CAC_BUSINESS_NUMBER}</li>
+              <li>Registered address: {REGISTERED_ADDRESS}</li>
+            </ul>
+          </article>
+
+          <article className="trust-card">
+            <h3>Wallet Funding With Clear Confirmation</h3>
+            <p>
+              Fund your wallet through your assigned virtual account or approved
+              checkout flow, then spend inside the same WhatsApp conversation.
+            </p>
+            <ul className="trust-list">
+              <li>Dedicated virtual account for repeat funding</li>
+              <li>Wallet balance and transaction history inside chat</li>
+              <li>One official support path for funding issues</li>
+            </ul>
+          </article>
+
+          <article className="trust-card">
+            <h3>Services Live Right Now</h3>
+            <p>
+              FirstOption is already handling everyday digital service requests for
+              Nigerians through the active WhatsApp menu.
+            </p>
+            <ul className="trust-list">
+              {LIVE_SERVICES.map((service) => (
+                <li key={service}>{service}</li>
+              ))}
+            </ul>
+          </article>
+        </div>
       </section>
 
       {/* Services */}
@@ -245,15 +373,15 @@ function App({ initialPath = "/", initialSearch = "" }: AppProps) {
           <img src={logo} alt="" className="wallet-logo" />
           <h2>Your Wallet, Your Speed</h2>
           <p>
-            Fund your FirstOption wallet via bank transfer to your personal virtual
-            account. Once funded, buy anything instantly — no waiting for transfers
-            to confirm each time.
+            Fund your FirstOption wallet through a dedicated virtual account or an
+            approved checkout flow. Once funded, you can buy airtime, data and
+            bills instantly without repeating a manual transfer for every order.
           </p>
           <div className="wallet-perks">
-            <span>✅ Instant top-up</span>
             <span>✅ Dedicated virtual account</span>
-            <span>✅ Transaction history</span>
-            <span>✅ Zero hidden fees</span>
+            <span>✅ Faster repeat payments</span>
+            <span>✅ Balance and history in chat</span>
+            <span>✅ Official support path</span>
           </div>
         </div>
       </section>
@@ -261,11 +389,18 @@ function App({ initialPath = "/", initialSearch = "" }: AppProps) {
       {/* CTA */}
       <section className="final-cta">
         <div className="final-cta-inner">
-          <h2>Ready to Get Started?</h2>
-          <p>Start the chat with a simple Hi and the bot will guide you from there.</p>
+          <h2>Start With the Official Number</h2>
+          <p>
+            Start the chat with a simple Hi and follow the menu from there. Use only
+            our official WhatsApp number and support email for funding or transaction help.
+          </p>
           <a href={WHATSAPP_START_URL} className="cta-btn cta-big" target="_blank" rel="noreferrer">
             Message FirstOption on WhatsApp
           </a>
+          <div className="final-cta-meta">
+            <span>{OFFICIAL_WHATSAPP_DISPLAY}</span>
+            <a href={SUPPORT_EMAIL_LINK}>{SUPPORT_EMAIL}</a>
+          </div>
         </div>
       </section>
 
@@ -275,7 +410,10 @@ function App({ initialPath = "/", initialSearch = "" }: AppProps) {
           <div className="footer-top">
             <div className="footer-brand-section">
               <img src={logo} alt="FirstOption" className="footer-logo" />
-              <p>Your WhatsApp hub for airtime, data, bills &amp; more.</p>
+              <p>
+                CAC-registered Nigerian business for airtime, data, bills, wallet
+                funding and everyday digital services through one official WhatsApp number.
+              </p>
             </div>
             <div className="footer-links">
               <div>
@@ -287,12 +425,29 @@ function App({ initialPath = "/", initialSearch = "" }: AppProps) {
               <div>
                 <h4>Company</h4>
                 <a href="#about">About Us</a>
+                <a href="#trust">Official Channels</a>
                 <a href="#how">How It Works</a>
+              </div>
+              <div>
+                <h4>Legal</h4>
+                {LEGAL_LINKS.map((link) => (
+                  <a key={link.label} href={link.href} target="_blank" rel="noreferrer">
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+              <div>
+                <h4>Official Socials</h4>
+                {SOCIAL_LINKS.map((link) => (
+                  <a key={link.label} href={link.href} target="_blank" rel="noreferrer">
+                    {link.label}
+                  </a>
+                ))}
               </div>
             </div>
           </div>
           <div className="footer-bottom">
-            <p>FirstOption Digital Services &bull; RC/BN: 9443317 &bull; CAC Registered, Nigeria</p>
+            <p>{LEGAL_NAME} &bull; RC/BN: {CAC_BUSINESS_NUMBER} &bull; CAC Registered, Nigeria</p>
             <p>&copy; {new Date().getFullYear()} FirstOption. All rights reserved.</p>
           </div>
         </div>
