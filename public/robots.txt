@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /payment-success
 
 Sitemap: https://www.thefirstoption.com.ng/sitemap.xml

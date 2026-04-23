@@ -94,6 +94,63 @@ const SERVICE_ROUTE_METADATA = [
   },
 ]
 
+const GUIDE_ROUTE_METADATA = [
+  {
+    url: 'https://www.thefirstoption.com.ng/guides/buy-airtime-on-whatsapp-nigeria',
+    output: path.join(distDir, 'guides', 'buy-airtime-on-whatsapp-nigeria', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/guides/buy-airtime-on-whatsapp-nigeria',
+    title: 'How to Buy Airtime on WhatsApp in Nigeria | FirstOption Guide',
+    description: 'Learn how to buy airtime on WhatsApp in Nigeria through the official FirstOption route, what to verify before paying and how to keep support in one chat.',
+    ogDescription: 'A practical FirstOption guide to buying airtime on WhatsApp in Nigeria through the official route.',
+    twitterDescription: 'Use this FirstOption guide to buy airtime on WhatsApp in Nigeria through the verified public route.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/guides/fund-your-wallet-before-paying-bills',
+    output: path.join(distDir, 'guides', 'fund-your-wallet-before-paying-bills', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/guides/fund-your-wallet-before-paying-bills',
+    title: 'How to Fund Your Wallet Before Paying Bills on WhatsApp | FirstOption Guide',
+    description: 'Learn how the FirstOption wallet-first payment flow works on WhatsApp in Nigeria and why it helps with repeat bill, airtime and subscription payments.',
+    ogDescription: 'A practical FirstOption guide to funding your wallet before paying bills on WhatsApp in Nigeria.',
+    twitterDescription: 'See how the FirstOption wallet-first flow works before repeat bill payments on WhatsApp.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/guides/airtime-to-cash-whatsapp-nigeria',
+    output: path.join(distDir, 'guides', 'airtime-to-cash-whatsapp-nigeria', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/guides/airtime-to-cash-whatsapp-nigeria',
+    title: 'How Airtime-to-Cash Works in Nigeria on WhatsApp | FirstOption Guide',
+    description: 'Learn how to approach airtime-to-cash requests in Nigeria through the official FirstOption route and what to verify before acting on any instruction.',
+    ogDescription: 'A practical FirstOption guide to understanding airtime-to-cash requests in Nigeria on WhatsApp.',
+    twitterDescription: 'Use this FirstOption guide to verify the official airtime-to-cash route in Nigeria.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/guides/buy-exam-pins-whatsapp-nigeria',
+    output: path.join(distDir, 'guides', 'buy-exam-pins-whatsapp-nigeria', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/guides/buy-exam-pins-whatsapp-nigeria',
+    title: 'How to Buy Exam Pins Without Leaving WhatsApp in Nigeria | FirstOption Guide',
+    description: 'Learn how to handle exam pin requests through the official FirstOption WhatsApp route in Nigeria and what to verify before paying.',
+    ogDescription: 'A practical FirstOption guide to buying exam pins through WhatsApp in Nigeria.',
+    twitterDescription: 'Use this FirstOption guide for exam pin requests through the verified WhatsApp route.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/guides/renew-dstv-gotv-whatsapp-nigeria',
+    output: path.join(distDir, 'guides', 'renew-dstv-gotv-whatsapp-nigeria', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/guides/renew-dstv-gotv-whatsapp-nigeria',
+    title: 'How to Renew DSTV or GOtv Through WhatsApp in Nigeria | FirstOption Guide',
+    description: 'Learn how to renew DSTV or GOtv through the official FirstOption WhatsApp route in Nigeria and how to keep support tied to the same verified path.',
+    ogDescription: 'A practical FirstOption guide to cable subscription renewals on WhatsApp in Nigeria.',
+    twitterDescription: 'Use this FirstOption guide for DSTV or GOtv renewals through the official WhatsApp route.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/guides/fund-betting-wallets-via-whatsapp',
+    output: path.join(distDir, 'guides', 'fund-betting-wallets-via-whatsapp', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/guides/fund-betting-wallets-via-whatsapp',
+    title: 'How to Fund Betting Wallets via WhatsApp in Nigeria | FirstOption Guide',
+    description: 'Learn how to handle betting wallet funding through the official FirstOption route in Nigeria and what to verify before using any payment instruction.',
+    ogDescription: 'A practical FirstOption guide to funding betting wallets via WhatsApp in Nigeria.',
+    twitterDescription: 'Use this FirstOption guide to verify the official betting wallet funding route on WhatsApp.',
+  },
+]
+
 function escapeHtml(value) {
   return value
     .replaceAll('&', '&amp;')
@@ -220,6 +277,7 @@ const routes = [
     twitterDescription: 'See how wallet funding works through the official FirstOption WhatsApp service flow in Nigeria.',
   },
   ...SERVICE_ROUTE_METADATA,
+  ...GUIDE_ROUTE_METADATA,
 ]
 
 for (const route of routes) {
