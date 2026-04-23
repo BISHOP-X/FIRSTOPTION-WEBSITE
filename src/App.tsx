@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import "./App.css";
 import logo from "/FISRTOPTION-LOGO-removebg-preview (1).png";
 import flutterwaveLogo from "/Flutterwave_whitebg.svg";
@@ -72,6 +72,19 @@ const PRIMARY_NAV_LINKS: FooterLink[] = [
 const COMPANY_LINKS: FooterLink[] = [
   { label: "About Us", href: "/about" },
   { label: "Contact", href: "/contact" },
+  { label: "Official WhatsApp", href: "/official-whatsapp" },
+  { label: "Anti-Scam Guide", href: "/anti-scam" },
+];
+
+const MOBILE_MENU_PRIMARY_LINKS: FooterLink[] = [
+  { label: "Home", href: "/" },
+  { label: "Services", href: "/services" },
+  { label: "Wallet Funding", href: "/wallet-funding" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
+
+const MOBILE_MENU_TRUST_LINKS: FooterLink[] = [
   { label: "Official WhatsApp", href: "/official-whatsapp" },
   { label: "Anti-Scam Guide", href: "/anti-scam" },
 ];
@@ -498,6 +511,45 @@ function getLinkAttributes(link: FooterLink) {
   return link.external ? { target: "_blank", rel: "noreferrer" } : {};
 }
 
+function isPathActive(currentPath: string, href: string) {
+  if (href === "/") {
+    return currentPath === "/";
+  }
+
+  if (href === "/services") {
+    return currentPath === "/services" || currentPath.startsWith("/services/");
+  }
+
+  return currentPath === href;
+}
+
+function getCurrentPageLabel(currentPath: string) {
+  const matchedService = getServiceByPath(currentPath);
+
+  if (matchedService) {
+    return matchedService.name;
+  }
+
+  switch (currentPath) {
+    case "/":
+      return "Home";
+    case "/services":
+      return "Services";
+    case "/wallet-funding":
+      return "Wallet Funding";
+    case "/about":
+      return "About";
+    case "/contact":
+      return "Contact";
+    case "/official-whatsapp":
+      return "Official WhatsApp";
+    case "/anti-scam":
+      return "Anti-Scam Guide";
+    default:
+      return "FirstOption";
+  }
+}
+
 function ServiceCardLink({ service }: { service: ServicePageConfig }) {
   return (
     <a href={service.path} className="service-card">
@@ -508,7 +560,58 @@ function ServiceCardLink({ service }: { service: ServicePageConfig }) {
   );
 }
 
-function SiteChrome({ children }: { children: ReactNode }) {
+function SiteChrome({ currentPath, children }: { currentPath: string; children: ReactNode }) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (typeof document === "undefined") {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isMobileMenuOpen]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen || typeof window === "undefined") {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isMobileMenuOpen]);
+
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+  const currentPageLabel = getCurrentPageLabel(currentPath);
+
   return (
     <div className="app">
       <nav className="nav">
@@ -520,16 +623,106 @@ function SiteChrome({ children }: { children: ReactNode }) {
           </div>
           <div className="nav-links">
             {PRIMARY_NAV_LINKS.map((link) => (
-              <a key={link.label} href={link.href} {...getLinkAttributes(link)}>
+              <a
+                key={link.label}
+                href={link.href}
+                className={isPathActive(currentPath, link.href) ? "nav-link-active" : undefined}
+                {...getLinkAttributes(link)}
+              >
                 {link.label}
               </a>
             ))}
           </div>
-          <a href={WHATSAPP_START_URL} className="nav-cta" target="_blank" rel="noreferrer">
+          <a href={WHATSAPP_START_URL} className="nav-cta nav-cta-desktop" target="_blank" rel="noreferrer">
             Get Started
           </a>
+          <button
+            type="button"
+            className={`nav-menu-button${isMobileMenuOpen ? " nav-menu-button-open" : ""}`}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-nav-panel"
+            aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            onClick={() => setIsMobileMenuOpen((open) => !open)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
       </nav>
+      <div className={`mobile-nav-shell${isMobileMenuOpen ? " mobile-nav-shell-open" : ""}`}>
+        <button
+          type="button"
+          className="mobile-nav-backdrop"
+          aria-label="Close navigation menu"
+          onClick={closeMobileMenu}
+        />
+        <div className="mobile-nav-panel" id="mobile-nav-panel">
+          <div className="mobile-nav-header">
+            <div className="mobile-nav-brand">
+              <img src={logo} alt="FirstOption" className="mobile-nav-brand-logo" />
+              <div className="mobile-nav-brand-copy">
+                <span className="mobile-nav-label">Browse FirstOption</span>
+                <span className="mobile-nav-current">You are here: {currentPageLabel}</span>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="mobile-nav-close"
+              aria-label="Close navigation menu"
+              onClick={closeMobileMenu}
+            >
+              ×
+            </button>
+          </div>
+          <div className="mobile-nav-sections">
+            <div className="mobile-nav-section">
+              <span className="mobile-nav-section-label">Navigate</span>
+              <div className="mobile-nav-links">
+                {MOBILE_MENU_PRIMARY_LINKS.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className={isPathActive(currentPath, link.href) ? "mobile-nav-link-active" : undefined}
+                    {...getLinkAttributes(link)}
+                    onClick={closeMobileMenu}
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+            <div className="mobile-nav-section">
+              <span className="mobile-nav-section-label">Verify and Protect</span>
+              <div className="mobile-nav-links mobile-nav-links-compact">
+                {MOBILE_MENU_TRUST_LINKS.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className={isPathActive(currentPath, link.href) ? "mobile-nav-link-active" : undefined}
+                    {...getLinkAttributes(link)}
+                    onClick={closeMobileMenu}
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+          <a
+            href={WHATSAPP_START_URL}
+            className="mobile-nav-cta"
+            target="_blank"
+            rel="noreferrer"
+            onClick={closeMobileMenu}
+          >
+            Start on WhatsApp
+          </a>
+          <div className="mobile-nav-meta">
+            <a href={SUPPORT_EMAIL_LINK} onClick={closeMobileMenu}>{SUPPORT_EMAIL}</a>
+          </div>
+        </div>
+      </div>
       {children}
       <footer className="footer">
         <div className="footer-inner">
@@ -537,8 +730,8 @@ function SiteChrome({ children }: { children: ReactNode }) {
             <div className="footer-brand-section">
               <img src={logo} alt="FirstOption" className="footer-logo" />
               <p>
-                CAC-registered Nigerian business for airtime, data, bills, wallet
-                funding and everyday digital services through one official WhatsApp number.
+                Official WhatsApp digital services for airtime, data, bills, wallet
+                funding and everyday payments through one verified support path.
               </p>
             </div>
             <div className="footer-links">
@@ -577,7 +770,7 @@ function SiteChrome({ children }: { children: ReactNode }) {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>{LEGAL_NAME} &bull; RC/BN: {CAC_BUSINESS_NUMBER} &bull; CAC Registered, Nigeria</p>
+            <p>{LEGAL_NAME} &bull; CAC BN {CAC_BUSINESS_NUMBER} &bull; {OPERATING_COUNTRY}</p>
             <p>&copy; {new Date().getFullYear()} FirstOption. All rights reserved.</p>
           </div>
         </div>
@@ -637,8 +830,12 @@ function ServiceLandingPage({ service }: { service: ServicePageConfig }) {
     .filter((entry): entry is ServicePageConfig => Boolean(entry));
 
   return (
-    <SiteChrome>
-      <PageHero badge={service.badge} title={service.h1} description={service.heroDescription}>
+    <SiteChrome currentPath={service.path}>
+      <PageHero
+        badge={service.badge}
+        title={service.h1}
+        description={service.heroDescription}
+      >
         <a href={WHATSAPP_START_URL} className="hero-trust-item hero-trust-link" target="_blank" rel="noreferrer">
           Start on WhatsApp
         </a>
@@ -705,7 +902,7 @@ function ServiceLandingPage({ service }: { service: ServicePageConfig }) {
 
 function WalletFundingPage() {
   return (
-    <SiteChrome>
+    <SiteChrome currentPath="/wallet-funding">
       <PageHero
         badge="WALLET FUNDING"
         title="Fund Your Wallet Before Paying Bills on WhatsApp"
@@ -792,13 +989,13 @@ function WalletFundingPage() {
 
 function HomePage() {
   return (
-    <SiteChrome>
+    <SiteChrome currentPath="/">
       <section className="hero">
         <div className="hero-bg" />
         <div className="hero-content">
           <div className="hero-badge">
             <span className="badge-dot">✦</span>
-            OFFICIAL WHATSAPP DIGITAL SERVICES BUSINESS
+            OFFICIAL FIRSTOPTION CHANNEL
           </div>
           <h1>
             Buy Airtime, Pay Bills &amp;
@@ -806,7 +1003,7 @@ function HomePage() {
             <em>Fund Your Wallet</em> on WhatsApp
           </h1>
           <p className="hero-sub">
-            {LEGAL_NAME} helps Nigerians buy airtime, data, electricity, cable TV,
+            FirstOption helps Nigerians buy airtime, data, electricity, cable TV,
             exam pins and more through one official WhatsApp chat. No app to download.
           </p>
           <div className="hero-btns">
@@ -818,21 +1015,23 @@ function HomePage() {
             </a>
           </div>
           <div className="hero-trust-strip">
-            <span className="hero-trust-item">CAC BN {CAC_BUSINESS_NUMBER}</span>
             <a href={WHATSAPP_START_URL} className="hero-trust-item hero-trust-link" target="_blank" rel="noreferrer">
               Official WhatsApp {OFFICIAL_WHATSAPP_DISPLAY}
             </a>
             <a href={SUPPORT_EMAIL_LINK} className="hero-trust-item hero-trust-link">
               {SUPPORT_EMAIL}
             </a>
+            <a href="/official-whatsapp" className="hero-trust-item hero-trust-link">
+              How to verify FirstOption
+            </a>
           </div>
         </div>
 
         <div className="hero-cards">
           <div className="float-card card-left">
-            <p className="card-label">CAC Business Number</p>
-            <p className="card-big">{CAC_BUSINESS_NUMBER}</p>
-            <span className="card-tag green">Registered</span>
+            <p className="card-label">Official Route</p>
+            <p className="card-big">Verified</p>
+            <span className="card-tag green">Public Details</span>
           </div>
           <div className="float-card card-center">
             <div className="card-header">
@@ -873,13 +1072,13 @@ function HomePage() {
           ABOUT FIRSTOPTION
         </div>
         <p className="about-text">
-          {LEGAL_NAME} is a CAC-registered Nigerian business built for fast,
-          everyday digital services through one official WhatsApp number. We help
+          FirstOption Digital Services is a Nigerian digital services business built for fast,
+          everyday purchases through one official WhatsApp channel. We help
           customers fund a wallet, buy airtime and data, pay bills, and handle
           routine digital payments without leaving chat.
         </p>
         <div className="about-facts">
-          <span>Registered in Nigeria</span>
+          <span>One verified support path</span>
           <span>Serving customers across {OPERATING_COUNTRY}</span>
           <a href={SUPPORT_EMAIL_LINK}>{SUPPORT_EMAIL}</a>
         </div>
@@ -924,14 +1123,14 @@ function HomePage() {
           </article>
 
           <article className="trust-card">
-            <h3>Registered Nigerian Business</h3>
+            <h3>Business Details</h3>
             <p>
               FirstOption operates under one public identity across its website,
               WhatsApp channel and official social profiles.
             </p>
             <ul className="trust-list">
               <li>Legal name: {LEGAL_NAME}</li>
-              <li>CAC business number: {CAC_BUSINESS_NUMBER}</li>
+              <li>CAC BN: {CAC_BUSINESS_NUMBER}</li>
               <li>Operating country: {OPERATING_COUNTRY}</li>
             </ul>
           </article>
@@ -1036,7 +1235,7 @@ function HomePage() {
 
 function ServicesPage() {
   return (
-    <SiteChrome>
+    <SiteChrome currentPath="/services">
       <PageHero
         badge="LIVE SERVICES"
         title={<>Everyday digital services built for <em>WhatsApp</em></>}
@@ -1106,11 +1305,11 @@ function ServicesPage() {
 
 function AboutPage() {
   return (
-    <SiteChrome>
+    <SiteChrome currentPath="/about">
       <PageHero
         badge="ABOUT FIRSTOPTION"
-        title={<>A CAC-registered brand built around <em>one trusted chat</em></>}
-        description="FirstOption Digital Services is designed for Nigerians who want airtime, bills and everyday digital services handled quickly through one official WhatsApp number."
+        title={<>A trusted digital services brand built around <em>one chat</em></>}
+        description="FirstOption Digital Services serves Nigerians who want airtime, bills and everyday digital services handled quickly through one official WhatsApp flow."
       >
         <a href="/services" className="hero-trust-item hero-trust-link">
           See live services
@@ -1156,7 +1355,7 @@ function AboutPage() {
             <h3>One brand across channels</h3>
             <ul className="trust-list">
               <li>Legal name: {LEGAL_NAME}</li>
-              <li>CAC business number: {CAC_BUSINESS_NUMBER}</li>
+              <li>CAC BN: {CAC_BUSINESS_NUMBER}</li>
               <li>Operating country: {OPERATING_COUNTRY}</li>
             </ul>
           </article>
@@ -1182,7 +1381,7 @@ function AboutPage() {
 
 function ContactPage() {
   return (
-    <SiteChrome>
+    <SiteChrome currentPath="/contact">
       <PageHero
         badge="CONTACT FIRSTOPTION"
         title={<>Use the public channels that <em>match everywhere</em></>}
@@ -1248,7 +1447,7 @@ function ContactPage() {
 
 function OfficialWhatsAppPage() {
   return (
-    <SiteChrome>
+    <SiteChrome currentPath="/official-whatsapp">
       <PageHero
         badge="OFFICIAL WHATSAPP"
         title={<>The public FirstOption number users should <em>actually trust</em></>}
@@ -1304,7 +1503,7 @@ function OfficialWhatsAppPage() {
 
 function AntiScamPage() {
   return (
-    <SiteChrome>
+    <SiteChrome currentPath="/anti-scam">
       <PageHero
         badge="ANTI-SCAM GUIDE"
         title={<>How to verify FirstOption before you <em>send money or data</em></>}
