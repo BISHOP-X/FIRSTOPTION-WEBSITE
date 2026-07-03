@@ -386,13 +386,6 @@ function SiteChrome({ currentPath, children }: { currentPath: string; children: 
       <div className={`mobile-nav-shell${isMenuOpen ? " mobile-nav-shell-open" : ""}`} aria-hidden={!isMenuOpen}>
         <button type="button" aria-label="Close navigation" className="mobile-nav-backdrop" onClick={() => setIsMenuOpen(false)} />
         <div className="mobile-nav-panel">
-          <div className="mobile-nav-header">
-            <img src={logo} alt="FirstOption" className="mobile-nav-logo" />
-            <span>{currentPageLabel(currentPath)}</span>
-            <button type="button" aria-label="Close navigation menu" onClick={() => setIsMenuOpen(false)}>
-              x
-            </button>
-          </div>
           {[{ label: "Home", href: "/" }, ...NAV_LINKS, { label: "Contact", href: "/contact" }, { label: "Anti-Scam", href: "/anti-scam" }].map((link) => (
             <a key={link.label} href={link.href} onClick={() => setIsMenuOpen(false)}>
               {link.label}
