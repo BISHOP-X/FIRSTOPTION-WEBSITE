@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import "./App.css";
-import logo from "/firstoption-logo-cropped.png";
+import logo from "/logo.png";
 import flutterwaveLogo from "/Flutterwave_whitebg.svg";
 import {
   CAC_BUSINESS_NUMBER,
@@ -49,6 +49,11 @@ import {
 } from "./siteData";
 
 type AppProps = { initialPath?: string; initialSearch?: string };
+
+function BrandLogo({ onDark = false, markOnly = false, decorative = false }: { onDark?: boolean; markOnly?: boolean; decorative?: boolean }) {
+  const className = `brand-logo${onDark ? " brand-logo-on-dark" : ""}${markOnly ? " brand-mark" : ""}`;
+  return <span className={className} role={decorative ? undefined : "img"} aria-label={decorative ? undefined : "FirstOption"} aria-hidden={decorative || undefined} style={{ backgroundImage: `url(${logo})` }} />;
+}
 
 const PRODUCT_LINKS: LinkItem[] = [
   { label: "Personal payments", href: "/personal" },
@@ -236,7 +241,7 @@ function SiteHeader({ currentPath }: { currentPath: string }) {
       <header className={`site-nav${hidden ? " site-nav-hidden" : ""}${condensed ? " site-nav-condensed" : ""}`}>
         <div className="site-nav-inner">
           <a className="nav-brand" href="/" aria-label="FirstOption home">
-            <img src={logo} alt="FirstOption" />
+            <BrandLogo decorative />
           </a>
           <nav className="desktop-nav" aria-label="Primary navigation">
             {NAV_LINKS.map((link) => (
@@ -280,7 +285,7 @@ function Footer() {
     <footer className="site-footer">
       <div className="footer-main">
         <div className="footer-brand">
-          <img src={logo} alt="FirstOption" />
+          <BrandLogo onDark />
           <p>Payments and everyday transactions, through WhatsApp.</p>
           <a href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Message FirstOption <ArrowRight size={16} /></a>
         </div>
@@ -359,7 +364,7 @@ function ProductPhone({ compact = false }: { compact?: boolean }) {
         <div className="product-phone-screen">
           <div className="phone-status"><strong>9:41</strong><span>● ᴡɪꜰɪ ▰</span></div>
           <div className="phone-contact">
-            <div className="phone-contact-mark"><img src={logo} alt="" /></div>
+            <div className="phone-contact-mark"><BrandLogo markOnly decorative /></div>
             <div><strong>FirstOption</strong><span>online</span></div>
             <ShieldCheck size={18} />
           </div>
@@ -406,7 +411,7 @@ function CommandDemo() {
   return (
     <div className="whatsapp-demo" aria-label="A natural FirstOption conversation on WhatsApp">
       <div className="whatsapp-demo-header">
-        <span className="whatsapp-demo-avatar"><img src={logo} alt="" /></span>
+        <span className="whatsapp-demo-avatar"><BrandLogo markOnly decorative /></span>
         <div><strong>FirstOption</strong><span>online</span></div>
         <ShieldCheck size={19} />
       </div>
@@ -681,7 +686,7 @@ function ServiceLandingPage({ service }: { service: Service }) {
 function ReferralProgramPage() {
   return <SiteChrome currentPath="/referral"><main className="subpage">
     <PageHero eyebrow="Refer & Earn" title="Share FirstOption with people you trust." description="Invite friends and groups with your referral link and follow the current reward steps in WhatsApp." />
-    <section className="section referral-layout"><Reveal className="referral-pass"><img src={logo} alt="" /><span>YOUR REFERRAL LINK</span><strong>firstoption.com.ng/r/you</strong><button type="button">Share link <Send size={16} /></button></Reveal><Reveal className="section-intro"><p className="eyebrow">Built into your network</p><h2>Your link connects every successful referral to you.</h2><p>Open Refer & Earn in FirstOption to view your link, current reward rules and progress.</p></Reveal></section>
+    <section className="section referral-layout"><Reveal className="referral-pass"><BrandLogo onDark decorative /><span>YOUR REFERRAL LINK</span><strong>firstoption.com.ng/r/you</strong><button type="button">Share link <Send size={16} /></button></Reveal><Reveal className="section-intro"><p className="eyebrow">Built into your network</p><h2>Your link connects every successful referral to you.</h2><p>Open Refer & Earn in FirstOption to view your link, current reward rules and progress.</p></Reveal></section>
     <ClosingCta title="Open Refer & Earn in WhatsApp." description="Check the current rules before you start sharing." />
   </main></SiteChrome>;
 }
@@ -745,13 +750,13 @@ function GuidePage({ guide }: { guide: Guide }) {
 }
 
 function ClosingCta({ title, description }: { title: string; description: string }) {
-  return <section className="closing-cta"><div className="closing-grid" aria-hidden="true" /><Reveal><img src={logo} alt="" /><h2>{title}</h2><p>{description}</p><a className="button button-white" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Open WhatsApp <ArrowRight size={18} /></a><span>{OFFICIAL_WHATSAPP_DISPLAY}</span></Reveal></section>;
+  return <section className="closing-cta"><div className="closing-grid" aria-hidden="true" /><Reveal><BrandLogo onDark decorative /><h2>{title}</h2><p>{description}</p><a className="button button-white" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Open WhatsApp <ArrowRight size={18} /></a><span>{OFFICIAL_WHATSAPP_DISPLAY}</span></Reveal></section>;
 }
 
 function PaymentResultPage({ search }: { search: string }) {
   const status = new URLSearchParams(search).get("status");
   const failed = Boolean(status && status !== "successful" && status !== "completed");
-  return <div className="payment-result-page"><div className="payment-result-card"><div className="payment-brand-strip"><img src={logo} alt="FirstOption" /><span>+</span><img src={flutterwaveLogo} alt="Flutterwave" /></div><span className={`payment-status${failed ? " payment-status-failed" : ""}`}>{failed ? "Payment not completed" : "Payment confirmed"}</span><h1>{failed ? "Return to WhatsApp and try again" : "Payment successful"}</h1><p>{failed ? "Your payment did not complete. Return to FirstOption and try again." : "Your payment has been received. Return to WhatsApp for the receipt and next step."}</p><a className="button button-primary" href={WHATSAPP_START_URL}>Return to WhatsApp <ArrowRight size={18} /></a></div></div>;
+  return <div className="payment-result-page"><div className="payment-result-card"><div className="payment-brand-strip"><BrandLogo /><span>+</span><img src={flutterwaveLogo} alt="Flutterwave" /></div><span className={`payment-status${failed ? " payment-status-failed" : ""}`}>{failed ? "Payment not completed" : "Payment confirmed"}</span><h1>{failed ? "Return to WhatsApp and try again" : "Payment successful"}</h1><p>{failed ? "Your payment did not complete. Return to FirstOption and try again." : "Your payment has been received. Return to WhatsApp for the receipt and next step."}</p><a className="button button-primary" href={WHATSAPP_START_URL}>Return to WhatsApp <ArrowRight size={18} /></a></div></div>;
 }
 
 function App({ initialPath = "/", initialSearch = "" }: AppProps) {
