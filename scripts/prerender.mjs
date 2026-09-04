@@ -14,10 +14,10 @@ const serverEntryPath = path.join(distServerDir, 'entry-server.js')
 const template = await readFile(templatePath, 'utf8')
 const { render } = await import(pathToFileURL(serverEntryPath).href)
 
-const HOME_TITLE = 'FirstOption Digital Services | WhatsApp Airtime, Bills, Crypto, Gift Cards & More in Nigeria'
-const HOME_DESCRIPTION = 'FirstOption Digital Services helps Nigerians buy airtime, data, electricity, cable TV, exam pins, internet, gift cards, crypto and virtual cards through WhatsApp.'
-const HOME_OG_DESCRIPTION = 'Buy airtime and data, pay bills, renew cable TV, buy exam pins, trade gift cards and use crypto on WhatsApp with FirstOption.'
-const HOME_TWITTER_DESCRIPTION = 'Official WhatsApp digital services for Nigerians: airtime, data, bills, gift cards, crypto, cards and everyday payments in one chat.'
+const HOME_TITLE = 'FirstOption | Payments and Everyday Services on WhatsApp'
+const HOME_DESCRIPTION = 'Send, request and collect money, pay bills and use everyday services through FirstOption on WhatsApp. Type naturally or send a voice note.'
+const HOME_OG_DESCRIPTION = 'Send a message or voice note to pay, collect and get everyday transactions done through FirstOption on WhatsApp.'
+const HOME_TWITTER_DESCRIPTION = 'Payments for people and businesses operating through WhatsApp, with everyday services in the same conversation.'
 
 const SERVICE_ROUTE_METADATA = [
   {
@@ -73,6 +73,15 @@ const SERVICE_ROUTE_METADATA = [
     description: 'Pay for internet subscriptions and gaming services through FirstOption on WhatsApp in Nigeria.',
     ogDescription: 'Pay for internet subscriptions on WhatsApp with FirstOption.',
     twitterDescription: 'Pay for internet subscriptions in Nigeria through FirstOption on WhatsApp.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/services/betting',
+    output: path.join(distDir, 'services', 'betting', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/services/betting',
+    title: 'Fund Betting Wallets on WhatsApp in Nigeria | FirstOption',
+    description: 'Fund supported SportyBet and Bet9ja wallets through FirstOption on WhatsApp in Nigeria.',
+    ogDescription: 'Fund supported betting wallets through FirstOption on WhatsApp.',
+    twitterDescription: 'Use FirstOption for supported betting wallet payments on WhatsApp.',
   },
   {
     url: 'https://www.thefirstoption.com.ng/services/gift-cards',
@@ -217,17 +226,52 @@ const routes = [
     url: 'https://www.thefirstoption.com.ng/',
     output: templatePath,
     canonical: 'https://www.thefirstoption.com.ng/',
-    title: 'FirstOption Digital Services | WhatsApp Airtime, Bills, Crypto, Gift Cards & More in Nigeria',
-    description: 'FirstOption Digital Services helps Nigerians buy airtime, data, electricity, cable TV, exam pins, internet, gift cards, crypto and virtual cards through WhatsApp.',
-    ogDescription: 'Buy airtime and data, pay bills, renew cable TV, buy exam pins, trade gift cards and use crypto on WhatsApp with FirstOption.',
-    twitterDescription: 'Official WhatsApp digital services for Nigerians: airtime, data, bills, gift cards, crypto, cards and everyday payments in one chat.',
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+    ogDescription: HOME_OG_DESCRIPTION,
+    twitterDescription: HOME_TWITTER_DESCRIPTION,
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/personal',
+    output: path.join(distDir, 'personal', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/personal',
+    title: 'Personal Payments on WhatsApp | FirstOption',
+    description: 'Send, receive, request and claim money through FirstOption on WhatsApp with clear details and receipts.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/business',
+    output: path.join(distDir, 'business', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/business',
+    title: 'Business Payments on WhatsApp | FirstOption',
+    description: 'Collect customer payments through WhatsApp requests, payment links, QR and invoices with FirstOption.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/groups',
+    output: path.join(distDir, 'groups', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/groups',
+    title: 'Group Collections on WhatsApp | FirstOption',
+    description: 'Organize group dues, contributions, shared targets and split payments through FirstOption on WhatsApp.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/payments',
+    output: path.join(distDir, 'payments', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/payments',
+    title: 'Payment Links, QR and Invoices | FirstOption',
+    description: 'Create and share FirstOption payments through WhatsApp requests, payment links, QR codes and invoices.',
+  },
+  {
+    url: 'https://www.thefirstoption.com.ng/developers',
+    output: path.join(distDir, 'developers', 'index.html'),
+    canonical: 'https://www.thefirstoption.com.ng/developers',
+    title: 'FirstOption Developer Payments',
+    description: 'Create payments, receive status updates and connect WhatsApp payment experiences through FirstOption.',
   },
   {
     url: 'https://www.thefirstoption.com.ng/services',
     output: path.join(distDir, 'services', 'index.html'),
     canonical: 'https://www.thefirstoption.com.ng/services',
-    title: 'FirstOption Services | Airtime, Data, Bills, Crypto and Gift Cards on WhatsApp',
-    description: 'Explore the FirstOption services available from the WhatsApp menu, including airtime, data, electricity, cable TV, exam pins, internet, gift cards, crypto and cards.',
+    title: 'FirstOption Services | Airtime, Data, Bills, Gift Cards, Crypto and More',
+    description: 'Explore FirstOption services on WhatsApp, including airtime, data, electricity, cable TV, exam pins, internet, betting, gift cards, crypto and cards.',
     ogDescription: 'Browse the FirstOption WhatsApp services for Nigerians, from airtime and data to electricity, cable, gift cards, crypto and cards.',
     twitterDescription: 'See what you can do with FirstOption on WhatsApp.',
   },
@@ -235,8 +279,8 @@ const routes = [
     url: 'https://www.thefirstoption.com.ng/how-it-works',
     output: path.join(distDir, 'how-it-works', 'index.html'),
     canonical: 'https://www.thefirstoption.com.ng/how-it-works',
-    title: 'How FirstOption Works | Buy Airtime, Data, Bills and More on WhatsApp',
-    description: 'Learn how to use FirstOption on WhatsApp: choose a service, check the details, pay and get your receipt.',
+    title: 'How FirstOption Works | Type or Speak on WhatsApp',
+    description: 'Type naturally or send a voice note, review the details, confirm securely and receive the result through FirstOption on WhatsApp.',
     ogDescription: 'See how FirstOption works on WhatsApp.',
     twitterDescription: 'Learn how to use FirstOption on WhatsApp.',
   },
@@ -262,10 +306,10 @@ const routes = [
     url: 'https://www.thefirstoption.com.ng/about',
     output: path.join(distDir, 'about', 'index.html'),
     canonical: 'https://www.thefirstoption.com.ng/about',
-    title: 'About FirstOption Digital Services | WhatsApp Digital Services in Nigeria',
-    description: 'Learn how FirstOption helps people buy airtime, data, bills, gift cards, crypto, cards and more on WhatsApp.',
-    ogDescription: 'Learn about FirstOption Digital Services.',
-    twitterDescription: 'Learn how FirstOption helps with everyday services on WhatsApp.',
+    title: 'About FirstOption | Payments for Commerce on WhatsApp',
+    description: 'FirstOption connects people, businesses and everyday transactions through WhatsApp.',
+    ogDescription: 'Learn about the FirstOption payment network for WhatsApp commerce.',
+    twitterDescription: 'Learn how FirstOption connects payments and everyday services through WhatsApp.',
   },
   {
     url: 'https://www.thefirstoption.com.ng/contact',
@@ -298,10 +342,10 @@ const routes = [
     url: 'https://www.thefirstoption.com.ng/wallet-funding',
     output: path.join(distDir, 'wallet-funding', 'index.html'),
     canonical: 'https://www.thefirstoption.com.ng/wallet-funding',
-    title: 'Payments on WhatsApp | FirstOption',
-    description: 'Learn what to check before paying for a FirstOption service on WhatsApp.',
-    ogDescription: 'Check service details and amount before paying with FirstOption.',
-    twitterDescription: 'Check payment details before using FirstOption on WhatsApp.',
+    title: 'Add Money to FirstOption With a Permanent Paga Account',
+    description: 'Create a permanent Paga account from a FirstOption service webview and transfer to it whenever you need.',
+    ogDescription: 'Learn how to add money to FirstOption using your permanent Paga account.',
+    twitterDescription: 'Create and reuse your permanent Paga account for FirstOption transactions.',
   },
   ...SERVICE_ROUTE_METADATA,
   ...GUIDE_ROUTE_METADATA,

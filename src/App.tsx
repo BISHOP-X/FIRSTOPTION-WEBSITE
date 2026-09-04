@@ -1,250 +1,89 @@
+import {
+  ArrowRight,
+  AudioLines,
+  Building2,
+  Check,
+  ChevronRight,
+  CircleDollarSign,
+  Code2,
+  Headphones,
+  Landmark,
+  Link2,
+  LockKeyhole,
+  Menu,
+  MessageCircleMore,
+  Mic2,
+  Play,
+  QrCode,
+  ReceiptText,
+  RefreshCcw,
+  Send,
+  ShieldCheck,
+  Users,
+  WalletCards,
+  X,
+  type LucideIcon,
+} from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import "./App.css";
 import logo from "/firstoption-logo-cropped.png";
 import flutterwaveLogo from "/Flutterwave_whitebg.svg";
+import {
+  CAC_BUSINESS_NUMBER,
+  GUIDE_PAGES,
+  LEGAL_LINKS,
+  LEGAL_NAME,
+  NAV_LINKS,
+  OFFICIAL_WHATSAPP_DISPLAY,
+  OPERATING_COUNTRY,
+  SERVICES,
+  SOCIAL_LINKS,
+  SUPPORT_EMAIL,
+  SUPPORT_EMAIL_LINK,
+  TRUST_CHECKS,
+  WEBSITE_URL,
+  WHATSAPP_START_URL,
+  type Guide,
+  type LinkItem,
+  type Service,
+} from "./siteData";
 
-type AppProps = {
-  initialPath?: string;
-  initialSearch?: string;
-};
+type AppProps = { initialPath?: string; initialSearch?: string };
 
-type LinkItem = {
-  label: string;
-  href: string;
-  external?: boolean;
-};
-
-type Service = {
-  slug: string;
-  name: string;
-  shortName: string;
-  path: string;
-  category: string;
-  image: string;
-  accent: string;
-  summary: string;
-  proof: string;
-  details: string[];
-  steps: string;
-};
-
-type Guide = {
-  path: string;
-  title: string;
-  summary: string;
-};
-
-const PRODUCTION_WHATSAPP_NUMBER = "2349060689011";
-const OFFICIAL_WHATSAPP_DISPLAY = "+234 906 068 9011";
-const SUPPORT_EMAIL = "support@thefirstoption.com.ng";
-const SUPPORT_EMAIL_LINK = `mailto:${SUPPORT_EMAIL}`;
-const WHATSAPP_START_URL = `https://wa.me/${PRODUCTION_WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi")}`;
-const BACKEND_BASE_URL = "https://firstoption.onrender.com";
-const WEBSITE_URL = "https://www.thefirstoption.com.ng";
-const LEGAL_NAME = "FIRSTOPTION DIGITAL SERVICES";
-const CAC_BUSINESS_NUMBER = "9443317";
-const OPERATING_COUNTRY = "Nigeria";
-
-const NAV_LINKS: LinkItem[] = [
-  { label: "Services", href: "/services" },
-  { label: "How it works", href: "/how-it-works" },
-  { label: "Safety", href: "/official-whatsapp" },
-  { label: "About", href: "/about" },
+const PRODUCT_LINKS: LinkItem[] = [
+  { label: "Personal payments", href: "/personal" },
+  { label: "Business payments", href: "/business" },
+  { label: "Group collections", href: "/groups" },
+  { label: "Payment links & QR", href: "/payments" },
+  { label: "Developer tools", href: "/developers" },
 ];
 
-const SOCIAL_LINKS: LinkItem[] = [
-  { label: "Instagram", href: "https://www.instagram.com/firstoptionng", external: true },
-  { label: "X / Twitter", href: "https://x.com/firstoptionng", external: true },
-  { label: "TikTok", href: "https://www.tiktok.com/@firstoptionng", external: true },
-  { label: "Telegram", href: "https://t.me/firstoptionng", external: true },
-];
-
-const LEGAL_LINKS: LinkItem[] = [
-  { label: "Privacy Policy", href: `${BACKEND_BASE_URL}/privacy`, external: true },
-  { label: "Terms of Service", href: `${BACKEND_BASE_URL}/terms`, external: true },
-  { label: "Data Deletion", href: `${BACKEND_BASE_URL}/data-deletion`, external: true },
-];
-
-const SERVICES: Service[] = [
+const NETWORK_AREAS: Array<{ icon: LucideIcon; number: string; title: string; copy: string; href: string }> = [
   {
-    slug: "airtime",
-    name: "Airtime Top-Up",
-    shortName: "Airtime",
-    path: "/services/airtime",
-    category: "Mobile",
-    image: "/service-icons/airtime.png",
-    accent: "#12a86b",
-    summary: "Buy airtime for MTN, Airtel, Glo and 9mobile.",
-    proof: "MTN, Airtel, Glo, 9mobile",
-    steps: "Choose your network, enter the phone number, confirm the amount and pay.",
-    details: ["Pick a network", "Enter the phone number", "Get your receipt on WhatsApp"],
+    icon: Send,
+    number: "01",
+    title: "People",
+    copy: "Send, receive, request and claim money in the conversations where plans are already being made.",
+    href: "/personal",
   },
   {
-    slug: "data-bundles",
-    name: "Data Bundles",
-    shortName: "Data",
-    path: "/services/data-bundles",
-    category: "Mobile",
-    image: "/service-icons/data-bundles.png",
-    accent: "#2877ff",
-    summary: "Buy daily, weekly and monthly data plans.",
-    proof: "SME and CG plans",
-    steps: "Choose a network, pick a data plan, confirm the number and pay.",
-    details: ["Browse available plans", "Choose what fits your budget", "Receive confirmation on WhatsApp"],
+    icon: Building2,
+    number: "02",
+    title: "Businesses",
+    copy: "Collect customer payments with clear amounts, references and confirmation for both sides.",
+    href: "/business",
   },
   {
-    slug: "electricity",
-    name: "Electricity Tokens",
-    shortName: "Electricity",
-    path: "/services/electricity",
-    category: "Bills",
-    image: "/service-icons/electricity.png",
-    accent: "#f3b21b",
-    summary: "Pay electricity bills and get your token.",
-    proof: "Prepaid tokens",
-    steps: "Enter your meter number, check the details, confirm the amount and pay.",
-    details: ["Check meter details", "Confirm before payment", "Receive token and receipt"],
-  },
-  {
-    slug: "cable-tv",
-    name: "Cable TV",
-    shortName: "Cable",
-    path: "/services/cable-tv",
-    category: "Bills",
-    image: "/service-icons/cable-tv.png",
-    accent: "#0ea5e9",
-    summary: "Renew DSTV, GOtv, Startimes and Showmax.",
-    proof: "DSTV / GOtv / Startimes",
-    steps: "Choose your provider, enter your smartcard number, pick a package and pay.",
-    details: ["DSTV, GOtv and Startimes", "Check smartcard details", "Renew or choose a package"],
-  },
-  {
-    slug: "exam-pins",
-    name: "Exam Pins",
-    shortName: "Exam Pins",
-    path: "/services/exam-pins",
-    category: "Education",
-    image: "/service-icons/exam-pins.png",
-    accent: "#7c3aed",
-    summary: "Buy WAEC and JAMB pins.",
-    proof: "WAEC and JAMB",
-    steps: "Choose WAEC or JAMB, confirm the details and pay.",
-    details: ["WAEC pins", "JAMB pins", "Quick receipt after purchase"],
-  },
-  {
-    slug: "internet",
-    name: "Internet & Gaming",
-    shortName: "Internet",
-    path: "/services/internet",
-    category: "Subscriptions",
-    image: "/service-icons/internet.png",
-    accent: "#0891b2",
-    summary: "Pay for internet subscriptions and gaming services.",
-    proof: "Spectranet, Smile, gaming",
-    steps: "Choose the provider, pick a plan, confirm the account and pay.",
-    details: ["Internet subscriptions", "Gaming services", "Repeat renewals made easier"],
-  },
-  {
-    slug: "betting",
-    name: "Betting Wallets",
-    shortName: "Betting",
-    path: "/services/betting",
-    category: "Betting",
-    image: "/service-icons/betting.png",
-    accent: "#16a34a",
-    summary: "Top up supported betting wallets.",
-    proof: "SportyBet and Bet9ja",
-    steps: "Choose the betting provider, enter the account details, confirm the amount and pay.",
-    details: ["SportyBet", "Bet9ja", "Check details before payment"],
-  },
-  {
-    slug: "gift-cards",
-    name: "Gift Cards",
-    shortName: "Gift Cards",
-    path: "/services/gift-cards",
-    category: "Gift Cards",
-    image: "/service-icons/gift-cards.png",
-    accent: "#db2777",
-    summary: "Buy and sell supported gift cards.",
-    proof: "Buy and sell",
-    steps: "Choose buy or sell, select the gift card, confirm the value and continue.",
-    details: ["Buy gift cards", "Sell supported cards", "Clear value before you continue"],
-  },
-  {
-    slug: "crypto",
-    name: "Crypto",
-    shortName: "Crypto",
-    path: "/services/crypto",
-    category: "Digital Assets",
-    image: "/service-icons/crypto.png",
-    accent: "#f7931a",
-    summary: "Buy, sell, send and receive supported crypto.",
-    proof: "Buy, sell, send, receive",
-    steps: "Choose what you want to do, check the rate or address, then confirm.",
-    details: ["Buy crypto", "Sell crypto", "Send and receive crypto"],
-  },
-  {
-    slug: "virtual-cards",
-    name: "Virtual Cards",
-    shortName: "Cards",
-    path: "/services/virtual-cards",
-    category: "Cards",
-    image: "/service-icons/virtual-cards.png",
-    accent: "#111827",
-    summary: "Create and manage virtual cards.",
-    proof: "Virtual cards",
-    steps: "Create a card, review the fee, add money and use the card details safely.",
-    details: ["Create virtual cards", "Add money to cards", "Manage card details"],
+    icon: Users,
+    number: "03",
+    title: "Groups",
+    copy: "Organize dues, contributions and shared targets without manually chasing every transfer.",
+    href: "/groups",
   },
 ];
-
-const HOME_SERVICES = SERVICES.filter((service) =>
-  ["airtime", "data-bundles", "electricity", "cable-tv", "exam-pins", "internet", "gift-cards", "crypto"].includes(service.slug),
-);
-
-const GUIDE_PAGES: Guide[] = [
-  {
-    path: "/guides/buy-airtime-on-whatsapp-nigeria",
-    title: "How to buy airtime on WhatsApp in Nigeria",
-    summary: "Open FirstOption on WhatsApp, choose airtime, enter the number and confirm the amount.",
-  },
-  {
-    path: "/guides/fund-your-wallet-before-paying-bills",
-    title: "How to pay faster next time",
-    summary: "Keep your details correct, confirm the amount and save your receipt after each payment.",
-  },
-  {
-    path: "/guides/buy-exam-pins-whatsapp-nigeria",
-    title: "How to buy WAEC or JAMB pins without leaving WhatsApp",
-    summary: "Choose the exam body, confirm the price and receive your pin after payment.",
-  },
-  {
-    path: "/guides/renew-dstv-gotv-whatsapp-nigeria",
-    title: "How to renew cable TV through FirstOption",
-    summary: "Choose DSTV, GOtv or Startimes, enter your smartcard number and pick a package.",
-  },
-  {
-    path: "/guides/fund-betting-wallets-via-whatsapp",
-    title: "How to check a payment before you continue",
-    summary: "Use the correct FirstOption number, check the amount and avoid random payment instructions.",
-  },
-];
-
-const TRUST_CHECKS = [
-  `WhatsApp number: ${OFFICIAL_WHATSAPP_DISPLAY}`,
-  `Support email: ${SUPPORT_EMAIL}`,
-  `Website: ${WEBSITE_URL.replace("https://", "")}`,
-  `CAC BN: ${CAC_BUSINESS_NUMBER}`,
-];
-
-function getLinkAttrs(link: LinkItem) {
-  return link.external ? { target: "_blank", rel: "noreferrer" } : {};
-}
 
 function resolveLocation(initialPath = "/", initialSearch = "") {
-  if (typeof window !== "undefined") {
-    return { pathname: window.location.pathname, search: window.location.search };
-  }
+  if (typeof window !== "undefined") return { pathname: window.location.pathname, search: window.location.search };
   return { pathname: initialPath, search: initialSearch };
 }
 
@@ -261,754 +100,287 @@ function getGuideByPath(pathname: string) {
 }
 
 function currentPageLabel(pathname: string) {
-  if (pathname === "/") return "Home";
-  if (pathname === "/services") return "Services";
-  if (pathname === "/how-it-works") return "How it works";
-  if (pathname === "/referral" || pathname === "/services/referral") return "Refer & Earn";
-  if (pathname === "/about") return "About";
-  if (pathname === "/contact") return "Contact";
-  if (pathname === "/official-whatsapp") return "Official WhatsApp";
-  if (pathname === "/anti-scam") return "Anti-Scam Guide";
-  if (pathname === "/wallet-funding") return "Payments";
-  return getServiceByPath(pathname)?.name ?? getGuideByPath(pathname)?.title ?? "FirstOption";
+  const fixed: Record<string, string> = {
+    "/": "Home",
+    "/personal": "Personal",
+    "/business": "Business",
+    "/groups": "Group collections",
+    "/payments": "Payments",
+    "/developers": "Developers",
+    "/services": "Services",
+    "/how-it-works": "How it works",
+    "/referral": "Refer & Earn",
+    "/services/referral": "Refer & Earn",
+    "/wallet-funding": "Add money",
+    "/about": "About",
+    "/contact": "Contact",
+    "/official-whatsapp": "Official WhatsApp",
+    "/anti-scam": "Anti-scam guide",
+  };
+  return fixed[pathname] ?? getServiceByPath(pathname)?.name ?? getGuideByPath(pathname)?.title ?? "FirstOption";
 }
 
 function isPathActive(currentPath: string, href: string) {
-  if (href === "/services") return currentPath === "/services" || (currentPath.startsWith("/services/") && currentPath !== "/services/referral");
+  if (href === "/services") return currentPath === href || (currentPath.startsWith("/services/") && currentPath !== "/services/referral");
   return currentPath === href;
 }
 
+function getLinkAttrs(link: LinkItem) {
+  return link.external ? { target: "_blank", rel: "noreferrer" } : {};
+}
+
 function Reveal({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`reveal ${className}`}>{children}</div>;
+  return <div className={`reveal ${className}`.trim()}>{children}</div>;
 }
 
 function SiteMotion({ currentPath }: { currentPath: string }) {
   useEffect(() => {
     if (typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const root = document.querySelector<HTMLElement>(".app, .payment-result-page");
-    if (!root) return;
-
     let disposed = false;
     let cleanup = () => {};
 
-    const setupMotion = async () => {
-      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-      ]);
-
+    const setup = async () => {
+      const [{ gsap }, { ScrollTrigger }] = await Promise.all([import("gsap"), import("gsap/ScrollTrigger")]);
       if (disposed) return;
-
       gsap.registerPlugin(ScrollTrigger);
-      const media = gsap.matchMedia();
       const context = gsap.context(() => {
-        const navInner = root.querySelector<HTMLElement>(".nav-inner");
-        if (navInner) {
-          gsap.from(navInner, { autoAlpha: 0, y: -18, scale: 0.985, duration: 0.72, ease: "power3.out" });
-        }
-
-        const pageHero = root.querySelector<HTMLElement>(".page-hero");
-        if (pageHero) {
-          const heroChildren = Array.from(pageHero.querySelector<HTMLElement>(".reveal")?.children ?? []);
-          gsap.from(heroChildren, {
-            autoAlpha: 0,
-            y: 34,
-            rotationX: 7,
-            duration: 0.9,
-            stagger: 0.1,
-            ease: "power3.out",
-            transformPerspective: 900,
-          });
-        }
-
-        const serviceHero = root.querySelector<HTMLElement>(".service-hero");
-        if (serviceHero) {
-          const copy = Array.from(serviceHero.querySelector<HTMLElement>(".service-hero-copy")?.children ?? []);
-          gsap.timeline({ defaults: { ease: "power3.out" } })
-            .from(copy, { autoAlpha: 0, x: -28, duration: 0.78, stagger: 0.08 })
-            .from(".service-scene-intro-rig", { autoAlpha: 0, y: 48, scale: 0.9, duration: 0.95 }, "-=0.62")
-            .from(".service-scene-orbit", { autoAlpha: 0, y: 18, scale: 0.86, stagger: 0.09, duration: 0.55 }, "-=0.54")
-            .from(".service-scene-row", { autoAlpha: 0, x: 18, stagger: 0.06, duration: 0.42 }, "-=0.48");
-        }
-
-        const cardGrids = root.querySelectorAll<HTMLElement>(".home-service-grid, .services-page-grid, .feature-grid-three");
-        cardGrids.forEach((grid) => {
-          const cards = Array.from(grid.querySelectorAll<HTMLElement>(".service-card"));
-          if (!cards.length) return;
-          gsap.from(cards, {
+        const nav = document.querySelector(".site-nav-inner");
+        const heroCopy = document.querySelectorAll(".motion-hero-copy > *");
+        const phone = document.querySelector(".motion-phone");
+        const phoneContent = document.querySelectorAll(".phone-message, .phone-action");
+        if (nav) gsap.from(nav, { autoAlpha: 0, y: -22, duration: 0.8, ease: "power3.out" });
+        if (heroCopy.length) gsap.from(heroCopy, { autoAlpha: 0, y: 30, duration: 0.85, stagger: 0.09, ease: "power3.out" });
+        if (phone) gsap.from(phone, { autoAlpha: 0, y: 64, rotationY: -15, rotationZ: 2, scale: 0.9, duration: 1.15, ease: "power4.out", delay: 0.18 });
+        if (phoneContent.length) gsap.from(phoneContent, { autoAlpha: 0, y: 16, stagger: 0.12, duration: 0.55, ease: "power3.out", delay: 0.72 });
+        document.querySelectorAll<HTMLElement>(".reveal").forEach((element) => {
+          if (element.closest(".hero")) return;
+          gsap.from(element, {
             autoAlpha: 0,
             y: 36,
-            rotationX: 7,
-            scale: 0.97,
-            duration: 0.72,
-            stagger: 0.065,
+            duration: 0.78,
             ease: "power3.out",
-            scrollTrigger: { trigger: grid, start: "top 82%", once: true },
+            scrollTrigger: { trigger: element, start: "top 88%", once: true },
           });
         });
-
-        const referral = root.querySelector<HTMLElement>(".referral-visual");
-        if (referral) {
-          gsap.timeline({
-            defaults: { ease: "power3.out" },
-            scrollTrigger: { trigger: referral, start: "top 82%", once: true },
-          })
-            .from(".referral-ticket", { autoAlpha: 0, y: 42, rotationX: 12, rotationY: -10, scale: 0.9, duration: 0.9 })
-            .from(".referral-mini-top", { autoAlpha: 0, x: 28, y: -10, scale: 0.8, duration: 0.55 }, "-=0.48")
-            .from(".referral-mini-bottom", { autoAlpha: 0, x: -28, y: 12, scale: 0.8, duration: 0.55 }, "-=0.4");
-        }
-
-        const trustGrid = root.querySelector<HTMLElement>(".trust-section .trust-grid, .subpage .trust-grid");
-        if (trustGrid) {
-          const panels = Array.from(trustGrid.querySelectorAll<HTMLElement>(".trust-panel"));
-          gsap.from(panels, {
+        document.querySelectorAll<HTMLElement>(".service-card").forEach((card) => {
+          gsap.from(card, {
             autoAlpha: 0,
-            y: 30,
-            rotationX: 8,
-            duration: 0.68,
-            stagger: 0.09,
+            y: 26,
+            scale: 0.98,
+            duration: 0.62,
             ease: "power3.out",
-            scrollTrigger: { trigger: trustGrid, start: "top 82%", once: true },
+            scrollTrigger: { trigger: card, start: "top 92%", once: true },
           });
-        }
-
-        const guideGrid = root.querySelector<HTMLElement>(".guide-grid");
-        if (guideGrid) {
-          const guides = Array.from(guideGrid.querySelectorAll<HTMLElement>(".guide-card"));
-          gsap.from(guides, {
-            autoAlpha: 0,
-            y: 28,
-            rotationX: 6,
-            duration: 0.72,
-            stagger: 0.08,
-            ease: "power3.out",
-            scrollTrigger: { trigger: guideGrid, start: "top 84%", once: true },
-          });
-        }
-
-        const closingCta = root.querySelector<HTMLElement>(".closing-cta");
-        if (closingCta) {
-          gsap.timeline({
-            defaults: { ease: "power3.out" },
-            scrollTrigger: { trigger: closingCta, start: "top 80%", once: true },
-          })
-            .from(".closing-brand-tile", { autoAlpha: 0, y: 26, rotationY: -18, scale: 0.84, duration: 0.8 })
-            .from(".closing-scene-chip", { autoAlpha: 0, y: 18, scale: 0.78, stagger: 0.1, duration: 0.5 }, "-=0.42")
-            .from(".closing-cta h2, .closing-cta p, .closing-cta .primary-btn, .closing-meta", { autoAlpha: 0, y: 22, stagger: 0.08, duration: 0.62 }, "-=0.38");
-        }
-
-        const paymentCard = root.querySelector<HTMLElement>(".payment-result-card");
-        if (paymentCard) {
-          gsap.timeline({ defaults: { ease: "power3.out" } })
-            .from(paymentCard, { autoAlpha: 0, y: 46, rotationX: 8, scale: 0.93, duration: 0.92, transformPerspective: 1100 })
-            .from(".payment-brand-panel", { autoAlpha: 0, y: 14, stagger: 0.1, duration: 0.5 }, "-=0.5")
-            .from(".payment-status, .payment-result-card h1, .payment-result-card > p", { autoAlpha: 0, y: 16, stagger: 0.08, duration: 0.5 }, "-=0.38")
-            .from(".payment-steps > div", { autoAlpha: 0, y: 18, stagger: 0.08, duration: 0.5 }, "-=0.3");
-        }
-
-        const contactGrid = root.querySelector<HTMLElement>(".contact-grid");
-        if (contactGrid) {
-          gsap.from(".contact-card", {
-            autoAlpha: 0,
-            y: 28,
-            rotationX: 7,
-            duration: 0.7,
-            stagger: 0.09,
-            ease: "power3.out",
-            scrollTrigger: { trigger: contactGrid, start: "top 82%", once: true },
-          });
-        }
-
-        const identityCard = root.querySelector<HTMLElement>(".identity-card");
-        if (identityCard) {
-          gsap.from(identityCard, {
-            autoAlpha: 0,
-            y: 30,
-            rotationY: -8,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: { trigger: identityCard, start: "top 84%", once: true },
-          });
-        }
-
-        media.add("(min-width: 781px)", () => {
-          const listenerCleanups: Array<() => void> = [];
-
-          root.querySelectorAll<HTMLElement>(".service-card, .guide-card, .contact-card").forEach((card) => {
-            gsap.set(card, { transformPerspective: 900, transformOrigin: "50% 50%" });
-            const rotateX = gsap.quickTo(card, "rotationX", { duration: 0.45, ease: "power3.out" });
-            const rotateY = gsap.quickTo(card, "rotationY", { duration: 0.45, ease: "power3.out" });
-            const lift = gsap.quickTo(card, "z", { duration: 0.45, ease: "power3.out" });
-            const move = (event: PointerEvent) => {
-              const bounds = card.getBoundingClientRect();
-              const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-              const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-              rotateY(x * 5);
-              rotateX(y * -4);
-              lift(8);
-            };
-            const reset = () => {
-              rotateX(0);
-              rotateY(0);
-              lift(0);
-            };
-            card.addEventListener("pointermove", move);
-            card.addEventListener("pointerleave", reset);
-            listenerCleanups.push(() => {
-              card.removeEventListener("pointermove", move);
-              card.removeEventListener("pointerleave", reset);
-            });
-          });
-
-          const navCta = root.querySelector<HTMLElement>(".nav-cta");
-          if (navCta) {
-            const moveX = gsap.quickTo(navCta, "x", { duration: 0.35, ease: "power3.out" });
-            const moveY = gsap.quickTo(navCta, "y", { duration: 0.35, ease: "power3.out" });
-            const move = (event: PointerEvent) => {
-              const bounds = navCta.getBoundingClientRect();
-              moveX((event.clientX - bounds.left - bounds.width / 2) * 0.08);
-              moveY((event.clientY - bounds.top - bounds.height / 2) * 0.12);
-            };
-            const reset = () => {
-              moveX(0);
-              moveY(0);
-            };
-            navCta.addEventListener("pointermove", move);
-            navCta.addEventListener("pointerleave", reset);
-            listenerCleanups.push(() => {
-              navCta.removeEventListener("pointermove", move);
-              navCta.removeEventListener("pointerleave", reset);
-            });
-          }
-
-          const story = root.querySelector<HTMLElement>(".product-story");
-          if (story) {
-            const steps = Array.from(story.querySelectorAll<HTMLElement>(".step-row"));
-            const screenParts = [
-              story.querySelector<HTMLElement>(".webview-topbar"),
-              story.querySelector<HTMLElement>(".provider-grid"),
-              story.querySelector<HTMLElement>(".webview-phone input"),
-              story.querySelector<HTMLElement>(".summary-line"),
-            ].filter((item): item is HTMLElement => Boolean(item));
-            const webview = story.querySelector<HTMLElement>(".webview-phone");
-
-            gsap.set(screenParts, { opacity: 0.35, y: 8 });
-            const storyTimeline = gsap.timeline({
-              scrollTrigger: {
-                trigger: story,
-                start: "top 8%",
-                end: "+=920",
-                pin: true,
-                scrub: 0.75,
-                anticipatePin: 1,
-              },
-            });
-
-            steps.forEach((step, index) => {
-              storyTimeline
-                .to(steps, { opacity: 0.38, scale: 0.985, duration: 0.35 })
-                .to(step, { opacity: 1, x: 10, scale: 1.015, duration: 0.5 }, "<")
-                .to(screenParts[index], { opacity: 1, y: 0, duration: 0.5 }, "<")
-                .to(webview, { rotationY: index % 2 === 0 ? -2.5 : 2.5, rotationX: index * -0.4, duration: 0.5 }, "<");
-            });
-          }
-
-          const serviceScene = root.querySelector<HTMLElement>(".service-scene");
-          const sceneScrollRig = serviceScene?.querySelector<HTMLElement>(".service-scene-scroll-rig");
-          const sceneTiltRig = serviceScene?.querySelector<HTMLElement>(".service-scene-tilt-rig");
-          if (serviceScene && sceneScrollRig && sceneTiltRig && serviceHero) {
-            gsap.fromTo(sceneScrollRig, { rotationX: 4, rotationY: -10, rotationZ: -1 }, {
-              rotationX: -2,
-              rotationY: 7,
-              rotationZ: 1,
-              y: -16,
-              ease: "none",
-              scrollTrigger: { trigger: serviceHero, start: "top top", end: "bottom top", scrub: 0.8 },
-            });
-            const rotateX = gsap.quickTo(sceneTiltRig, "rotationX", { duration: 0.65, ease: "power3.out" });
-            const rotateY = gsap.quickTo(sceneTiltRig, "rotationY", { duration: 0.65, ease: "power3.out" });
-            const move = (event: PointerEvent) => {
-              const bounds = serviceScene.getBoundingClientRect();
-              rotateY(((event.clientX - bounds.left) / bounds.width - 0.5) * 8);
-              rotateX(((event.clientY - bounds.top) / bounds.height - 0.5) * -6);
-            };
-            const reset = () => {
-              rotateX(0);
-              rotateY(0);
-            };
-            serviceScene.addEventListener("pointermove", move);
-            serviceScene.addEventListener("pointerleave", reset);
-            listenerCleanups.push(() => {
-              serviceScene.removeEventListener("pointermove", move);
-              serviceScene.removeEventListener("pointerleave", reset);
-            });
-          }
-
-          return () => listenerCleanups.forEach((remove) => remove());
         });
-
-        media.add("(max-width: 780px)", () => {
-          const story = root.querySelector<HTMLElement>(".product-story");
-          if (story) {
-            gsap.from(".step-row", {
-              autoAlpha: 0,
-              x: -18,
-              duration: 0.55,
-              stagger: 0.08,
-              ease: "power3.out",
-              scrollTrigger: { trigger: story, start: "top 78%", once: true },
-            });
-            gsap.from(".webview-phone", {
-              autoAlpha: 0,
-              y: 26,
-              rotationY: -7,
-              scale: 0.96,
-              duration: 0.78,
-              ease: "power3.out",
-              scrollTrigger: { trigger: ".webview-showcase", start: "top 84%", once: true },
-            });
-          }
-
-          if (serviceHero) {
-            gsap.fromTo(".service-scene-scroll-rig", { rotationY: -6, rotationX: 3 }, {
-              rotationY: 4,
-              rotationX: -2,
-              y: -8,
-              ease: "none",
-              scrollTrigger: { trigger: serviceHero, start: "top top", end: "bottom top", scrub: 0.65 },
-            });
-          }
-        });
-      }, root);
-
-      ScrollTrigger.refresh();
-      cleanup = () => {
-        media.revert();
-        context.revert();
-      };
+        const processLine = document.querySelector(".process-line");
+        const processFill = processLine?.querySelector("span");
+        if (processLine && processFill) {
+          gsap.from(processFill, {
+            scaleX: 0,
+            transformOrigin: "left center",
+            ease: "none",
+            scrollTrigger: { trigger: processLine, start: "top 82%", end: "top 48%", scrub: 0.7 },
+          });
+        }
+      });
+      cleanup = () => context.revert();
     };
-
-    void setupMotion();
+    void setup();
     return () => {
       disposed = true;
       cleanup();
     };
   }, [currentPath]);
-
   return null;
 }
 
-function SiteChrome({ currentPath, children }: { currentPath: string; children: ReactNode }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isNavScrolled, setIsNavScrolled] = useState(false);
-  const [isNavHidden, setIsNavHidden] = useState(false);
+function SiteHeader({ currentPath }: { currentPath: string }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [condensed, setCondensed] = useState(false);
+  const menuOpenRef = useRef(false);
 
   useEffect(() => {
-    if (typeof document === "undefined") return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = isMenuOpen ? "hidden" : previous;
-    return () => {
-      document.body.style.overflow = previous;
-    };
-  }, [isMenuOpen]);
+    menuOpenRef.current = menuOpen;
+  }, [menuOpen]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const closeOnResize = () => {
-      if (window.innerWidth > 780) setIsMenuOpen(false);
-    };
-    window.addEventListener("resize", closeOnResize);
-    return () => window.removeEventListener("resize", closeOnResize);
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    let lastScrollY = window.scrollY;
+    let lastY = window.scrollY;
     let ticking = false;
-
-    const updateNav = () => {
-      const currentScrollY = window.scrollY;
-      const isMovingDown = currentScrollY > lastScrollY + 6;
-      const isMovingUp = currentScrollY < lastScrollY - 6;
-
-      setIsNavScrolled(currentScrollY > 12);
-      if (currentScrollY < 90 || isMovingUp || isMenuOpen) {
-        setIsNavHidden(false);
-      } else if (isMovingDown) {
-        setIsNavHidden(true);
-      }
-
-      lastScrollY = currentScrollY;
+    const update = () => {
+      const nextY = window.scrollY;
+      setCondensed(nextY > 24);
+      setHidden(!menuOpenRef.current && nextY > 150 && nextY > lastY);
+      lastY = nextY;
       ticking = false;
     };
-
     const onScroll = () => {
       if (!ticking) {
-        window.requestAnimationFrame(updateNav);
+        window.requestAnimationFrame(update);
         ticking = true;
       }
     };
-
-    updateNav();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [isMenuOpen]);
+  }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const targets = Array.from(document.querySelectorAll(".reveal"));
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add("reveal-visible");
-        });
-      },
-      { threshold: 0.16 },
-    );
-    targets.forEach((target) => observer.observe(target));
-    return () => observer.disconnect();
-  }, [currentPath]);
+    if (!menuOpen || typeof document === "undefined") return;
+    document.body.classList.add("menu-locked");
+    return () => document.body.classList.remove("menu-locked");
+  }, [menuOpen]);
 
   return (
-    <div className="app">
-      <nav className={`nav${isNavScrolled ? " nav-scrolled" : ""}${isNavHidden ? " nav-hidden" : ""}`}>
-        <div className="nav-inner">
-          <a href="/" aria-label="FirstOption home" className="nav-brand">
-            <img src={logo} alt="FirstOption" className="nav-logo" />
+    <>
+      <header className={`site-nav${hidden ? " site-nav-hidden" : ""}${condensed ? " site-nav-condensed" : ""}`}>
+        <div className="site-nav-inner">
+          <a className="nav-brand" href="/" aria-label="FirstOption home">
+            <img src={logo} alt="FirstOption" />
           </a>
-          <div className="nav-links">
+          <nav className="desktop-nav" aria-label="Primary navigation">
             {NAV_LINKS.map((link) => (
-              <a key={link.label} href={link.href} className={isPathActive(currentPath, link.href) ? "nav-link-active" : undefined}>
+              <a key={link.href} href={link.href} aria-current={isPathActive(currentPath, link.href) ? "page" : undefined}>
                 {link.label}
               </a>
             ))}
-          </div>
-          <a href={WHATSAPP_START_URL} className="nav-cta" target="_blank" rel="noreferrer">
-            Start on WhatsApp
+          </nav>
+          <a className="nav-cta" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">
+            Open WhatsApp <ArrowRight size={17} strokeWidth={2.2} />
           </a>
-          <button
-            type="button"
-            aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            className={`nav-menu-button${isMenuOpen ? " nav-menu-button-open" : ""}`}
-            onClick={() => setIsMenuOpen((open) => !open)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
         </div>
-      </nav>
-
-      <div className={`mobile-nav-shell${isMenuOpen ? " mobile-nav-shell-open" : ""}`} aria-hidden={!isMenuOpen}>
-        <button type="button" aria-label="Close navigation" className="mobile-nav-backdrop" onClick={() => setIsMenuOpen(false)} />
-        <div className="mobile-nav-panel">
-          {[{ label: "Home", href: "/" }, ...NAV_LINKS, { label: "Contact", href: "/contact" }, { label: "Anti-Scam", href: "/anti-scam" }].map((link) => (
-            <a key={link.label} href={link.href} onClick={() => setIsMenuOpen(false)}>
-              {link.label}
-            </a>
-          ))}
-          <a href={WHATSAPP_START_URL} className="mobile-nav-cta" target="_blank" rel="noreferrer">
-            Message FirstOption
+        <button
+          className="nav-menu-button"
+          type="button"
+          aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((value) => !value)}
+        >
+          {menuOpen ? <X size={23} /> : <Menu size={23} />}
+        </button>
+      </header>
+      <div className={`mobile-menu${menuOpen ? " mobile-menu-open" : ""}`} aria-hidden={!menuOpen}>
+        <button className="mobile-menu-backdrop" type="button" aria-label="Close navigation" onClick={() => setMenuOpen(false)} />
+        <div className="mobile-menu-panel">
+          <nav aria-label="Mobile navigation">
+            <a href="/">Home <ChevronRight size={18} /></a>
+            {NAV_LINKS.map((link) => <a key={link.href} href={link.href}>{link.label}<ChevronRight size={18} /></a>)}
+          </nav>
+          <a className="mobile-menu-cta" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">
+            Open FirstOption on WhatsApp <ArrowRight size={18} />
           </a>
         </div>
       </div>
-
-      {children}
-      <Footer />
-    </div>
+    </>
   );
 }
 
 function Footer() {
   return (
-    <footer className="footer">
-      <div className="footer-inner">
+    <footer className="site-footer">
+      <div className="footer-main">
         <div className="footer-brand">
-          <img src={logo} alt="FirstOption" className="footer-logo" />
-          <p>Buy airtime and data, pay bills, buy or sell gift cards and crypto, and create virtual cards on WhatsApp.</p>
+          <img src={logo} alt="FirstOption" />
+          <p>Payments and everyday transactions, through WhatsApp.</p>
+          <a href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Message FirstOption <ArrowRight size={16} /></a>
         </div>
-        <div className="footer-links">
-          <div>
-            <h4>Services</h4>
-            {SERVICES.map((service) => (
-              <a key={service.slug} href={service.path}>
-                {service.shortName}
-              </a>
-            ))}
-          </div>
-          <div>
-            <h4>Company</h4>
-            <a href="/how-it-works">How it works</a>
-            <a href="/about">About</a>
-            <a href="/contact">Contact</a>
-            <a href="/referral">Refer & Earn</a>
-            <a href="/official-whatsapp">Official WhatsApp</a>
-            <a href="/anti-scam">Anti-Scam Guide</a>
-          </div>
-          <div>
-            <h4>Legal</h4>
-            {LEGAL_LINKS.map((link) => (
-              <a key={link.label} href={link.href} {...getLinkAttrs(link)}>
-                {link.label}
-              </a>
-            ))}
-          </div>
-          <div>
-            <h4>Social</h4>
-            {SOCIAL_LINKS.map((link) => (
-              <a key={link.label} href={link.href} {...getLinkAttrs(link)}>
-                {link.label}
-              </a>
-            ))}
-          </div>
+        <div className="footer-column">
+          <strong>Product</strong>
+          {PRODUCT_LINKS.map((link) => <a href={link.href} key={link.href}>{link.label}</a>)}
+          <a href="/referral">Refer & Earn</a>
         </div>
-        <div className="footer-bottom">
-          <p>{LEGAL_NAME} - CAC BN {CAC_BUSINESS_NUMBER} - {OPERATING_COUNTRY}</p>
-          <p>Copyright 2026 FirstOption. All rights reserved.</p>
+        <div className="footer-column footer-services">
+          <strong>Everyday services</strong>
+          {SERVICES.map((service) => <a href={service.path} key={service.path}>{service.shortName}</a>)}
         </div>
+        <div className="footer-column">
+          <strong>Company</strong>
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
+          <a href="/official-whatsapp">Official WhatsApp</a>
+          <a href="/anti-scam">Anti-scam guide</a>
+          {SOCIAL_LINKS.map((link) => <a href={link.href} key={link.href} {...getLinkAttrs(link)}>{link.label}</a>)}
+        </div>
+      </div>
+      <div className="footer-bottom">
+        <span>{LEGAL_NAME} · CAC BN {CAC_BUSINESS_NUMBER} · {OPERATING_COUNTRY}</span>
+        <div>{LEGAL_LINKS.map((link) => <a href={link.href} key={link.href} {...getLinkAttrs(link)}>{link.label}</a>)}</div>
+        <span>© 2026 FirstOption</span>
       </div>
     </footer>
   );
 }
 
-function PhoneMockup() {
-  const stageRef = useRef<HTMLDivElement>(null);
+function SiteChrome({ currentPath, children }: { currentPath: string; children: ReactNode }) {
+  return <div className="app"><SiteHeader currentPath={currentPath} />{children}<Footer /></div>;
+}
 
+const WAVEFORM_HEIGHTS = [8, 13, 19, 11, 24, 17, 10, 21, 27, 15, 9, 18, 25, 13, 20, 11, 7, 15, 22, 12, 8, 17, 11, 6];
+
+function Waveform({ light = false }: { light?: boolean }) {
+  return (
+    <span className={`waveform${light ? " waveform-light" : ""}`} aria-hidden="true">
+      {WAVEFORM_HEIGHTS.map((height, index) => <i key={`${height}-${index}`} style={{ "--wave-height": `${height}px` } as CSSProperties} />)}
+    </span>
+  );
+}
+
+function ProductPhone({ compact = false }: { compact?: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const stage = stageRef.current;
-    if (!stage || typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return;
-    }
-
-    let disposed = false;
-    let cleanup = () => {};
-
-    const setupMotion = async () => {
-      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-      ]);
-
-      if (disposed) return;
-
-      gsap.registerPlugin(ScrollTrigger);
-      const hero = stage.closest(".hero");
-      const introRig = stage.querySelector<HTMLElement>(".phone-intro-rig");
-      const scrollRig = stage.querySelector<HTMLElement>(".phone-scroll-rig");
-      const tiltRig = stage.querySelector<HTMLElement>(".phone-tilt-rig");
-      const groundShadow = stage.querySelector<HTMLElement>(".phone-ground-shadow");
-
-      if (!hero || !introRig || !scrollRig || !tiltRig) return;
-
-      const media = gsap.matchMedia();
-      const context = gsap.context(() => {
-        gsap.set([introRig, scrollRig, tiltRig], {
-          transformPerspective: 1200,
-          transformOrigin: "50% 55%",
-        });
-
-        gsap.timeline({ defaults: { ease: "power3.out" } })
-          .from(introRig, { autoAlpha: 0, y: 58, scale: 0.88, duration: 1.05 })
-          .from(".phone-screen", { autoAlpha: 0, scale: 0.96, duration: 0.65 }, "-=0.72")
-          .from(".whatsapp-top, .chat-bubble", { autoAlpha: 0, y: 14, stagger: 0.09, duration: 0.48 }, "-=0.55")
-          .from(".menu-row", { autoAlpha: 0, x: 18, stagger: 0.055, duration: 0.45 }, "-=0.4")
-          .from(".orbit-card, .mini-webview", { autoAlpha: 0, y: 22, scale: 0.9, stagger: 0.1, duration: 0.62 }, "-=0.5");
-
-        media.add("(min-width: 781px)", () => {
-          gsap.fromTo(
-            scrollRig,
-            { rotationX: 5, rotationY: -13, rotationZ: -1.5, y: 8, scale: 0.97 },
-            {
-              rotationX: -3,
-              rotationY: 8,
-              rotationZ: 0.8,
-              y: -22,
-              scale: 1.025,
-              ease: "none",
-              scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 0.9 },
-            },
-          );
-
-          gsap.to(".orbit-card-balance", {
-            x: -28,
-            y: -36,
-            rotation: -3,
-            ease: "none",
-            scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 1.1 },
-          });
-          gsap.to(".orbit-card-receipt", {
-            x: 34,
-            y: -18,
-            rotation: 2.5,
-            ease: "none",
-            scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 1.1 },
-          });
-          gsap.to(".mini-webview", {
-            x: 24,
-            y: 28,
-            rotation: 1.5,
-            ease: "none",
-            scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 1.1 },
-          });
-          if (groundShadow) {
-            gsap.to(groundShadow, {
-              scaleX: 0.82,
-              opacity: 0.24,
-              ease: "none",
-              scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 0.9 },
-            });
-          }
-
-          const rotateX = gsap.quickTo(tiltRig, "rotationX", { duration: 0.7, ease: "power3.out" });
-          const rotateY = gsap.quickTo(tiltRig, "rotationY", { duration: 0.7, ease: "power3.out" });
-
-          const handlePointerMove = (event: PointerEvent) => {
-            const bounds = stage.getBoundingClientRect();
-            const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-            const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-            rotateY(x * 9);
-            rotateX(y * -7);
-          };
-          const resetTilt = () => {
-            rotateX(0);
-            rotateY(0);
-          };
-
-          stage.addEventListener("pointermove", handlePointerMove);
-          stage.addEventListener("pointerleave", resetTilt);
-
-          return () => {
-            stage.removeEventListener("pointermove", handlePointerMove);
-            stage.removeEventListener("pointerleave", resetTilt);
-          };
-        });
-
-        media.add("(max-width: 780px)", () => {
-          gsap.fromTo(
-            scrollRig,
-            { rotationX: 3, rotationY: -7, rotationZ: -1, scale: 0.98 },
-            {
-              rotationX: -2,
-              rotationY: 5,
-              rotationZ: 0.5,
-              y: -10,
-              scale: 1.01,
-              ease: "none",
-              scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 0.7 },
-            },
-          );
-        });
-      }, stage);
-
-      ScrollTrigger.refresh();
-      cleanup = () => {
-        media.revert();
-        context.revert();
-      };
+    const element = ref.current;
+    if (!element || typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const onMove = (event: PointerEvent) => {
+      if (window.innerWidth < 900) return;
+      const bounds = element.getBoundingClientRect();
+      const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+      const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+      element.style.setProperty("--phone-rx", `${y * -5}deg`);
+      element.style.setProperty("--phone-ry", `${x * 8}deg`);
     };
-
-    void setupMotion();
-
+    const reset = () => {
+      element.style.setProperty("--phone-rx", "0deg");
+      element.style.setProperty("--phone-ry", "0deg");
+    };
+    element.addEventListener("pointermove", onMove);
+    element.addEventListener("pointerleave", reset);
     return () => {
-      disposed = true;
-      cleanup();
+      element.removeEventListener("pointermove", onMove);
+      element.removeEventListener("pointerleave", reset);
     };
   }, []);
 
   return (
-    <div ref={stageRef} className="device-stage" aria-label="FirstOption WhatsApp preview">
-      <div className="phone-ground-shadow" aria-hidden="true" />
-      <div className="orbit-card orbit-card-balance">
-        <span>Ready</span>
-        <strong>N28,650.00</strong>
-      </div>
-      <div className="orbit-card orbit-card-receipt">
-        <span>Payment successful</span>
-        <strong>Electricity token</strong>
-        <small>Receipt sent to WhatsApp</small>
-      </div>
-      <div className="phone-intro-rig">
-        <div className="phone-scroll-rig">
-          <div className="phone-tilt-rig">
-            <div className="phone">
-              <div className="phone-side-button phone-side-button-top" aria-hidden="true" />
-              <div className="phone-side-button phone-side-button-bottom" aria-hidden="true" />
-              <div className="phone-speaker" />
-              <div className="phone-screen">
-                <div className="whatsapp-top">
-                  <img src={logo} alt="" />
-                  <div>
-                    <strong>FirstOption</strong>
-                    <span>Official support account</span>
-                  </div>
-                </div>
-                <div className="chat-bubble">Hi, welcome to FirstOption. What would you like to do today?</div>
-                <div className="menu-list">
-                  {SERVICES.slice(0, 8).map((service) => (
-                    <div className="menu-row" key={service.slug}>
-                      <span className="menu-dot" style={{ background: service.accent }} />
-                      <span>{service.shortName}</span>
-                      <small>{service.category}</small>
-                    </div>
-                  ))}
-                </div>
-                <div className="message-bar">Message</div>
-              </div>
-            </div>
+    <div className={`product-phone-stage motion-phone${compact ? " product-phone-stage-compact" : ""}`} ref={ref}>
+      <div className="product-phone-shadow" aria-hidden="true" />
+      <div className="product-phone">
+        <div className="phone-hardware phone-hardware-one" />
+        <div className="phone-hardware phone-hardware-two" />
+        <div className="product-phone-screen">
+          <div className="phone-status"><strong>9:41</strong><span>● ᴡɪꜰɪ ▰</span></div>
+          <div className="phone-contact">
+            <div className="phone-contact-mark"><img src={logo} alt="" /></div>
+            <div><strong>FirstOption</strong><span>online</span></div>
+            <ShieldCheck size={18} />
           </div>
-        </div>
-      </div>
-      <div className="mini-webview">
-        <div className="webview-top">
-          <img src={logo} alt="" />
-          <span>Secure</span>
-        </div>
-        <div className="webview-card">
-          <small>You will pay</small>
-          <strong>N5,000.00</strong>
-        </div>
-        <button type="button">Complete purchase</button>
-      </div>
-    </div>
-  );
-}
-
-function ServiceScene({ service }: { service: Service }) {
-  return (
-    <div className="service-scene" style={{ "--scene-accent": service.accent } as CSSProperties} role="img" aria-label={`${service.name} preview`}>
-      <div className="service-scene-shadow" aria-hidden="true" />
-      <div className="service-scene-orbit service-scene-orbit-top">On WhatsApp</div>
-      <div className="service-scene-orbit service-scene-orbit-bottom">Ready to continue</div>
-      <div className="service-scene-intro-rig">
-        <div className="service-scene-scroll-rig">
-          <div className="service-scene-tilt-rig">
-            <div className="service-scene-device">
-              <div className="service-scene-topbar">
-                <img src={logo} alt="" />
-                <strong>FirstOption</strong>
-                <span>Secure</span>
-              </div>
-              <div className="service-scene-brand">
-                <div className="service-scene-mark">
-                  <img src={service.image} alt="" />
-                </div>
-                <div>
-                  <small>{service.category}</small>
-                  <strong>{service.name}</strong>
-                </div>
-              </div>
-              <div className="service-scene-rows">
-                {service.details.slice(0, 3).map((detail, index) => (
-                  <div className="service-scene-row" key={detail}>
-                    <span>{index + 1}</span>
-                    <strong>{detail}</strong>
-                  </div>
-                ))}
-              </div>
-              <div className="service-scene-button">Continue</div>
+          <div className="phone-thread">
+            <div className="phone-message phone-message-user">
+              <div className="voice-note"><span className="voice-play"><Play size={11} fill="currentColor" /></span><Waveform /><small>0:06</small><Mic2 size={13} /></div>
+              <p>Send ₦5,000 to Ada</p>
             </div>
+            <div className="phone-message phone-message-bot">
+              <span className="message-label">Ready to confirm</span>
+              <div className="recipient-row">
+                <div className="recipient-avatar">AO</div>
+                <div><strong>Ada Okafor</strong><span><Check size={11} /> Verified recipient</span></div>
+              </div>
+              <div className="amount-row"><span>You are sending</span><strong>₦5,000.00</strong></div>
+              <div className="reference-row"><span>For</span><strong>Order payment</strong></div>
+              <button className="phone-action" type="button"><LockKeyhole size={15} /> Confirm securely</button>
+            </div>
+            <div className="phone-message phone-message-receipt"><ReceiptText size={16} /><div><strong>Details locked</strong><span>Nothing moves until you confirm.</span></div></div>
           </div>
+          <div className="phone-composer"><span>Message FirstOption</span><AudioLines size={17} /></div>
         </div>
       </div>
     </div>
@@ -1017,17 +389,46 @@ function ServiceScene({ service }: { service: Service }) {
 
 function ServiceCard({ service, large = false }: { service: Service; large?: boolean }) {
   return (
-    <a href={service.path} className={`service-card${large ? " service-card-large" : ""}`}>
-      <div className="service-mark" style={{ backgroundColor: `${service.accent}12` }}>
-        <img src={service.image} alt="" loading="lazy" />
+    <a href={service.path} className={`service-card${large ? " service-card-large" : ""}`} style={{ "--service-accent": service.accent } as CSSProperties}>
+      <div className="service-card-top">
+        <span className="service-mark"><img src={service.image} alt="" loading="lazy" /></span>
+        <ArrowRight size={18} />
       </div>
-      <div className="service-copy">
-        <span>{service.category}</span>
-        <h3>{service.name}</h3>
-        <p>{service.summary}</p>
-        <strong>{service.proof}</strong>
-      </div>
+      <span className="service-category">{service.category}</span>
+      <h3>{service.name}</h3>
+      <p>{service.summary}</p>
+      <strong>{service.proof}</strong>
     </a>
+  );
+}
+
+function CommandDemo() {
+  return (
+    <div className="whatsapp-demo" aria-label="A natural FirstOption conversation on WhatsApp">
+      <div className="whatsapp-demo-header">
+        <span className="whatsapp-demo-avatar"><img src={logo} alt="" /></span>
+        <div><strong>FirstOption</strong><span>online</span></div>
+        <ShieldCheck size={19} />
+      </div>
+      <div className="whatsapp-demo-thread">
+        <span className="whatsapp-day">Today</span>
+        <div className="whatsapp-bubble whatsapp-bubble-user"><p>Buy 2GB MTN data</p><time>9:41</time></div>
+        <div className="whatsapp-bubble whatsapp-bubble-user whatsapp-voice-note">
+          <span className="voice-play voice-play-large"><Play size={13} fill="currentColor" /></span>
+          <Waveform />
+          <div className="voice-meta"><span>0:06</span><Mic2 size={13} /></div>
+        </div>
+        <div className="whatsapp-bubble whatsapp-bubble-bot">
+          <span className="whatsapp-bot-label"><Check size={13} /> I have the details</span>
+          <strong>MTN 2GB data</strong>
+          <div><span>Receiving line</span><b>0906 068 9011</b></div>
+          <div><span>Total</span><b>₦2,500.00</b></div>
+          <span className="whatsapp-confirm"><LockKeyhole size={15} /> Confirm securely</span>
+        </div>
+        <div className="whatsapp-bubble whatsapp-bubble-bot whatsapp-result"><ReceiptText size={15} /><span>Everything stays clear before you pay.</span></div>
+      </div>
+      <div className="whatsapp-demo-composer"><span>Message</span><Mic2 size={17} /></div>
+    </div>
   );
 }
 
@@ -1036,546 +437,321 @@ function HomePage() {
     <SiteChrome currentPath="/">
       <main>
         <section className="hero">
-          <div className="hero-bg" />
-          <div className="hero-grid">
-            <Reveal className="hero-copy">
-              <p className="eyebrow">FirstOption on WhatsApp</p>
-              <h1>
-                <span>Buy airtime.</span>
-                <span>Pay bills.</span>
-                <span>Buy or sell gift cards and crypto.</span>
-              </h1>
-              <p className="hero-sub">
-                Send Hi on WhatsApp, choose what you need, confirm the details and pay.
-              </p>
-              <div className="hero-actions">
-                <a href={WHATSAPP_START_URL} className="primary-btn" target="_blank" rel="noreferrer">
-                  Start on WhatsApp
-                </a>
-                <a href="/services" className="secondary-btn">
-                  Explore services
-                </a>
-              </div>
-              <div className="hero-trust">
-                <span>{OFFICIAL_WHATSAPP_DISPLAY}</span>
-                <span>{SUPPORT_EMAIL}</span>
-                <span>CAC BN {CAC_BUSINESS_NUMBER}</span>
-              </div>
-            </Reveal>
-            <Reveal className="hero-product">
-              <PhoneMockup />
-            </Reveal>
+          <div className="hero-grid-lines" aria-hidden="true" />
+          <div className="hero-content motion-hero-copy">
+            <p className="eyebrow">FirstOption on WhatsApp</p>
+            <h1>Send a message.<br /><span>Move money.</span></h1>
+            <p className="hero-copy">Type it or say it. FirstOption helps you pay, collect and get everyday transactions done through WhatsApp.</p>
+            <div className="hero-actions">
+              <a className="button button-primary" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Open WhatsApp <ArrowRight size={18} /></a>
+              <a className="button button-secondary" href="/how-it-works">See how it works</a>
+            </div>
+            <div className="hero-prompts" aria-label="Example requests">
+              <span>“Send ₦5,000 to Ada”</span>
+              <span>“Buy MTN data”</span>
+              <span>“Request payment”</span>
+            </div>
+          </div>
+          <div className="hero-product"><ProductPhone /></div>
+          <div className="hero-service-line">
+            <span>One conversation for</span>
+            <div>{SERVICES.slice(0, 8).map((service) => <a href={service.path} key={service.slug}>{service.shortName}</a>)}</div>
           </div>
         </section>
 
-        <section className="section section-services" id="services">
-          <Reveal className="section-heading">
-            <p className="eyebrow">Services</p>
-            <h2>What would you like to do?</h2>
-            <p>Choose any FirstOption service from one WhatsApp chat.</p>
+        <section className="section conversation-section">
+          <Reveal className="section-intro section-intro-wide">
+            <p className="eyebrow">Speak naturally</p>
+            <h2>No commands to memorize.</h2>
+            <p>Write the way you normally write. Send a voice note when that is faster. FirstOption finds the right path and asks only for what is missing.</p>
           </Reveal>
-          <div className="feature-grid home-service-grid">
-            {HOME_SERVICES.map((service) => (
-              <Reveal className="motion-managed motion-service-item" key={service.slug}>
-                <ServiceCard service={service} />
+          <Reveal><CommandDemo /></Reveal>
+        </section>
+
+        <section className="section network-section">
+          <Reveal className="section-intro">
+            <p className="eyebrow">One connected network</p>
+            <h2>Built for the way money already moves.</h2>
+          </Reveal>
+          <div className="network-grid">
+            {NETWORK_AREAS.map(({ icon: Icon, number, title, copy, href }) => (
+              <Reveal className="network-item" key={title}>
+                <div className="network-item-top"><span>{number}</span><Icon size={25} strokeWidth={1.8} /></div>
+                <h3>{title}</h3><p>{copy}</p><a href={href}>Explore <ArrowRight size={16} /></a>
               </Reveal>
             ))}
           </div>
-          <Reveal className="all-services-link">
-            <a href="/services" className="secondary-btn">See all services</a>
+        </section>
+
+        <section className="merchant-story">
+          <img src="/firstoption-merchant-studio.jpg" alt="A Nigerian business owner checking a payment on her phone while preparing an order" loading="lazy" />
+          <div className="merchant-story-shade" />
+          <Reveal className="merchant-story-copy">
+            <p className="eyebrow">For business</p>
+            <h2>From “I’ve paid” to payment confirmed.</h2>
+            <p>Create a request in the customer conversation. FirstOption keeps the amount, order and receipt together.</p>
+            <a className="button button-light" href="/business">Explore business payments <ArrowRight size={18} /></a>
           </Reveal>
         </section>
 
-        <section className="section product-story" id="how">
-          <div className="story-copy">
-            <Reveal>
-              <p className="eyebrow">How it works</p>
-              <h2>Start on WhatsApp. Finish in a few clear steps.</h2>
-              <p>
-                No confusing process. FirstOption shows you what to choose, what to enter and what to pay before you continue.
-              </p>
-            </Reveal>
-            <div className="step-list">
-              {["Open FirstOption on WhatsApp", "Choose a service", "Check the details", "Pay and get your receipt"].map((item, index) => (
-                <Reveal className="step-row motion-managed" key={item}>
-                  <span>{index + 1}</span>
-                  <strong>{item}</strong>
-                </Reveal>
-              ))}
-            </div>
+        <section className="section services-section">
+          <Reveal className="section-intro section-intro-row">
+            <div><p className="eyebrow">Everyday services</p><h2>More reasons to open FirstOption.</h2></div>
+            <p>Buy, pay, renew and trade from the same WhatsApp conversation.</p>
+          </Reveal>
+          <div className="service-grid">
+            {SERVICES.map((service) => <ServiceCard service={service} key={service.slug} />)}
           </div>
-          <Reveal className="webview-showcase motion-managed">
-            <div className="webview-phone">
-              <div className="webview-topbar">
-                <img src={logo} alt="" />
-                <strong>FirstOption</strong>
-                <span>Secure</span>
-              </div>
-              <div className="wallet-card">
-                <small>Ready to pay</small>
-                <strong>N28,650.00</strong>
-                <button type="button">Continue</button>
-              </div>
-              <h3>Pay Cable</h3>
-              <div className="provider-grid">
-                {["DSTV", "GOtv", "Startimes", "Showmax"].map((item) => (
-                  <button type="button" key={item}>{item}</button>
-                ))}
-              </div>
-              <input value="Smartcard / IUC number" readOnly />
-              <div className="summary-line">
-                <span>You will pay</span>
-                <strong>N5,000.00</strong>
-              </div>
-              <button type="button" className="webview-primary">Pay Cable</button>
-            </div>
-          </Reveal>
         </section>
 
-        <section className="section visual-band" id="referral">
-          <Reveal className="visual-copy">
-            <p className="eyebrow">Referral program</p>
-            <h2>Invite people. Earn rewards.</h2>
-            <p>Share FirstOption with friends and groups. Earn when they start using it.</p>
-            <a href={WHATSAPP_START_URL} className="primary-btn" target="_blank" rel="noreferrer">Ask about Refer & Earn</a>
+        <section className="section process-section">
+          <Reveal className="section-intro section-intro-wide">
+            <p className="eyebrow">One clear payment</p>
+            <h2>The conversation stays connected to the money.</h2>
           </Reveal>
-          <Reveal className="visual-image motion-managed">
-            <div className="referral-visual" aria-label="Refer and earn preview">
-              <div className="referral-ticket">
-                <img src="/service-icons/referral.png" alt="" />
-                <span>Refer & Earn</span>
-                <strong>Share your link</strong>
-                <p>Invite friends. Earn rewards.</p>
-              </div>
-              <div className="referral-mini referral-mini-top">Group ready</div>
-              <div className="referral-mini referral-mini-bottom">Reward earned</div>
-            </div>
-          </Reveal>
+          <div className="process-line"><span /></div>
+          <div className="process-grid">
+            {[
+              [MessageCircleMore, "Ask", "Send a message, voice note, request link or QR."],
+              [ShieldCheck, "Check", "See who you are paying, the amount and the reason."],
+              [LockKeyhole, "Confirm", "Authorize the transaction in a focused secure step."],
+              [ReceiptText, "Know", "Both sides receive a clear, verifiable receipt."],
+            ].map(([Icon, title, copy], index) => {
+              const ProcessIcon = Icon as LucideIcon;
+              return <Reveal className="process-item" key={title as string}><span>{index + 1}</span><ProcessIcon size={23} /><h3>{title as string}</h3><p>{copy as string}</p></Reveal>;
+            })}
+          </div>
         </section>
 
         <section className="section trust-section">
-          <Reveal className="section-heading">
-            <p className="eyebrow">Stay safe</p>
-            <h2>Check the right FirstOption details before you pay.</h2>
+          <Reveal className="trust-statement">
+            <ShieldCheck size={34} />
+            <p className="eyebrow">Trust is part of the product</p>
+            <h2>Know who. Know how much. Know what happened.</h2>
           </Reveal>
-          <div className="trust-grid">
-            <Reveal className="trust-panel trust-panel-dark motion-managed">
-              <h3>Use the right number</h3>
-              <p>Only use the WhatsApp number and support email listed on this website.</p>
-              <a href="/official-whatsapp">Verify the WhatsApp number</a>
-            </Reveal>
-            {TRUST_CHECKS.map((item) => (
-              <Reveal className="trust-panel motion-managed" key={item}>
-                <span>{item}</span>
-              </Reveal>
-            ))}
+          <div className="trust-points">
+            {[
+              ["Verified identity", "See a trusted name before you act."],
+              ["Locked details", "Recipient, amount and purpose stay clear."],
+              ["Secure confirmation", "Nothing moves until you approve it."],
+              ["Shared receipt", "Both sides see the same result."],
+            ].map(([title, copy]) => <Reveal className="trust-point" key={title}><Check size={17} /><div><strong>{title}</strong><span>{copy}</span></div></Reveal>)}
           </div>
         </section>
 
-        <section className="section guide-strip">
-          <Reveal className="section-heading">
-            <p className="eyebrow">Helpful guides</p>
-            <h2>Simple guides before you pay.</h2>
-          </Reveal>
-          <div className="guide-grid">
-            {GUIDE_PAGES.slice(0, 4).map((guide) => (
-              <Reveal className="motion-managed motion-guide-item" key={guide.path}>
-                <a href={guide.path} className="guide-card">
-                  <h3>{guide.title}</h3>
-                  <p>{guide.summary}</p>
-                </a>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-
-        <ClosingCta title="Start with the official FirstOption chat" description="Open WhatsApp, send Hi, and choose the service you need from the menu." />
+        <ClosingCta title="Your next transaction can start with a message." description="Open the official FirstOption conversation and say what you need." />
       </main>
     </SiteChrome>
   );
+}
+
+function PageHero({ eyebrow, title, description, children }: { eyebrow: string; title: string; description: string; children?: ReactNode }) {
+  return (
+    <section className="page-hero">
+      <div className="page-hero-grid" aria-hidden="true" />
+      <Reveal className="page-hero-content motion-hero-copy"><p className="eyebrow">{eyebrow}</p><h1>{title}</h1><p>{description}</p>{children}</Reveal>
+    </section>
+  );
+}
+
+function FeatureRows({ items }: { items: Array<{ icon: LucideIcon; title: string; copy: string }> }) {
+  return <div className="feature-rows">{items.map(({ icon: Icon, title, copy }, index) => <Reveal className="feature-row" key={title}><span>{String(index + 1).padStart(2, "0")}</span><Icon size={23} /><div><h3>{title}</h3><p>{copy}</p></div></Reveal>)}</div>;
+}
+
+function PersonalPage() {
+  return <SiteChrome currentPath="/personal"><main className="subpage">
+    <PageHero eyebrow="FirstOption for people" title="Send it. Request it. Get it done." description="Move money through the conversations you already use, with the details clear before you confirm.">
+      <a className="button button-primary" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Start on WhatsApp <ArrowRight size={18} /></a>
+    </PageHero>
+    <section className="personal-image-band"><img src="/firstoption-personal-payments.jpg" alt="Two friends reviewing a payment on a phone" /><div><p className="eyebrow">Personal payments</p><h2>Money shared in the conversation.</h2><p>Send it, request it or receive it without losing the people and purpose behind the payment.</p></div></section>
+    <section className="section split-copy"><Reveal><p className="eyebrow">Your financial identity</p><h2>Your number connects you. Your name builds trust.</h2></Reveal><Reveal><p>Send to someone you know, respond to a request or share a claim with someone joining FirstOption for the first time.</p></Reveal></section>
+    <section className="section"><FeatureRows items={[
+      { icon: Send, title: "Send money", copy: "Use a phone number, trusted name, recent recipient, request or QR." },
+      { icon: CircleDollarSign, title: "Request money", copy: "Set the amount and reason, then share it in the right conversation." },
+      { icon: Link2, title: "Claim money", copy: "Money sent to a new user stays tied to the intended phone number." },
+      { icon: ReceiptText, title: "Keep every receipt", copy: "Requests, transfers, refunds and receipts stay organized in one inbox." },
+    ]} /></section>
+    <ClosingCta title="Move money with a message." description="Tell FirstOption what you want to do." />
+  </main></SiteChrome>;
+}
+
+function BusinessPage() {
+  return <SiteChrome currentPath="/business"><main className="subpage">
+    <PageHero eyebrow="FirstOption for business" title="Collect payment where the sale happens." description="Turn a WhatsApp order into a clear payment request, confirmation and record for your business.">
+      <a className="button button-primary" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Talk to FirstOption <ArrowRight size={18} /></a>
+    </PageHero>
+    <section className="business-image-band"><img src="/firstoption-merchant-studio.jpg" alt="Nigerian business owner preparing an order" /><div><p className="eyebrow">Social commerce, properly connected</p><h2>No account-number copy. No screenshot matching.</h2></div></section>
+    <section className="section"><FeatureRows items={[
+      { icon: CircleDollarSign, title: "Payment requests", copy: "Set an amount and order reference, then share it with the customer." },
+      { icon: QrCode, title: "Links and QR", copy: "Use the same payment experience in chat, at a counter or on a website." },
+      { icon: ReceiptText, title: "Automatic matching", copy: "Keep the payment attached to the customer, amount and order." },
+      { icon: Landmark, title: "Settlement your way", copy: "Keep funds ready to use or settle to a verified bank account." },
+      { icon: RefreshCcw, title: "Connected refunds", copy: "Return an eligible payment against the original transaction." },
+      { icon: Code2, title: "Business infrastructure", copy: "Create payments and receive status through one consistent system." },
+    ]} /></section>
+    <ClosingCta title="Make every paid order easier to verify." description="Start the business conversation with FirstOption." />
+  </main></SiteChrome>;
+}
+
+function GroupsPage() {
+  return <SiteChrome currentPath="/groups"><main className="subpage">
+    <PageHero eyebrow="Group collections" title="One link for everyone contributing." description="Create dues, open contributions, targets and shared payments for the groups already organizing on WhatsApp." />
+    <section className="section collection-demo">
+      <Reveal className="collection-copy"><p className="eyebrow">A clearer total</p><h2>Share once. Track every contribution.</h2><p>Participants pay individually while the organizer sees progress without manually matching screenshots.</p></Reveal>
+      <Reveal className="collection-visual"><div className="collection-top"><div><span>Family trip</span><strong>₦350,000 target</strong></div><Users size={25} /></div><div className="collection-progress"><span /></div><div className="collection-numbers"><div><strong>₦227,500</strong><span>collected</span></div><div><strong>18</strong><span>contributors</span></div></div><button type="button">Share collection link <Link2 size={16} /></button></Reveal>
+    </section>
+    <section className="section"><FeatureRows items={[
+      { icon: Users, title: "Dues and contributions", copy: "Choose a fixed amount or let each person decide what to give." },
+      { icon: CircleDollarSign, title: "Targets and deadlines", copy: "Keep the goal, progress and payment status visible." },
+      { icon: ShieldCheck, title: "Privacy controls", copy: "Choose what contributors can see and keep organizer details clear." },
+    ]} /></section>
+    <ClosingCta title="Organize the money without leaving the group." description="Create a collection and share one clear link." />
+  </main></SiteChrome>;
+}
+
+function PaymentsPage() {
+  return <SiteChrome currentPath="/payments"><main className="subpage">
+    <PageHero eyebrow="Payment tools" title="One payment, shared in every useful way." description="A request can travel through WhatsApp, a payment link, a QR code, an invoice or a checkout button." />
+    <section className="section payment-tools-grid">
+      {[
+        [MessageCircleMore, "WhatsApp request", "Share the payment in the customer conversation."],
+        [Link2, "Payment link", "Use one protected reference across social channels."],
+        [QrCode, "QR payment", "Accept a flexible or exact amount in person."],
+        [ReceiptText, "Invoice", "Keep the amount, purpose and reference together."],
+      ].map(([Icon, title, copy]) => { const ToolIcon = Icon as LucideIcon; return <Reveal className="payment-tool" key={title as string}><ToolIcon size={28} /><h2>{title as string}</h2><p>{copy as string}</p></Reveal>; })}
+    </section>
+    <section className="section split-copy"><Reveal><p className="eyebrow">Pay your way</p><h2>Use the source that makes sense.</h2></Reveal><Reveal><p>Complete a payment from your FirstOption balance or an enabled bank, card, USSD or QR route. The request stays connected while payment is confirmed.</p><a href="/wallet-funding">How adding money works <ArrowRight size={16} /></a></Reveal></section>
+    <ClosingCta title="Create the payment. Share it anywhere." description="FirstOption keeps the important details together." />
+  </main></SiteChrome>;
+}
+
+function DevelopersPage() {
+  return <SiteChrome currentPath="/developers"><main className="subpage developer-page">
+    <PageHero eyebrow="Developer infrastructure" title="One payment layer for conversations and commerce." description="Create a payment, share it through WhatsApp or QR, check its status and receive a clear event when it completes." />
+    <section className="section developer-console">
+      <Reveal className="developer-copy"><Code2 size={30} /><h2>A simpler integration surface.</h2><p>One payment ID connects the customer, amount, status, receipt and webhook.</p></Reveal>
+      <Reveal className="code-window"><div><span /><span /><span /></div><pre>{`POST /payments\n{\n  "amount": 25000,\n  "currency": "NGN",\n  "purpose": "Order 104"\n}\n\n→ payment_url\n→ qr\n→ status\n→ receipt`}</pre></Reveal>
+    </section>
+    <ClosingCta title="Connect your product to FirstOption." description="Talk to us about payments for your business or platform." />
+  </main></SiteChrome>;
 }
 
 function ServicesPage() {
-  return (
-    <SiteChrome currentPath="/services">
-      <main className="subpage">
-        <PageHero
-          eyebrow="Services"
-          title="Choose what you want to do on WhatsApp."
-          description="Choose airtime, data, electricity, cable TV, exam pins, internet, gift cards, crypto or virtual cards."
-        />
-        <section className="section services-page-grid">
-          {SERVICES.map((service) => (
-            <Reveal className="motion-managed motion-service-item" key={service.slug}>
-              <ServiceCard service={service} large />
-            </Reveal>
-          ))}
-        </section>
-        <ClosingCta title="Start with FirstOption on WhatsApp" description="Send Hi, choose a service and follow the prompts." />
-      </main>
-    </SiteChrome>
-  );
+  return <SiteChrome currentPath="/services"><main className="subpage">
+    <PageHero eyebrow="Everyday services" title="What do you need to get done?" description="Choose a service or simply tell FirstOption what you want in the WhatsApp chat.">
+      <a className="button button-primary" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Open WhatsApp <ArrowRight size={18} /></a>
+    </PageHero>
+    <section className="section service-grid services-page-grid">{SERVICES.map((service) => <ServiceCard service={service} large key={service.slug} />)}</section>
+    <section className="digital-services-story"><img src="/firstoption-digital-services.jpg" alt="A customer using digital services from a phone" loading="lazy" /><div className="digital-services-shade" /><Reveal className="digital-services-copy"><p className="eyebrow">Gift cards and crypto</p><h2>Buy. Sell. Send. Receive.</h2><p>Move between supported digital value and the conversations where you need it.</p><div><a className="button button-light" href="/services/gift-cards">Gift cards <ArrowRight size={17} /></a><a className="button button-secondary" href="/services/crypto">Crypto <ArrowRight size={17} /></a></div></Reveal></section>
+    <ClosingCta title="Say what you need." description="FirstOption will take you to the right service." />
+  </main></SiteChrome>;
 }
 
 function HowItWorksPage() {
-  return (
-    <SiteChrome currentPath="/how-it-works">
-      <main className="subpage">
-        <PageHero
-          eyebrow="How it works"
-          title="Start on WhatsApp. Finish in a few clear steps."
-          description="FirstOption keeps the process simple: choose what you need, check the details, pay and get your receipt."
-        />
-        <section className="section split-section">
-          <Reveal>
-            <h2>The basic steps</h2>
-            <p>Most purchases follow the same pattern, whether you are buying airtime, paying a bill, renewing cable TV or using gift cards and crypto.</p>
-          </Reveal>
-          <div className="detail-list">
-            {["Send Hi on WhatsApp", "Choose a service", "Check the details", "Pay and get your receipt"].map((item) => (
-              <Reveal className="detail-item" key={item}>
-                <span />
-                <strong>{item}</strong>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-        <section className="section related-section">
-          <Reveal className="section-heading">
-            <p className="eyebrow">Popular services</p>
-            <h2>Choose what you want to do next.</h2>
-          </Reveal>
-          <div className="feature-grid feature-grid-three">
-            {SERVICES.slice(0, 6).map((service) => (
-              <Reveal className="motion-managed motion-service-item" key={service.slug}>
-                <ServiceCard service={service} />
-              </Reveal>
-            ))}
-          </div>
-        </section>
-        <ClosingCta title="Start on WhatsApp" description="Send Hi to FirstOption and choose what you need." />
-      </main>
-    </SiteChrome>
-  );
-}
-
-function ReferralProgramPage() {
-  return (
-    <SiteChrome currentPath="/referral">
-      <main className="subpage">
-        <PageHero
-          eyebrow="Refer & Earn"
-          title="Invite people to FirstOption and earn rewards."
-          description="Refer & Earn is a reward program, not a core payment service. Share FirstOption with friends, groups and your community."
-        />
-        <section className="section visual-band">
-          <Reveal className="visual-copy">
-            <p className="eyebrow">How it works</p>
-            <h2>Share FirstOption. Earn when people start using it.</h2>
-            <p>Ask about Refer & Earn on WhatsApp to confirm the current reward rules before you start sharing.</p>
-            <a href={WHATSAPP_START_URL} className="primary-btn" target="_blank" rel="noreferrer">Ask about Refer & Earn</a>
-          </Reveal>
-          <Reveal className="visual-image motion-managed">
-            <div className="referral-visual" aria-label="Refer and earn preview">
-              <div className="referral-ticket">
-                <img src="/service-icons/referral.png" alt="" />
-                <span>Refer & Earn</span>
-                <strong>Share your link</strong>
-                <p>Invite friends and earn when they use FirstOption.</p>
-              </div>
-              <div className="referral-mini referral-mini-top">Group ready</div>
-              <div className="referral-mini referral-mini-bottom">Reward earned</div>
-            </div>
-          </Reveal>
-        </section>
-      </main>
-    </SiteChrome>
-  );
+  return <SiteChrome currentPath="/how-it-works"><main className="subpage">
+    <PageHero eyebrow="How FirstOption works" title="Type it. Say it. Check it. Done." description="Start naturally in WhatsApp. FirstOption gathers the right details and shows you a clear confirmation before anything moves." />
+    <section className="section two-column how-lead"><Reveal className="section-intro"><p className="eyebrow">Conversation first</p><h2>You do not need to learn commands.</h2><p>Use normal English, shorthand or a voice note. Choose from buttons and lists when they are faster.</p></Reveal><Reveal><CommandDemo /></Reveal></section>
+    <section className="section"><FeatureRows items={[
+      { icon: MessageCircleMore, title: "Tell FirstOption what you need", copy: "Type a request, send a voice note or choose from the menu." },
+      { icon: Headphones, title: "Answer only what is missing", copy: "FirstOption asks for the number, provider, plan or amount it still needs." },
+      { icon: ShieldCheck, title: "Review the full details", copy: "See the recipient, service, amount and fee before continuing." },
+      { icon: LockKeyhole, title: "Confirm securely", copy: "Use a focused secure screen when authorization is required." },
+      { icon: ReceiptText, title: "Receive the result", copy: "Get the receipt, token, pin or confirmation back in WhatsApp." },
+    ]} /></section>
+    <ClosingCta title="No special wording required." description="Open WhatsApp and tell FirstOption what you want to do." />
+  </main></SiteChrome>;
 }
 
 function ServiceLandingPage({ service }: { service: Service }) {
   const related = SERVICES.filter((item) => item.slug !== service.slug).slice(0, 3);
-  return (
-    <SiteChrome currentPath={service.path}>
-      <main className="subpage">
-        <section className="service-hero">
-          <Reveal className="service-hero-copy motion-managed">
-            <p className="eyebrow">{service.category}</p>
-            <h1>{service.name} on WhatsApp</h1>
-            <p>{service.summary}</p>
-            <div className="hero-actions">
-              <a href={WHATSAPP_START_URL} className="primary-btn" target="_blank" rel="noreferrer">
-                Start on WhatsApp
-              </a>
-              <a href="/official-whatsapp" className="secondary-btn">Verify first</a>
-            </div>
-          </Reveal>
-          <Reveal className="service-hero-scene motion-managed">
-            <ServiceScene service={service} />
-          </Reveal>
-        </section>
-        <section className="section split-section">
-          <Reveal>
-            <h2>How it works</h2>
-            <p>{service.steps}</p>
-          </Reveal>
-          <div className="detail-list">
-            {service.details.map((detail) => (
-              <Reveal className="detail-item" key={detail}>
-                <span />
-                <strong>{detail}</strong>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-        <section className="section related-section">
-          <Reveal className="section-heading">
-            <p className="eyebrow">Related services</p>
-            <h2>More things you can do.</h2>
-          </Reveal>
-          <div className="feature-grid feature-grid-three">
-            {related.map((item) => (
-              <Reveal className="motion-managed motion-service-item" key={item.slug}>
-                <ServiceCard service={item} />
-              </Reveal>
-            ))}
-          </div>
-        </section>
-        <ClosingCta title={`Start ${service.shortName} on WhatsApp`} description="Send Hi to FirstOption and choose the service you need." />
-      </main>
-    </SiteChrome>
-  );
+  return <SiteChrome currentPath={service.path}><main className="subpage">
+    <PageHero eyebrow={service.category} title={`${service.name}, right from WhatsApp.`} description={service.summary}>
+      <a className="button button-primary" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Start {service.shortName} <ArrowRight size={18} /></a>
+    </PageHero>
+    <section className="section service-detail-lead" style={{ "--service-accent": service.accent } as CSSProperties}>
+      <Reveal className="service-detail-art"><img src={service.image} alt="" /><span>{service.proof}</span></Reveal>
+      <Reveal className="section-intro"><p className="eyebrow">How it works</p><h2>{service.steps}</h2></Reveal>
+    </section>
+    <section className="section feature-rows">{service.details.map((detail, index) => <Reveal className="feature-row" key={detail}><span>{String(index + 1).padStart(2, "0")}</span><Check size={22} /><div><h3>{detail}</h3></div></Reveal>)}</section>
+    <section className="section related-services"><Reveal className="section-intro"><p className="eyebrow">Continue in FirstOption</p><h2>More things you can do.</h2></Reveal><div className="related-grid">{related.map((item) => <ServiceCard service={item} key={item.slug} />)}</div></section>
+    <ClosingCta title={`Start ${service.shortName} with a message.`} description="Open the official FirstOption WhatsApp conversation." />
+  </main></SiteChrome>;
 }
 
-function PageHero({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
-  return (
-    <section className="page-hero">
-      <Reveal className="motion-managed">
-        <p className="eyebrow">{eyebrow}</p>
-        <h1>{title}</h1>
-        <p>{description}</p>
-      </Reveal>
-    </section>
-  );
+function ReferralProgramPage() {
+  return <SiteChrome currentPath="/referral"><main className="subpage">
+    <PageHero eyebrow="Refer & Earn" title="Share FirstOption with people you trust." description="Invite friends and groups with your referral link and follow the current reward steps in WhatsApp." />
+    <section className="section referral-layout"><Reveal className="referral-pass"><img src={logo} alt="" /><span>YOUR REFERRAL LINK</span><strong>firstoption.com.ng/r/you</strong><button type="button">Share link <Send size={16} /></button></Reveal><Reveal className="section-intro"><p className="eyebrow">Built into your network</p><h2>Your link connects every successful referral to you.</h2><p>Open Refer & Earn in FirstOption to view your link, current reward rules and progress.</p></Reveal></section>
+    <ClosingCta title="Open Refer & Earn in WhatsApp." description="Check the current rules before you start sharing." />
+  </main></SiteChrome>;
 }
 
 function WalletFundingPage() {
-  return (
-    <SiteChrome currentPath="/wallet-funding">
-      <main className="subpage">
-        <PageHero
-          eyebrow="Payments"
-          title="Pay faster when you use FirstOption again."
-          description="Some services may ask you to add money before you pay. Always check the amount before you continue."
-        />
-        <section className="section split-section">
-          <Reveal>
-            <h2>What to check</h2>
-            <p>Before you pay, confirm the service, phone number, meter number, smartcard number or card details. Keep your receipt after payment.</p>
-          </Reveal>
-          <div className="detail-list">
-            {["Correct service", "Correct amount", "Receipt after payment", "Support on WhatsApp"].map((item) => (
-              <Reveal className="detail-item" key={item}>
-                <span />
-                <strong>{item}</strong>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-      </main>
-    </SiteChrome>
-  );
+  return <SiteChrome currentPath="/wallet-funding"><main className="subpage">
+    <PageHero eyebrow="Add money" title="Create one account. Use it whenever you need." description="Your permanent Paga account gives you a reusable way to add money to FirstOption." />
+    <section className="section"><FeatureRows items={[
+      { icon: MessageCircleMore, title: "Send Hi to FirstOption", copy: "Choose the service you want from the WhatsApp conversation." },
+      { icon: WalletCards, title: "Open the service and tap Fund", copy: "The Fund option appears inside the secure service webview." },
+      { icon: Landmark, title: "Create your permanent Paga account", copy: "Complete the first-time setup and keep the account details." },
+      { icon: RefreshCcw, title: "Transfer any amount whenever you need", copy: "The permanent account is yours to reuse for future FirstOption transactions." },
+    ]} /></section>
+    <ClosingCta title="Start from the service you want." description="Open WhatsApp, choose a service and tap Fund inside its secure screen." />
+  </main></SiteChrome>;
 }
 
 function AboutPage() {
-  return (
-    <SiteChrome currentPath="/about">
-      <main className="subpage">
-        <PageHero
-          eyebrow="About FirstOption"
-          title="A simple way to buy everyday services on WhatsApp."
-          description="FirstOption helps people buy airtime, data, electricity, cable TV, exam pins, internet, gift cards, crypto and virtual cards."
-        />
-        <section className="section split-section">
-          <Reveal>
-            <h2>What we do</h2>
-            <p>We make common payments easier from WhatsApp. Choose what you need, check the details and pay.</p>
-          </Reveal>
-          <Reveal className="identity-card">
-            <strong>{LEGAL_NAME}</strong>
-            <span>CAC BN {CAC_BUSINESS_NUMBER}</span>
-            <span>{OPERATING_COUNTRY}</span>
-            <span>{SUPPORT_EMAIL}</span>
-          </Reveal>
-        </section>
-      </main>
-    </SiteChrome>
-  );
+  return <SiteChrome currentPath="/about"><main className="subpage">
+    <PageHero eyebrow="About FirstOption" title="The payment network for commerce happening on WhatsApp." description="FirstOption gives people and businesses a trusted way to pay, collect and manage transactions where their conversations already happen." />
+    <section className="section split-copy"><Reveal><p className="eyebrow">Our direction</p><h2>WhatsApp is the interface. FirstOption connects the payment.</h2></Reveal><Reveal><p>Everyday services create useful habits. Personal payments, merchants, groups and developer tools connect those habits into a wider network.</p></Reveal></section>
+    <section className="section identity-strip"><div><span>Registered name</span><strong>{LEGAL_NAME}</strong></div><div><span>CAC number</span><strong>BN {CAC_BUSINESS_NUMBER}</strong></div><div><span>Country</span><strong>{OPERATING_COUNTRY}</strong></div></section>
+    <ClosingCta title="Start with one conversation." description="Open FirstOption on WhatsApp and say what you need." />
+  </main></SiteChrome>;
 }
 
 function ContactPage() {
-  return (
-    <SiteChrome currentPath="/contact">
-      <main className="subpage">
-        <PageHero
-          eyebrow="Contact"
-          title="Contact FirstOption."
-          description="Use these details when you need help or want to confirm you are speaking with the right FirstOption account."
-        />
-        <section className="section contact-grid">
-          {[
-            { label: "WhatsApp", value: OFFICIAL_WHATSAPP_DISPLAY, href: WHATSAPP_START_URL },
-            { label: "Support email", value: SUPPORT_EMAIL, href: SUPPORT_EMAIL_LINK },
-            { label: "Website", value: WEBSITE_URL.replace("https://", ""), href: WEBSITE_URL },
-          ].map((item) => (
-            <Reveal className="motion-managed" key={item.label}>
-              <a href={item.href} className="contact-card">
-                <span>{item.label}</span>
-                <strong>{item.value}</strong>
-              </a>
-            </Reveal>
-          ))}
-        </section>
-      </main>
-    </SiteChrome>
-  );
+  return <SiteChrome currentPath="/contact"><main className="subpage">
+    <PageHero eyebrow="Contact" title="Reach the real FirstOption." description="Use the details below for support, business conversations and channel verification." />
+    <section className="section contact-list">
+      {[
+        ["WhatsApp", OFFICIAL_WHATSAPP_DISPLAY, WHATSAPP_START_URL],
+        ["Support email", SUPPORT_EMAIL, SUPPORT_EMAIL_LINK],
+        ["Website", WEBSITE_URL.replace("https://", ""), WEBSITE_URL],
+      ].map(([label, value, href]) => <Reveal key={label}><a href={href} className="contact-row"><span>{label}</span><strong>{value}</strong><ArrowRight size={19} /></a></Reveal>)}
+    </section>
+  </main></SiteChrome>;
 }
 
 function OfficialWhatsAppPage() {
-  return (
-    <SiteChrome currentPath="/official-whatsapp">
-      <main className="subpage">
-        <PageHero
-          eyebrow="Official WhatsApp"
-          title="Use the right FirstOption WhatsApp number."
-          description="Before you send money or details, check that the number matches what is shown here."
-        />
-        <section className="section trust-grid">
-          {TRUST_CHECKS.map((item) => (
-            <Reveal className="trust-panel motion-managed" key={item}>
-              <span>{item}</span>
-            </Reveal>
-          ))}
-        </section>
-        <ClosingCta title="Start from the right WhatsApp number" description="Use the WhatsApp link on this website when you want to begin." />
-      </main>
-    </SiteChrome>
-  );
+  return <SiteChrome currentPath="/official-whatsapp"><main className="subpage">
+    <PageHero eyebrow="Official WhatsApp" title="Check the number before you transact." description="Start from this website whenever you need to confirm that you are speaking with the real FirstOption." />
+    <section className="section verification-layout"><Reveal className="official-number"><MessageCircleMore size={31} /><span>Official WhatsApp</span><strong>{OFFICIAL_WHATSAPP_DISPLAY}</strong><a href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Open the official chat <ArrowRight size={17} /></a></Reveal><div className="verification-list">{TRUST_CHECKS.slice(1).map((item) => <Reveal className="verification-item" key={item}><Check size={18} /><span>{item}</span></Reveal>)}</div></section>
+    <ClosingCta title="Use the right conversation." description="Open FirstOption directly from this website." />
+  </main></SiteChrome>;
 }
 
 function AntiScamPage() {
-  return (
-    <SiteChrome currentPath="/anti-scam">
-      <main className="subpage">
-        <PageHero
-          eyebrow="Anti-scam guide"
-          title="Verify FirstOption before you send money, card details or personal data."
-          description="The WhatsApp number, support email, website and social handles should match the details listed here."
-        />
-        <section className="section split-section">
-          <Reveal>
-            <h2>Stop if you see these signs</h2>
-            <ul className="clean-list">
-              <li>A different WhatsApp number asks you to pay.</li>
-              <li>A profile pressures you to send money quickly.</li>
-              <li>Support asks for passwords, OTPs or private account access.</li>
-            </ul>
-          </Reveal>
-          <Reveal>
-            <h2>Safer way</h2>
-            <ul className="clean-list">
-              <li>Start from the official website or WhatsApp link.</li>
-              <li>Check the amount and service before you pay.</li>
-              <li>Email support when you need written help.</li>
-            </ul>
-          </Reveal>
-        </section>
-      </main>
-    </SiteChrome>
-  );
+  return <SiteChrome currentPath="/anti-scam"><main className="subpage">
+    <PageHero eyebrow="Anti-scam guide" title="Pause when the details do not match." description="A real FirstOption transaction should be clear about the account, amount, service and final status." />
+    <section className="section safety-columns"><Reveal><ShieldCheck size={27} /><h2>Check first</h2><ul><li>Start from the official website or WhatsApp number.</li><li>Review the person, business, service and amount.</li><li>Keep the receipt or transaction reference.</li></ul></Reveal><Reveal><LockKeyhole size={27} /><h2>Never share</h2><ul><li>Your password, PIN or one-time code with support.</li><li>Private card or account access in a chat.</li><li>Money with a different number because someone pressures you.</li></ul></Reveal></section>
+  </main></SiteChrome>;
 }
 
 function GuidePage({ guide }: { guide: Guide }) {
-  return (
-    <SiteChrome currentPath={guide.path}>
-      <main className="subpage">
-        <PageHero eyebrow="Guide" title={guide.title} description={guide.summary} />
-        <section className="section split-section">
-          <Reveal>
-            <h2>Start from the official channel</h2>
-            <p>Use the WhatsApp number listed on this website. Check the service, amount and details before you pay.</p>
-          </Reveal>
-          <Reveal>
-            <h2>What to check</h2>
-            <ul className="clean-list">
-              <li>Service name and destination details.</li>
-              <li>Total amount before payment.</li>
-              <li>Receipt or reference after payment.</li>
-            </ul>
-          </Reveal>
-        </section>
-      </main>
-    </SiteChrome>
-  );
+  return <SiteChrome currentPath={guide.path}><main className="subpage"><PageHero eyebrow="FirstOption guide" title={guide.title} description={guide.summary} /><section className="section"><FeatureRows items={[
+    { icon: MessageCircleMore, title: "Start from the official chat", copy: "Use the WhatsApp link on this website and tell FirstOption what you need." },
+    { icon: Check, title: "Check every detail", copy: "Review the service, receiving account and amount before confirming." },
+    { icon: ReceiptText, title: "Keep the result", copy: "Save the receipt, token, pin or transaction reference sent to WhatsApp." },
+  ]} /></section><ClosingCta title="Continue with FirstOption." description="Open the official WhatsApp conversation." /></main></SiteChrome>;
 }
 
 function ClosingCta({ title, description }: { title: string; description: string }) {
-  return (
-    <section className="closing-cta">
-      <Reveal className="motion-managed">
-        <div className="closing-scene" role="img" aria-label="FirstOption WhatsApp preview">
-          <div className="closing-scene-chip closing-scene-chip-left">Hi</div>
-          <div className="closing-brand-tile">
-            <img src={logo} alt="" />
-          </div>
-          <div className="closing-scene-chip closing-scene-chip-right">Ready</div>
-        </div>
-        <h2>{title}</h2>
-        <p>{description}</p>
-        <a href={WHATSAPP_START_URL} className="primary-btn" target="_blank" rel="noreferrer">
-          Message FirstOption on WhatsApp
-        </a>
-        <div className="closing-meta">
-          <span>{OFFICIAL_WHATSAPP_DISPLAY}</span>
-          <span>{SUPPORT_EMAIL}</span>
-        </div>
-      </Reveal>
-    </section>
-  );
+  return <section className="closing-cta"><div className="closing-grid" aria-hidden="true" /><Reveal><img src={logo} alt="" /><h2>{title}</h2><p>{description}</p><a className="button button-white" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Open WhatsApp <ArrowRight size={18} /></a><span>{OFFICIAL_WHATSAPP_DISPLAY}</span></Reveal></section>;
 }
 
 function PaymentResultPage({ search }: { search: string }) {
-  const params = new URLSearchParams(search);
-  const status = params.get("status");
+  const status = new URLSearchParams(search).get("status");
   const failed = Boolean(status && status !== "successful" && status !== "completed");
-
-  return (
-    <div className="payment-result-page">
-      <div className="payment-result-card">
-        <div className="payment-brand-strip">
-          <div className="payment-brand-panel">
-            <img src={logo} alt="FirstOption" />
-          </div>
-          <span>+</span>
-          <div className="payment-brand-panel">
-            <img src={flutterwaveLogo} alt="Flutterwave" />
-          </div>
-        </div>
-        <div className={`payment-status ${failed ? "payment-status-failed" : ""}`}>{failed ? "Payment not completed" : "Payment confirmed"}</div>
-        <h1>{failed ? "Return to WhatsApp and try again" : "Payment successful"}</h1>
-        <p>{failed ? "Your payment did not complete. Go back to WhatsApp and try again." : "Your payment has been received. Go back to FirstOption on WhatsApp for your receipt."}</p>
-        <div className="payment-steps">
-          {["Return to WhatsApp", "Open FirstOption chat", "Check your receipt"].map((item, index) => (
-            <div key={item}>
-              <span>{index + 1}</span>
-              <strong>{item}</strong>
-            </div>
-          ))}
-        </div>
-        <a href="/" className="primary-btn">Back to FirstOption</a>
-      </div>
-    </div>
-  );
+  return <div className="payment-result-page"><div className="payment-result-card"><div className="payment-brand-strip"><img src={logo} alt="FirstOption" /><span>+</span><img src={flutterwaveLogo} alt="Flutterwave" /></div><span className={`payment-status${failed ? " payment-status-failed" : ""}`}>{failed ? "Payment not completed" : "Payment confirmed"}</span><h1>{failed ? "Return to WhatsApp and try again" : "Payment successful"}</h1><p>{failed ? "Your payment did not complete. Return to FirstOption and try again." : "Your payment has been received. Return to WhatsApp for the receipt and next step."}</p><a className="button button-primary" href={WHATSAPP_START_URL}>Return to WhatsApp <ArrowRight size={18} /></a></div></div>;
 }
 
 function App({ initialPath = "/", initialSearch = "" }: AppProps) {
@@ -1586,58 +762,35 @@ function App({ initialPath = "/", initialSearch = "" }: AppProps) {
 
   useEffect(() => {
     if (typeof document === "undefined") return;
-    const title = currentPageLabel(currentPath);
-    document.title = title === "Home"
-      ? "FirstOption Digital Services | Buy Airtime, Data, Bills, Crypto & Gift Cards on WhatsApp"
-      : `${title} | FirstOption Digital Services`;
+    const label = currentPageLabel(currentPath);
+    document.title = label === "Home" ? "FirstOption | Payments and Everyday Services on WhatsApp" : `${label} | FirstOption`;
   }, [currentPath]);
 
   let page: ReactNode;
-  if (currentPath === "/payment-success") {
-    page = <PaymentResultPage search={search} />;
-  } else if (service) {
-    page = <ServiceLandingPage service={service} />;
-  } else if (guide) {
-    page = <GuidePage guide={guide} />;
-  } else {
+  if (currentPath === "/payment-success") page = <PaymentResultPage search={search} />;
+  else if (service) page = <ServiceLandingPage service={service} />;
+  else if (guide) page = <GuidePage guide={guide} />;
+  else {
     switch (currentPath) {
-      case "/services":
-        page = <ServicesPage />;
-        break;
-      case "/how-it-works":
-        page = <HowItWorksPage />;
-        break;
+      case "/personal": page = <PersonalPage />; break;
+      case "/business": page = <BusinessPage />; break;
+      case "/groups": page = <GroupsPage />; break;
+      case "/payments": page = <PaymentsPage />; break;
+      case "/developers": page = <DevelopersPage />; break;
+      case "/services": page = <ServicesPage />; break;
+      case "/how-it-works": page = <HowItWorksPage />; break;
       case "/referral":
-      case "/services/referral":
-        page = <ReferralProgramPage />;
-        break;
-      case "/wallet-funding":
-        page = <WalletFundingPage />;
-        break;
-      case "/about":
-        page = <AboutPage />;
-        break;
-      case "/contact":
-        page = <ContactPage />;
-        break;
-      case "/official-whatsapp":
-        page = <OfficialWhatsAppPage />;
-        break;
-      case "/anti-scam":
-        page = <AntiScamPage />;
-        break;
-      default:
-        page = <HomePage />;
+      case "/services/referral": page = <ReferralProgramPage />; break;
+      case "/wallet-funding": page = <WalletFundingPage />; break;
+      case "/about": page = <AboutPage />; break;
+      case "/contact": page = <ContactPage />; break;
+      case "/official-whatsapp": page = <OfficialWhatsAppPage />; break;
+      case "/anti-scam": page = <AntiScamPage />; break;
+      default: page = <HomePage />;
     }
   }
 
-  const motionExcluded = ["/privacy", "/privacy-policy", "/terms", "/terms-of-service", "/cookie-policy"].includes(currentPath);
-  return (
-    <>
-      {!motionExcluded && <SiteMotion currentPath={currentPath} />}
-      {page}
-    </>
-  );
+  return <><SiteMotion currentPath={currentPath} />{page}</>;
 }
 
 export default App;
