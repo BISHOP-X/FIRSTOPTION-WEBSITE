@@ -82,9 +82,7 @@ p {
 }
 
 .eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 9px;
+  display: block;
   margin-bottom: 18px;
   color: var(--green-dark);
   font-size: 0.76rem;
@@ -94,10 +92,7 @@ p {
 }
 
 .eyebrow::before {
-  width: 22px;
-  height: 2px;
-  background: currentColor;
-  content: "";
+  display: none;
 }
 
 .button,
@@ -428,23 +423,20 @@ p {
   min-width: 0;
   place-items: center;
   align-self: stretch;
-  padding: 96px 36px 74px 0;
+  padding: 96px 36px 42px 0;
 }
 
 .hero-service-line {
-  position: absolute;
-  z-index: 3;
-  right: 0;
-  bottom: 0;
-  left: 0;
   display: grid;
   width: var(--content);
-  min-height: 74px;
+  min-height: 82px;
   grid-template-columns: auto 1fr;
   align-items: center;
   gap: 30px;
   margin: 0 auto;
+  border-bottom: 1px solid rgba(8, 20, 38, 0.08);
   border-top: 1px solid rgba(8, 20, 38, 0.12);
+  background: var(--paper);
   color: #657183;
   font-size: 0.78rem;
 }
@@ -553,10 +545,10 @@ p {
 .phone-contact {
   display: grid;
   min-height: 63px;
-  grid-template-columns: 37px 1fr auto;
+  grid-template-columns: auto 37px 1fr auto;
   align-items: center;
-  gap: 9px;
-  padding: 8px 16px;
+  gap: 8px;
+  padding: 8px 13px;
   border-bottom: 1px solid #e4eaeb;
   background: #fbfcfc;
 }
@@ -570,7 +562,7 @@ p {
   background: #edf7f1;
 }
 
-.phone-contact > div:nth-child(2) {
+.phone-contact > div:nth-child(3) {
   display: grid;
 }
 
@@ -579,35 +571,81 @@ p {
 }
 
 .phone-contact span {
-  color: var(--green-dark);
+  color: #66776f;
   font-size: 0.64rem;
 }
 
+.phone-back,
+.phone-contact-actions {
+  color: #16745e;
+}
+
+.phone-contact-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .phone-thread {
-  display: grid;
-  gap: 12px;
-  padding: 18px 13px 66px;
+  display: flex;
+  min-height: 555px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 14px 13px 64px;
+  background-color: #efeae2;
+  background-image: radial-gradient(circle at 1px 1px, rgba(78, 91, 84, 0.07) 1px, transparent 0);
+  background-size: 18px 18px;
+}
+
+.phone-day {
+  align-self: center;
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: #f7fbfa;
+  box-shadow: 0 1px 2px rgba(8, 20, 38, 0.08);
+  color: #60706a;
+  font-size: 0.54rem;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .phone-message {
+  position: relative;
   max-width: 88%;
-  border: 1px solid #e1e7e9;
-  border-radius: 17px;
+  border: 0;
+  border-radius: 9px;
   background: var(--white);
-  box-shadow: 0 8px 20px rgba(8, 20, 38, 0.045);
+  box-shadow: 0 1px 1px rgba(8, 20, 38, 0.1);
 }
 
 .phone-message-user {
-  justify-self: end;
-  padding: 12px 13px 10px;
-  border-color: #cfe9d9;
-  background: #dff7e8;
+  align-self: flex-end;
+  padding: 10px 12px 18px;
+  border-top-right-radius: 2px;
+  background: #d9fdd3;
 }
 
 .phone-message-user p {
-  margin-top: 8px;
+  margin: 0;
   font-size: 0.77rem;
-  font-weight: 700;
+  font-weight: 550;
+  line-height: 1.42;
+}
+
+.phone-message time {
+  position: absolute;
+  right: 8px;
+  bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #6d7d75;
+  font-size: 0.5rem;
+}
+
+.phone-message-user time svg {
+  color: #53a3cf;
 }
 
 .voice-note {
@@ -657,6 +695,35 @@ p {
 
 .phone-message-bot {
   padding: 15px;
+  border-top-left-radius: 2px;
+}
+
+.phone-welcome {
+  width: 88%;
+  padding-bottom: 23px;
+}
+
+.phone-welcome > p {
+  font-size: 0.8rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.phone-menu-options {
+  display: grid;
+  margin-top: 11px;
+  border-top: 1px solid #e7ebe8;
+}
+
+.phone-menu-options span {
+  display: flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e7ebe8;
+  color: #087a61;
+  font-size: 0.68rem;
+  font-weight: 700;
 }
 
 .message-label {
@@ -667,6 +734,13 @@ p {
   font-weight: 800;
   letter-spacing: 0.09em;
   text-transform: uppercase;
+}
+
+.phone-service-name {
+  display: block;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e8edef;
+  font-size: 0.95rem;
 }
 
 .recipient-row {
@@ -723,7 +797,7 @@ p {
 }
 
 .amount-row strong {
-  font-size: 1.05rem;
+  font-size: 0.72rem;
 }
 
 .reference-row {
@@ -731,7 +805,7 @@ p {
 }
 
 .reference-row strong {
-  font-size: 0.68rem;
+  font-size: 0.78rem;
 }
 
 .phone-action {
@@ -2552,7 +2626,7 @@ p {
   .hero-product {
     min-height: 0;
     align-items: start;
-    padding: 28px 0 0;
+    padding: 12px 0 0;
   }
 
   .product-phone-stage {
@@ -2562,7 +2636,8 @@ p {
   .product-phone {
     padding: 7px;
     border-radius: 39px;
-    transform: rotateZ(0.7deg);
+    transform: scale(0.82) rotateZ(0.7deg);
+    transform-origin: top center;
   }
 
   .product-phone::before {
@@ -2572,21 +2647,21 @@ p {
   }
 
   .product-phone-screen {
-    min-height: 466px;
+    min-height: 388px;
     border-radius: 32px;
   }
 
   .phone-status {
-    min-height: 34px;
+    min-height: 30px;
     padding: 6px 17px 0;
     font-size: 0.5rem;
   }
 
   .phone-contact {
-    min-height: 46px;
-    grid-template-columns: 28px 1fr auto;
-    gap: 7px;
-    padding: 5px 11px;
+    min-height: 40px;
+    grid-template-columns: auto 28px 1fr auto;
+    gap: 5px;
+    padding: 5px 8px;
   }
 
   .phone-contact-mark {
@@ -2603,20 +2678,35 @@ p {
   }
 
   .phone-contact > svg {
-    width: 14px;
+    width: 12px;
+  }
+
+  .phone-contact-actions {
+    gap: 7px;
+  }
+
+  .phone-contact-actions svg {
+    width: 12px;
   }
 
   .phone-thread {
-    gap: 8px;
+    min-height: 318px;
+    gap: 6px;
     padding: 11px 9px 52px;
+    background-size: 14px 14px;
+  }
+
+  .phone-day {
+    padding: 3px 7px;
+    font-size: 0.4rem;
   }
 
   .phone-message {
-    border-radius: 12px;
+    border-radius: 7px;
   }
 
   .phone-message-user {
-    padding: 8px 9px 7px;
+    padding: 7px 8px 14px;
   }
 
   .voice-note {
@@ -2642,7 +2732,7 @@ p {
   }
 
   .phone-message-user p {
-    margin-top: 4px;
+    margin: 0;
     font-size: 0.57rem;
   }
 
@@ -2650,9 +2740,38 @@ p {
     padding: 10px;
   }
 
+  .phone-message time {
+    right: 6px;
+    bottom: 4px;
+    font-size: 0.38rem;
+  }
+
+  .phone-welcome {
+    width: 90%;
+    padding-bottom: 17px;
+  }
+
+  .phone-welcome > p {
+    font-size: 0.58rem;
+  }
+
+  .phone-menu-options {
+    margin-top: 7px;
+  }
+
+  .phone-menu-options span {
+    min-height: 23px;
+    font-size: 0.48rem;
+  }
+
   .message-label {
     margin-bottom: 8px;
     font-size: 0.46rem;
+  }
+
+  .phone-service-name {
+    padding-bottom: 7px;
+    font-size: 0.67rem;
   }
 
   .recipient-row {

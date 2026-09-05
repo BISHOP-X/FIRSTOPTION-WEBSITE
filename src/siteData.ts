@@ -14,6 +14,7 @@ export type Service = {
   accent: string;
   summary: string;
   proof: string;
+  cta: string;
   details: string[];
   steps: string;
 };
@@ -68,7 +69,8 @@ export const SERVICES: Service[] = [
     accent: "#19a866",
     summary: "Top up MTN, Airtel, Glo and 9mobile lines.",
     proof: "MTN, Airtel, Glo, 9mobile",
-    steps: "Tell FirstOption the network, phone number and amount. Check the details, then confirm.",
+    cta: "Buy airtime",
+    steps: "Choose the network, enter the phone number and amount, then check the details before you pay.",
     details: ["Choose a network", "Enter the phone number", "Receive your WhatsApp receipt"],
   },
   {
@@ -81,6 +83,7 @@ export const SERVICES: Service[] = [
     accent: "#3478f6",
     summary: "Buy daily, weekly and monthly data plans.",
     proof: "SME and CG plans",
+    cta: "Buy data",
     steps: "Choose a network and plan, check the receiving number, then confirm your purchase.",
     details: ["Browse current plans", "Choose the receiving line", "Get confirmation on WhatsApp"],
   },
@@ -94,6 +97,7 @@ export const SERVICES: Service[] = [
     accent: "#efb309",
     summary: "Pay electricity bills and receive your token.",
     proof: "Prepaid and postpaid",
+    cta: "Pay electricity bill",
     steps: "Enter your meter number, verify the customer details, choose an amount and confirm.",
     details: ["Check meter details", "Review before payment", "Receive token and receipt"],
   },
@@ -107,6 +111,7 @@ export const SERVICES: Service[] = [
     accent: "#0ca5d8",
     summary: "Renew DSTV, GOtv, Startimes and Showmax.",
     proof: "DSTV, GOtv, Startimes",
+    cta: "Renew cable TV",
     steps: "Choose a provider, verify the smartcard or IUC number, select a package and confirm.",
     details: ["Choose a provider", "Verify the account", "Renew or change package"],
   },
@@ -120,6 +125,7 @@ export const SERVICES: Service[] = [
     accent: "#7957df",
     summary: "Buy WAEC and JAMB pins from the chat.",
     proof: "WAEC and JAMB",
+    cta: "Buy an exam pin",
     steps: "Choose the exam body, check the price, confirm the purchase and receive the pin.",
     details: ["Choose WAEC or JAMB", "Confirm the price", "Receive your pin securely"],
   },
@@ -133,6 +139,7 @@ export const SERVICES: Service[] = [
     accent: "#1590a9",
     summary: "Pay internet and supported gaming subscriptions.",
     proof: "Spectranet, Smile and more",
+    cta: "Pay for internet",
     steps: "Choose the provider, enter the account details, select a plan and confirm.",
     details: ["Internet subscriptions", "Gaming services", "Simpler repeat renewals"],
   },
@@ -146,6 +153,7 @@ export const SERVICES: Service[] = [
     accent: "#25a65a",
     summary: "Top up supported betting wallets.",
     proof: "SportyBet and Bet9ja",
+    cta: "Fund SportyBet or Bet9ja",
     steps: "Choose a provider, verify the betting account, enter an amount and confirm.",
     details: ["SportyBet", "Bet9ja", "Verify the account before payment"],
   },
@@ -159,6 +167,7 @@ export const SERVICES: Service[] = [
     accent: "#df477d",
     summary: "Buy and sell supported gift cards.",
     proof: "Buy and sell",
+    cta: "Buy or sell gift cards",
     steps: "Choose buy or sell, select the card, enter its value and review the details.",
     details: ["Buy gift cards", "Sell supported cards", "See the value before continuing"],
   },
@@ -172,6 +181,7 @@ export const SERVICES: Service[] = [
     accent: "#f28b20",
     summary: "Buy, sell, send and receive supported crypto.",
     proof: "Buy, sell, send, receive",
+    cta: "Buy or sell crypto",
     steps: "Choose an operation and asset, review the rate or destination, then confirm.",
     details: ["Buy and sell", "Send and receive", "Review every detail first"],
   },
@@ -185,6 +195,7 @@ export const SERVICES: Service[] = [
     accent: "#111a2d",
     summary: "Create and manage supported virtual cards.",
     proof: "USD virtual cards",
+    cta: "Get a virtual card",
     steps: "Create a card, review the fee, add money and manage the card securely.",
     details: ["Create a virtual card", "Add money to the card", "Manage card details securely"],
   },

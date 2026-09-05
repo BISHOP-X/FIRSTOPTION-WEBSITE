@@ -1,8 +1,9 @@
 import {
   ArrowRight,
-  AudioLines,
+  ArrowLeft,
   Building2,
   Check,
+  CheckCheck,
   ChevronRight,
   CircleDollarSign,
   Code2,
@@ -14,12 +15,14 @@ import {
   MessageCircleMore,
   Mic2,
   Play,
+  PhoneCall,
   QrCode,
   ReceiptText,
   RefreshCcw,
   Send,
   ShieldCheck,
   Users,
+  Video,
   WalletCards,
   X,
   type LucideIcon,
@@ -362,30 +365,37 @@ function ProductPhone({ compact = false }: { compact?: boolean }) {
         <div className="phone-hardware phone-hardware-one" />
         <div className="phone-hardware phone-hardware-two" />
         <div className="product-phone-screen">
-          <div className="phone-status"><strong>9:41</strong><span>● ᴡɪꜰɪ ▰</span></div>
+          <div className="phone-status"><strong>9:41</strong><span aria-hidden="true">● WiFi ▰</span></div>
           <div className="phone-contact">
+            <ArrowLeft className="phone-back" size={17} />
             <div className="phone-contact-mark"><BrandLogo markOnly decorative /></div>
             <div><strong>FirstOption</strong><span>online</span></div>
-            <ShieldCheck size={18} />
+            <div className="phone-contact-actions"><Video size={16} /><PhoneCall size={15} /></div>
           </div>
           <div className="phone-thread">
-            <div className="phone-message phone-message-user">
-              <div className="voice-note"><span className="voice-play"><Play size={11} fill="currentColor" /></span><Waveform /><small>0:06</small><Mic2 size={13} /></div>
-              <p>Send ₦5,000 to Ada</p>
-            </div>
-            <div className="phone-message phone-message-bot">
-              <span className="message-label">Ready to confirm</span>
-              <div className="recipient-row">
-                <div className="recipient-avatar">AO</div>
-                <div><strong>Ada Okafor</strong><span><Check size={11} /> Verified recipient</span></div>
+            <span className="phone-day">Today</span>
+            <div className="phone-message phone-message-bot phone-welcome">
+              <p>Hi. What would you like to do?</p>
+              <div className="phone-menu-options">
+                <span>Send or request money <ChevronRight size={11} /></span>
+                <span>Buy airtime or data <ChevronRight size={11} /></span>
+                <span>Pay a bill <ChevronRight size={11} /></span>
               </div>
-              <div className="amount-row"><span>You are sending</span><strong>₦5,000.00</strong></div>
-              <div className="reference-row"><span>For</span><strong>Order payment</strong></div>
-              <button className="phone-action" type="button"><LockKeyhole size={15} /> Confirm securely</button>
+              <time>9:40</time>
             </div>
-            <div className="phone-message phone-message-receipt"><ReceiptText size={16} /><div><strong>Details locked</strong><span>Nothing moves until you confirm.</span></div></div>
+            <div className="phone-message phone-message-user">
+              <p>Buy 2GB MTN data for 0906 068 9011</p>
+              <time>9:41 <CheckCheck size={10} /></time>
+            </div>
+            <div className="phone-message phone-message-bot phone-confirmation">
+              <span className="message-label">Ready to confirm</span>
+              <strong className="phone-service-name">MTN 2GB data</strong>
+              <div className="amount-row"><span>Receiving line</span><strong>0906 068 9011</strong></div>
+              <div className="reference-row"><span>Total</span><strong>₦2,500.00</strong></div>
+              <span className="phone-action"><LockKeyhole size={15} /> Confirm securely</span>
+            </div>
           </div>
-          <div className="phone-composer"><span>Message FirstOption</span><AudioLines size={17} /></div>
+          <div className="phone-composer"><span>Message</span><Mic2 size={17} /></div>
         </div>
       </div>
     </div>
@@ -458,11 +468,12 @@ function HomePage() {
             </div>
           </div>
           <div className="hero-product"><ProductPhone /></div>
-          <div className="hero-service-line">
-            <span>One conversation for</span>
-            <div>{SERVICES.slice(0, 8).map((service) => <a href={service.path} key={service.slug}>{service.shortName}</a>)}</div>
-          </div>
         </section>
+
+        <div className="hero-service-line">
+          <span>Pay, buy and manage</span>
+          <div>{SERVICES.slice(0, 8).map((service) => <a href={service.path} key={service.slug}>{service.shortName}</a>)}</div>
+        </div>
 
         <section className="section conversation-section">
           <Reveal className="section-intro section-intro-wide">
@@ -544,7 +555,7 @@ function HomePage() {
           </div>
         </section>
 
-        <ClosingCta title="Your next transaction can start with a message." description="Open the official FirstOption conversation and say what you need." />
+        <ClosingCta title="Pay, collect and buy what you need on WhatsApp." description="Message FirstOption whenever you are ready." />
       </main>
     </SiteChrome>
   );
@@ -566,7 +577,7 @@ function FeatureRows({ items }: { items: Array<{ icon: LucideIcon; title: string
 function PersonalPage() {
   return <SiteChrome currentPath="/personal"><main className="subpage">
     <PageHero eyebrow="FirstOption for people" title="Send it. Request it. Get it done." description="Move money through the conversations you already use, with the details clear before you confirm.">
-      <a className="button button-primary" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Start on WhatsApp <ArrowRight size={18} /></a>
+      <a className="button button-primary" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Open WhatsApp <ArrowRight size={18} /></a>
     </PageHero>
     <section className="personal-image-band"><img src="/firstoption-personal-payments.jpg" alt="Two friends reviewing a payment on a phone" /><div><p className="eyebrow">Personal payments</p><h2>Money shared in the conversation.</h2><p>Send it, request it or receive it without losing the people and purpose behind the payment.</p></div></section>
     <section className="section split-copy"><Reveal><p className="eyebrow">Your financial identity</p><h2>Your number connects you. Your name builds trust.</h2></Reveal><Reveal><p>Send to someone you know, respond to a request or share a claim with someone joining FirstOption for the first time.</p></Reveal></section>
@@ -576,7 +587,7 @@ function PersonalPage() {
       { icon: Link2, title: "Claim money", copy: "Money sent to a new user stays tied to the intended phone number." },
       { icon: ReceiptText, title: "Keep every receipt", copy: "Requests, transfers, refunds and receipts stay organized in one inbox." },
     ]} /></section>
-    <ClosingCta title="Move money with a message." description="Tell FirstOption what you want to do." />
+    <ClosingCta title="Move money with a message." description="Open WhatsApp to send, request or receive money." />
   </main></SiteChrome>;
 }
 
@@ -594,7 +605,7 @@ function BusinessPage() {
       { icon: RefreshCcw, title: "Connected refunds", copy: "Return an eligible payment against the original transaction." },
       { icon: Code2, title: "Business infrastructure", copy: "Create payments and receive status through one consistent system." },
     ]} /></section>
-    <ClosingCta title="Make every paid order easier to verify." description="Start the business conversation with FirstOption." />
+    <ClosingCta title="Make every paid order easier to verify." description="Open WhatsApp to create payment requests for your business." />
   </main></SiteChrome>;
 }
 
@@ -643,43 +654,43 @@ function DevelopersPage() {
 
 function ServicesPage() {
   return <SiteChrome currentPath="/services"><main className="subpage">
-    <PageHero eyebrow="Everyday services" title="What do you need to get done?" description="Choose a service or simply tell FirstOption what you want in the WhatsApp chat.">
+    <PageHero eyebrow="Everyday services" title="What do you need to get done?" description="Choose a service in WhatsApp, or type what you need.">
       <a className="button button-primary" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Open WhatsApp <ArrowRight size={18} /></a>
     </PageHero>
     <section className="section service-grid services-page-grid">{SERVICES.map((service) => <ServiceCard service={service} large key={service.slug} />)}</section>
     <section className="digital-services-story"><img src="/firstoption-digital-services.jpg" alt="A customer using digital services from a phone" loading="lazy" /><div className="digital-services-shade" /><Reveal className="digital-services-copy"><p className="eyebrow">Gift cards and crypto</p><h2>Buy. Sell. Send. Receive.</h2><p>Move between supported digital value and the conversations where you need it.</p><div><a className="button button-light" href="/services/gift-cards">Gift cards <ArrowRight size={17} /></a><a className="button button-secondary" href="/services/crypto">Crypto <ArrowRight size={17} /></a></div></Reveal></section>
-    <ClosingCta title="Say what you need." description="FirstOption will take you to the right service." />
+    <ClosingCta title="Need airtime, data, bill payment or more?" description="Open WhatsApp and choose what you want to buy or pay for." />
   </main></SiteChrome>;
 }
 
 function HowItWorksPage() {
   return <SiteChrome currentPath="/how-it-works"><main className="subpage">
-    <PageHero eyebrow="How FirstOption works" title="Type it. Say it. Check it. Done." description="Start naturally in WhatsApp. FirstOption gathers the right details and shows you a clear confirmation before anything moves." />
+    <PageHero eyebrow="How FirstOption works" title="Type it. Say it. Check it. Done." description="Write or speak naturally on WhatsApp. FirstOption gathers the right details and shows you a clear confirmation before anything moves." />
     <section className="section two-column how-lead"><Reveal className="section-intro"><p className="eyebrow">Conversation first</p><h2>You do not need to learn commands.</h2><p>Use normal English, shorthand or a voice note. Choose from buttons and lists when they are faster.</p></Reveal><Reveal><CommandDemo /></Reveal></section>
     <section className="section"><FeatureRows items={[
-      { icon: MessageCircleMore, title: "Tell FirstOption what you need", copy: "Type a request, send a voice note or choose from the menu." },
+      { icon: MessageCircleMore, title: "Describe what you need", copy: "Type a request, send a voice note or choose from the menu." },
       { icon: Headphones, title: "Answer only what is missing", copy: "FirstOption asks for the number, provider, plan or amount it still needs." },
       { icon: ShieldCheck, title: "Review the full details", copy: "See the recipient, service, amount and fee before continuing." },
       { icon: LockKeyhole, title: "Confirm securely", copy: "Use a focused secure screen when authorization is required." },
       { icon: ReceiptText, title: "Receive the result", copy: "Get the receipt, token, pin or confirmation back in WhatsApp." },
     ]} /></section>
-    <ClosingCta title="No special wording required." description="Open WhatsApp and tell FirstOption what you want to do." />
+    <ClosingCta title="No special wording required." description="Open WhatsApp and type or say your request." />
   </main></SiteChrome>;
 }
 
 function ServiceLandingPage({ service }: { service: Service }) {
   const related = SERVICES.filter((item) => item.slug !== service.slug).slice(0, 3);
   return <SiteChrome currentPath={service.path}><main className="subpage">
-    <PageHero eyebrow={service.category} title={`${service.name}, right from WhatsApp.`} description={service.summary}>
-      <a className="button button-primary" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Start {service.shortName} <ArrowRight size={18} /></a>
+    <PageHero eyebrow={service.category} title={`${service.cta}, right from WhatsApp.`} description={service.summary}>
+      <a className="button button-primary" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">{service.cta} <ArrowRight size={18} /></a>
     </PageHero>
     <section className="section service-detail-lead" style={{ "--service-accent": service.accent } as CSSProperties}>
       <Reveal className="service-detail-art"><img src={service.image} alt="" /><span>{service.proof}</span></Reveal>
       <Reveal className="section-intro"><p className="eyebrow">How it works</p><h2>{service.steps}</h2></Reveal>
     </section>
     <section className="section feature-rows">{service.details.map((detail, index) => <Reveal className="feature-row" key={detail}><span>{String(index + 1).padStart(2, "0")}</span><Check size={22} /><div><h3>{detail}</h3></div></Reveal>)}</section>
-    <section className="section related-services"><Reveal className="section-intro"><p className="eyebrow">Continue in FirstOption</p><h2>More things you can do.</h2></Reveal><div className="related-grid">{related.map((item) => <ServiceCard service={item} key={item.slug} />)}</div></section>
-    <ClosingCta title={`Start ${service.shortName} with a message.`} description="Open the official FirstOption WhatsApp conversation." />
+    <section className="section related-services"><Reveal className="section-intro"><p className="eyebrow">You may also need</p><h2>More things you can do.</h2></Reveal><div className="related-grid">{related.map((item) => <ServiceCard service={item} key={item.slug} />)}</div></section>
+    <ClosingCta title={`${service.cta} on WhatsApp.`} description="Open the official FirstOption conversation and tell us what you need." />
   </main></SiteChrome>;
 }
 
@@ -700,7 +711,7 @@ function WalletFundingPage() {
       { icon: Landmark, title: "Create your permanent Paga account", copy: "Complete the first-time setup and keep the account details." },
       { icon: RefreshCcw, title: "Transfer any amount whenever you need", copy: "The permanent account is yours to reuse for future FirstOption transactions." },
     ]} /></section>
-    <ClosingCta title="Start from the service you want." description="Open WhatsApp, choose a service and tap Fund inside its secure screen." />
+    <ClosingCta title="Choose a service first." description="Open WhatsApp, choose what you want to do and tap Fund inside the secure screen." />
   </main></SiteChrome>;
 }
 
@@ -709,7 +720,7 @@ function AboutPage() {
     <PageHero eyebrow="About FirstOption" title="The payment network for commerce happening on WhatsApp." description="FirstOption gives people and businesses a trusted way to pay, collect and manage transactions where their conversations already happen." />
     <section className="section split-copy"><Reveal><p className="eyebrow">Our direction</p><h2>WhatsApp is the interface. FirstOption connects the payment.</h2></Reveal><Reveal><p>Everyday services create useful habits. Personal payments, merchants, groups and developer tools connect those habits into a wider network.</p></Reveal></section>
     <section className="section identity-strip"><div><span>Registered name</span><strong>{LEGAL_NAME}</strong></div><div><span>CAC number</span><strong>BN {CAC_BUSINESS_NUMBER}</strong></div><div><span>Country</span><strong>{OPERATING_COUNTRY}</strong></div></section>
-    <ClosingCta title="Start with one conversation." description="Open FirstOption on WhatsApp and say what you need." />
+    <ClosingCta title="Everything begins in one conversation." description="Open FirstOption on WhatsApp and make your next payment." />
   </main></SiteChrome>;
 }
 
@@ -728,7 +739,7 @@ function ContactPage() {
 
 function OfficialWhatsAppPage() {
   return <SiteChrome currentPath="/official-whatsapp"><main className="subpage">
-    <PageHero eyebrow="Official WhatsApp" title="Check the number before you transact." description="Start from this website whenever you need to confirm that you are speaking with the real FirstOption." />
+    <PageHero eyebrow="Official WhatsApp" title="Check the number before you transact." description="Use this website whenever you need to confirm that you are speaking with the real FirstOption." />
     <section className="section verification-layout"><Reveal className="official-number"><MessageCircleMore size={31} /><span>Official WhatsApp</span><strong>{OFFICIAL_WHATSAPP_DISPLAY}</strong><a href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Open the official chat <ArrowRight size={17} /></a></Reveal><div className="verification-list">{TRUST_CHECKS.slice(1).map((item) => <Reveal className="verification-item" key={item}><Check size={18} /><span>{item}</span></Reveal>)}</div></section>
     <ClosingCta title="Use the right conversation." description="Open FirstOption directly from this website." />
   </main></SiteChrome>;
@@ -737,16 +748,16 @@ function OfficialWhatsAppPage() {
 function AntiScamPage() {
   return <SiteChrome currentPath="/anti-scam"><main className="subpage">
     <PageHero eyebrow="Anti-scam guide" title="Pause when the details do not match." description="A real FirstOption transaction should be clear about the account, amount, service and final status." />
-    <section className="section safety-columns"><Reveal><ShieldCheck size={27} /><h2>Check first</h2><ul><li>Start from the official website or WhatsApp number.</li><li>Review the person, business, service and amount.</li><li>Keep the receipt or transaction reference.</li></ul></Reveal><Reveal><LockKeyhole size={27} /><h2>Never share</h2><ul><li>Your password, PIN or one-time code with support.</li><li>Private card or account access in a chat.</li><li>Money with a different number because someone pressures you.</li></ul></Reveal></section>
+    <section className="section safety-columns"><Reveal><ShieldCheck size={27} /><h2>Check first</h2><ul><li>Use the official website or WhatsApp number.</li><li>Review the person, business, service and amount.</li><li>Keep the receipt or transaction reference.</li></ul></Reveal><Reveal><LockKeyhole size={27} /><h2>Never share</h2><ul><li>Your password, PIN or one-time code with support.</li><li>Private card or account access in a chat.</li><li>Money with a different number because someone pressures you.</li></ul></Reveal></section>
   </main></SiteChrome>;
 }
 
 function GuidePage({ guide }: { guide: Guide }) {
   return <SiteChrome currentPath={guide.path}><main className="subpage"><PageHero eyebrow="FirstOption guide" title={guide.title} description={guide.summary} /><section className="section"><FeatureRows items={[
-    { icon: MessageCircleMore, title: "Start from the official chat", copy: "Use the WhatsApp link on this website and tell FirstOption what you need." },
+    { icon: MessageCircleMore, title: "Open the official chat", copy: "Use the WhatsApp link on this website and choose what you want to buy or pay for." },
     { icon: Check, title: "Check every detail", copy: "Review the service, receiving account and amount before confirming." },
     { icon: ReceiptText, title: "Keep the result", copy: "Save the receipt, token, pin or transaction reference sent to WhatsApp." },
-  ]} /></section><ClosingCta title="Continue with FirstOption." description="Open the official WhatsApp conversation." /></main></SiteChrome>;
+  ]} /></section><ClosingCta title="Get it done on WhatsApp." description="Open the official FirstOption conversation." /></main></SiteChrome>;
 }
 
 function ClosingCta({ title, description }: { title: string; description: string }) {
