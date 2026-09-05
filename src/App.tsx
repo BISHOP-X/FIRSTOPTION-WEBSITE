@@ -247,6 +247,9 @@ function SiteHeader({ currentPath }: { currentPath: string }) {
             <BrandLogo decorative />
           </a>
           <nav className="desktop-nav" aria-label="Primary navigation">
+            <a href="/" aria-current={currentPath === "/" ? "page" : undefined}>
+              Home
+            </a>
             {NAV_LINKS.map((link) => (
               <a key={link.href} href={link.href} aria-current={isPathActive(currentPath, link.href) ? "page" : undefined}>
                 {link.label}
