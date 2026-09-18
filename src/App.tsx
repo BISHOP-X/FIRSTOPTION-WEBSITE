@@ -1,9 +1,7 @@
 import {
   ArrowRight,
-  ArrowLeft,
   Building2,
   Check,
-  CheckCheck,
   ChevronRight,
   CircleDollarSign,
   Code2,
@@ -13,22 +11,20 @@ import {
   LockKeyhole,
   Menu,
   MessageCircleMore,
-  Mic2,
-  Play,
-  PhoneCall,
   QrCode,
   ReceiptText,
   RefreshCcw,
   Send,
   ShieldCheck,
   Users,
-  Video,
   WalletCards,
   X,
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import "./App.css";
+import { PaymentDemo, VoiceDemo, ClaimDemo, MerchantDemo, LinkDemo, FundingDemo, ServicePreview, ServiceReceiptDemo } from "./PaymentDemo";
+import "./PaymentStories.css";
 import logo from "/logo.png";
 import flutterwaveLogo from "/Flutterwave_whitebg.svg";
 import {
@@ -155,11 +151,9 @@ function SiteMotion({ currentPath }: { currentPath: string }) {
         const nav = document.querySelector(".site-nav-inner");
         const heroCopy = document.querySelectorAll(".motion-hero-copy > *");
         const phone = document.querySelector(".motion-phone");
-        const phoneContent = document.querySelectorAll(".phone-message, .phone-action");
         if (nav) gsap.from(nav, { autoAlpha: 0, y: -22, duration: 0.8, ease: "power3.out" });
         if (heroCopy.length) gsap.from(heroCopy, { autoAlpha: 0, y: 30, duration: 0.85, stagger: 0.09, ease: "power3.out" });
         if (phone) gsap.from(phone, { autoAlpha: 0, y: 64, rotationY: -15, rotationZ: 2, scale: 0.9, duration: 1.15, ease: "power4.out", delay: 0.18 });
-        if (phoneContent.length) gsap.from(phoneContent, { autoAlpha: 0, y: 16, stagger: 0.12, duration: 0.55, ease: "power3.out", delay: 0.72 });
         document.querySelectorAll<HTMLElement>(".reveal").forEach((element) => {
           if (element.closest(".hero")) return;
           gsap.from(element, {
@@ -326,85 +320,6 @@ function SiteChrome({ currentPath, children }: { currentPath: string; children: 
   return <div className="app"><SiteHeader currentPath={currentPath} />{children}<Footer /></div>;
 }
 
-const WAVEFORM_HEIGHTS = [8, 13, 19, 11, 24, 17, 10, 21, 27, 15, 9, 18, 25, 13, 20, 11, 7, 15, 22, 12, 8, 17, 11, 6];
-
-function Waveform({ light = false }: { light?: boolean }) {
-  return (
-    <span className={`waveform${light ? " waveform-light" : ""}`} aria-hidden="true">
-      {WAVEFORM_HEIGHTS.map((height, index) => <i key={`${height}-${index}`} style={{ "--wave-height": `${height}px` } as CSSProperties} />)}
-    </span>
-  );
-}
-
-function ProductPhone({ compact = false }: { compact?: boolean }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const element = ref.current;
-    if (!element || typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const onMove = (event: PointerEvent) => {
-      if (window.innerWidth < 900) return;
-      const bounds = element.getBoundingClientRect();
-      const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-      const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-      element.style.setProperty("--phone-rx", `${y * -5}deg`);
-      element.style.setProperty("--phone-ry", `${x * 8}deg`);
-    };
-    const reset = () => {
-      element.style.setProperty("--phone-rx", "0deg");
-      element.style.setProperty("--phone-ry", "0deg");
-    };
-    element.addEventListener("pointermove", onMove);
-    element.addEventListener("pointerleave", reset);
-    return () => {
-      element.removeEventListener("pointermove", onMove);
-      element.removeEventListener("pointerleave", reset);
-    };
-  }, []);
-
-  return (
-    <div className={`product-phone-stage motion-phone${compact ? " product-phone-stage-compact" : ""}`} ref={ref}>
-      <div className="product-phone-shadow" aria-hidden="true" />
-      <div className="product-phone">
-        <div className="phone-hardware phone-hardware-one" />
-        <div className="phone-hardware phone-hardware-two" />
-        <div className="product-phone-screen">
-          <div className="phone-status"><strong>9:41</strong><span aria-hidden="true">● WiFi ▰</span></div>
-          <div className="phone-contact">
-            <ArrowLeft className="phone-back" size={17} />
-            <div className="phone-contact-mark"><BrandLogo markOnly decorative /></div>
-            <div><strong>FirstOption</strong><span>online</span></div>
-            <div className="phone-contact-actions"><Video size={16} /><PhoneCall size={15} /></div>
-          </div>
-          <div className="phone-thread">
-            <span className="phone-day">Today</span>
-            <div className="phone-message phone-message-bot phone-welcome">
-              <p>Hi. What would you like to do?</p>
-              <div className="phone-menu-options">
-                <span>Send or request money <ChevronRight size={11} /></span>
-                <span>Buy airtime or data <ChevronRight size={11} /></span>
-                <span>Pay a bill <ChevronRight size={11} /></span>
-              </div>
-              <time>9:40</time>
-            </div>
-            <div className="phone-message phone-message-user">
-              <p>Buy 2GB MTN data for 0906 068 9011</p>
-              <time>9:41 <CheckCheck size={10} /></time>
-            </div>
-            <div className="phone-message phone-message-bot phone-confirmation">
-              <span className="message-label">Ready to confirm</span>
-              <strong className="phone-service-name">MTN 2GB data</strong>
-              <div className="amount-row"><span>Receiving line</span><strong>0906 068 9011</strong></div>
-              <div className="reference-row"><span>Total</span><strong>₦2,500.00</strong></div>
-              <span className="phone-action"><LockKeyhole size={15} /> Confirm securely</span>
-            </div>
-          </div>
-          <div className="phone-composer"><span>Message</span><Mic2 size={17} /></div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function ServiceCard({ service, large = false }: { service: Service; large?: boolean }) {
   return (
     <a href={service.path} className={`service-card${large ? " service-card-large" : ""}`} style={{ "--service-accent": service.accent } as CSSProperties}>
@@ -420,71 +335,37 @@ function ServiceCard({ service, large = false }: { service: Service; large?: boo
   );
 }
 
-function CommandDemo() {
-  return (
-    <div className="whatsapp-demo" aria-label="A natural FirstOption conversation on WhatsApp">
-      <div className="whatsapp-demo-header">
-        <span className="whatsapp-demo-avatar"><BrandLogo markOnly decorative /></span>
-        <div><strong>FirstOption</strong><span>online</span></div>
-        <ShieldCheck size={19} />
-      </div>
-      <div className="whatsapp-demo-thread">
-        <span className="whatsapp-day">Today</span>
-        <div className="whatsapp-bubble whatsapp-bubble-user"><p>Buy 2GB MTN data</p><time>9:41</time></div>
-        <div className="whatsapp-bubble whatsapp-bubble-user whatsapp-voice-note">
-          <span className="voice-play voice-play-large"><Play size={13} fill="currentColor" /></span>
-          <Waveform />
-          <div className="voice-meta"><span>0:06</span><Mic2 size={13} /></div>
-        </div>
-        <div className="whatsapp-bubble whatsapp-bubble-bot">
-          <span className="whatsapp-bot-label"><Check size={13} /> I have the details</span>
-          <strong>MTN 2GB data</strong>
-          <div><span>Receiving line</span><b>0906 068 9011</b></div>
-          <div><span>Total</span><b>₦2,500.00</b></div>
-          <span className="whatsapp-confirm"><LockKeyhole size={15} /> Confirm securely</span>
-        </div>
-        <div className="whatsapp-bubble whatsapp-bubble-bot whatsapp-result"><ReceiptText size={15} /><span>Everything stays clear before you pay.</span></div>
-      </div>
-      <div className="whatsapp-demo-composer"><span>Message</span><Mic2 size={17} /></div>
-    </div>
-  );
-}
-
 function HomePage() {
   return (
     <SiteChrome currentPath="/">
       <main>
-        <section className="hero">
+        <section className="hero payment-led-hero">
           <div className="hero-grid-lines" aria-hidden="true" />
           <div className="hero-content motion-hero-copy">
             <p className="eyebrow">FirstOption on WhatsApp</p>
             <h1>Send a message.<br /><span>Move money.</span></h1>
-            <p className="hero-copy">Type it or say it. FirstOption helps you pay, collect and get everyday transactions done through WhatsApp.</p>
+            <p className="hero-copy">Send money in your own words. Type it or say it on WhatsApp.</p>
             <div className="hero-actions">
               <a className="button button-primary" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Open WhatsApp <ArrowRight size={18} /></a>
               <a className="button button-secondary" href="/how-it-works">See how it works</a>
             </div>
-            <div className="hero-prompts" aria-label="Example requests">
-              <span>“Send ₦5,000 to Ada”</span>
-              <span>“Buy MTN data”</span>
-              <span>“Request payment”</span>
-            </div>
+            <p className="hero-everyday">And buy airtime, data, pay bills and more, in the same chat.</p>
           </div>
-          <div className="hero-product"><ProductPhone /></div>
+          <div className="hero-product"><PaymentDemo /></div>
         </section>
 
         <div className="hero-service-line">
-          <span>Pay, buy and manage</span>
-          <div>{SERVICES.slice(0, 8).map((service) => <a href={service.path} key={service.slug}>{service.shortName}</a>)}</div>
+          <span>One conversation</span>
+          <div><a href="/personal">Send money</a><a href="/business">Collect payments</a><a href="/payments">Payment links & QR</a><a href="/services">Airtime, data & more</a></div>
         </div>
 
         <section className="section conversation-section">
           <Reveal className="section-intro section-intro-wide">
             <p className="eyebrow">Speak naturally</p>
             <h2>No commands to memorize.</h2>
-            <p>Write the way you normally write. Send a voice note when that is faster. FirstOption finds the right path and asks only for what is missing.</p>
+            <p>Ask in your own words. Or send a voice note. FirstOption picks up the details and asks only for what is missing.</p>
           </Reveal>
-          <Reveal><CommandDemo /></Reveal>
+          <Reveal><VoiceDemo /></Reveal>
         </section>
 
         <section className="section network-section">
@@ -583,7 +464,7 @@ function PersonalPage() {
       <a className="button button-primary" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Open WhatsApp <ArrowRight size={18} /></a>
     </PageHero>
     <section className="personal-image-band"><img src="/firstoption-personal-payments.jpg" alt="Two friends reviewing a payment on a phone" /><div><p className="eyebrow">Personal payments</p><h2>Money shared in the conversation.</h2><p>Send it, request it or receive it without losing the people and purpose behind the payment.</p></div></section>
-    <section className="section split-copy"><Reveal><p className="eyebrow">Your financial identity</p><h2>Your number connects you. Your name builds trust.</h2></Reveal><Reveal><p>Send to someone you know, respond to a request or share a claim with someone joining FirstOption for the first time.</p></Reveal></section>
+    <section className="section product-story"><Reveal className="section-intro"><p className="eyebrow">For someone new</p><h2>They don't have to be here yet.</h2><p>Send money to their WhatsApp number and share the claim link. They join FirstOption to receive it.</p><a className="story-link" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Send money <ArrowRight size={17} /></a></Reveal><Reveal><ClaimDemo /></Reveal></section>
     <section className="section"><FeatureRows items={[
       { icon: Send, title: "Send money", copy: "Use a phone number, trusted name, recent recipient, request or QR." },
       { icon: CircleDollarSign, title: "Request money", copy: "Set the amount and reason, then share it in the right conversation." },
@@ -600,6 +481,7 @@ function BusinessPage() {
       <a className="button button-primary" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Talk to FirstOption <ArrowRight size={18} /></a>
     </PageHero>
     <section className="business-image-band"><img src="/firstoption-merchant-studio.jpg" alt="Nigerian business owner preparing an order" /><div><p className="eyebrow">Social commerce, properly connected</p><h2>No account-number copy. No screenshot matching.</h2></div></section>
+    <section className="section product-story"><Reveal className="section-intro"><p className="eyebrow">Every order accounted for</p><h2>The order. The payment. The proof.</h2><p>“Collect ₦25,000 for order 104.” Share the request with your customer. When they pay, the confirmation comes back with the same order reference.</p><a className="story-link" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Collect a payment <ArrowRight size={17} /></a></Reveal><Reveal><MerchantDemo /></Reveal></section>
     <section className="section"><FeatureRows items={[
       { icon: CircleDollarSign, title: "Payment requests", copy: "Set an amount and order reference, then share it with the customer." },
       { icon: QrCode, title: "Links and QR", copy: "Use the same payment experience in chat, at a counter or on a website." },
@@ -617,7 +499,7 @@ function GroupsPage() {
     <PageHero eyebrow="Group collections" title="One link for everyone contributing." description="Create dues, open contributions, targets and shared payments for the groups already organizing on WhatsApp." />
     <section className="section collection-demo">
       <Reveal className="collection-copy"><p className="eyebrow">A clearer total</p><h2>Share once. Track every contribution.</h2><p>Participants pay individually while the organizer sees progress without manually matching screenshots.</p></Reveal>
-      <Reveal className="collection-visual"><div className="collection-top"><div><span>Family trip</span><strong>₦350,000 target</strong></div><Users size={25} /></div><div className="collection-progress"><span /></div><div className="collection-numbers"><div><strong>₦227,500</strong><span>collected</span></div><div><strong>18</strong><span>contributors</span></div></div><button type="button">Share collection link <Link2 size={16} /></button></Reveal>
+      <Reveal className="collection-visual"><div className="collection-top"><div><span>Family trip</span><strong>₦350,000 target</strong></div><Users size={25} /></div><div className="collection-progress"><span /></div><div className="collection-numbers"><div><strong>₦227,500</strong><span>collected</span></div><div><strong>18</strong><span>contributors</span></div></div><div className="collection-contribution"><span><Check size={16} /></span><div><strong>Ada contributed</strong><span>Added to the family trip</span></div><b>₦5,000</b></div><a className="collection-chat-link" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">Open FirstOption <ArrowRight size={16} /></a></Reveal>
     </section>
     <section className="section"><FeatureRows items={[
       { icon: Users, title: "Dues and contributions", copy: "Choose a fixed amount or let each person decide what to give." },
@@ -631,6 +513,7 @@ function GroupsPage() {
 function PaymentsPage() {
   return <SiteChrome currentPath="/payments"><main className="subpage">
     <PageHero eyebrow="Payment tools" title="One payment, shared in every useful way." description="A request can travel through WhatsApp, a payment link, a QR code, an invoice or a checkout button." />
+    <section className="section product-story"><Reveal className="section-intro"><p className="eyebrow">A link for the way you collect</p><h2>Your amount. Or theirs.</h2><p>Set an exact amount for an order. Or share your reusable link and let each customer enter what they owe. They see who they're paying before they continue.</p></Reveal><Reveal><LinkDemo /></Reveal></section>
     <section className="section payment-tools-grid">
       {[
         [MessageCircleMore, "WhatsApp request", "Share the payment in the customer conversation."],
@@ -639,7 +522,7 @@ function PaymentsPage() {
         [ReceiptText, "Invoice", "Keep the amount, purpose and reference together."],
       ].map(([Icon, title, copy]) => { const ToolIcon = Icon as LucideIcon; return <Reveal className="payment-tool" key={title as string}><ToolIcon size={28} /><h2>{title as string}</h2><p>{copy as string}</p></Reveal>; })}
     </section>
-    <section className="section split-copy"><Reveal><p className="eyebrow">Pay your way</p><h2>Use the source that makes sense.</h2></Reveal><Reveal><p>Complete a payment from your FirstOption balance or an enabled bank, card, USSD or QR route. The request stays connected while payment is confirmed.</p><a href="/wallet-funding">How adding money works <ArrowRight size={16} /></a></Reveal></section>
+    <section className="section split-copy"><Reveal><p className="eyebrow">Pay your way</p><h2>Your payment stays with you.</h2></Reveal><Reveal><p>Pay from your FirstOption balance. Need to add money? Use your permanent funding account, then return to the same payment and confirm.</p><a href="/wallet-funding">How adding money works <ArrowRight size={16} /></a></Reveal></section>
     <ClosingCta title="Create the payment. Share it anywhere." description="FirstOption keeps the important details together." />
   </main></SiteChrome>;
 }
@@ -669,13 +552,13 @@ function ServicesPage() {
 function HowItWorksPage() {
   return <SiteChrome currentPath="/how-it-works"><main className="subpage">
     <PageHero eyebrow="How FirstOption works" title="Type it. Say it. Check it. Done." description="Write or speak naturally on WhatsApp. FirstOption gathers the right details and shows you a clear confirmation before anything moves." />
-    <section className="section two-column how-lead"><Reveal className="section-intro"><p className="eyebrow">Conversation first</p><h2>You do not need to learn commands.</h2><p>Use normal English, shorthand or a voice note. Choose from buttons and lists when they are faster.</p></Reveal><Reveal><CommandDemo /></Reveal></section>
+    <section className="section two-column how-lead"><Reveal className="section-intro"><p className="eyebrow">From a message to money sent</p><h2>Say who. Say how much.</h2><p>“Send ₦5,000 to Ada.” FirstOption finds your saved recipient and prepares the payment. Check the details, approve with your PIN and get the receipt.</p><p className="story-secondary">You can still choose from the menu. A complete request simply takes you straight to the next step.</p></Reveal><Reveal><PaymentDemo walkthrough /></Reveal></section>
     <section className="section"><FeatureRows items={[
       { icon: MessageCircleMore, title: "Describe what you need", copy: "Type a request, send a voice note or choose from the menu." },
-      { icon: Headphones, title: "Answer only what is missing", copy: "FirstOption asks for the number, provider, plan or amount it still needs." },
+      { icon: Headphones, title: "Answer only what is missing", copy: "Give a missing recipient or amount without starting again." },
       { icon: ShieldCheck, title: "Review the full details", copy: "See the recipient, service, amount and fee before continuing." },
       { icon: LockKeyhole, title: "Confirm securely", copy: "Use a focused secure screen when authorization is required." },
-      { icon: ReceiptText, title: "Receive the result", copy: "Get the receipt, token, pin or confirmation back in WhatsApp." },
+      { icon: ReceiptText, title: "Keep the receipt", copy: "See who was paid, how much and what the payment was for, back in WhatsApp." },
     ]} /></section>
     <ClosingCta title="No special wording required." description="Open WhatsApp and type or say your request." />
   </main></SiteChrome>;
@@ -688,7 +571,7 @@ function ServiceLandingPage({ service }: { service: Service }) {
       <a className="button button-primary" href={WHATSAPP_START_URL} target="_blank" rel="noreferrer">{service.cta} <ArrowRight size={18} /></a>
     </PageHero>
     <section className="section service-detail-lead" style={{ "--service-accent": service.accent } as CSSProperties}>
-      <Reveal className="service-detail-art"><img src={service.image} alt="" /><span>{service.proof}</span></Reveal>
+      {service.slug === "electricity" ? <Reveal><ServiceReceiptDemo slug={service.slug} /></Reveal> : ["airtime", "data-bundles", "crypto", "gift-cards"].includes(service.slug) ? <Reveal><ServicePreview slug={service.slug} /></Reveal> : <Reveal className="service-detail-art"><img src={service.image} alt="" /><span>{service.proof}</span></Reveal>}
       <Reveal className="section-intro"><p className="eyebrow">How it works</p><h2>{service.steps}</h2></Reveal>
     </section>
     <section className="section feature-rows">{service.details.map((detail, index) => <Reveal className="feature-row" key={detail}><span>{String(index + 1).padStart(2, "0")}</span><Check size={22} /><div><h3>{detail}</h3></div></Reveal>)}</section>
@@ -707,14 +590,15 @@ function ReferralProgramPage() {
 
 function WalletFundingPage() {
   return <SiteChrome currentPath="/wallet-funding"><main className="subpage">
-    <PageHero eyebrow="Add money" title="Create one account. Use it whenever you need." description="Your permanent Paga account gives you a reusable way to add money to FirstOption." />
+    <PageHero eyebrow="Add money" title="Create one account. Use it whenever you need." description="Transfer to your permanent funding account to add money to FirstOption. Reuse it for your next payment, purchase or bill." />
+    <section className="section product-story"><Reveal className="section-intro"><p className="eyebrow">Keep your place</p><h2>Add money. Carry on.</h2><p>If your balance is short, add money from the payment screen. Your recipient and amount stay saved while you fund. Then check the payment and approve with your PIN.</p><p className="story-secondary">You can also transfer to your saved account at any time. Extra money stays in your FirstOption balance.</p></Reveal><Reveal><FundingDemo /></Reveal></section>
     <section className="section"><FeatureRows items={[
-      { icon: MessageCircleMore, title: "Send Hi to FirstOption", copy: "Choose the service you want from the WhatsApp conversation." },
-      { icon: WalletCards, title: "Open the service and tap Fund", copy: "The Fund option appears inside the secure service webview." },
-      { icon: Landmark, title: "Create your permanent Paga account", copy: "Complete the first-time setup and keep the account details." },
+      { icon: MessageCircleMore, title: "Tell FirstOption what you need", copy: "Send money, pay a request or choose a service from the WhatsApp conversation." },
+      { icon: WalletCards, title: "Add money from the payment screen", copy: "Use Add money during a payment, or Fund inside a service." },
+      { icon: Landmark, title: "Create your permanent funding account", copy: "Complete the first-time setup and keep the bank, account name and account number shown." },
       { icon: RefreshCcw, title: "Transfer any amount whenever you need", copy: "The permanent account is yours to reuse for future FirstOption transactions." },
     ]} /></section>
-    <ClosingCta title="Choose a service first." description="Open WhatsApp, choose what you want to do and tap Fund inside the secure screen." />
+    <ClosingCta title="Your next payment starts with a message." description="Open FirstOption on WhatsApp to send, collect or pay." />
   </main></SiteChrome>;
 }
 

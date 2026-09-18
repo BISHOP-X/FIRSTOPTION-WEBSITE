@@ -1,0 +1,201 @@
+{
+  "send": {
+    "src": "/demo-receipts/send.webp",
+    "width": 840,
+    "height": 1306,
+    "renderer": "printed-1",
+    "sample": true,
+    "receipt": {
+      "service": "bank",
+      "title": "Payment sent",
+      "status": "success",
+      "amount": "\u20a65,000.00",
+      "subtitle": "Paid from your FirstOption balance",
+      "details": [
+        [
+          "Recipient",
+          "08000000001"
+        ],
+        [
+          "For",
+          "For Ada"
+        ]
+      ],
+      "amounts": [
+        [
+          "Amount",
+          "\u20a65,000.00"
+        ],
+        [
+          "Fee",
+          "\u20a60.00"
+        ]
+      ],
+      "total_label": "Total paid",
+      "total": "\u20a65,000.00",
+      "reference": "DEMO-SEND-104",
+      "date": "18 Sep 2026 \u00b7 09:41 WAT",
+      "contact": "09060689011"
+    }
+  },
+  "collect": {
+    "src": "/demo-receipts/collect.webp",
+    "width": 840,
+    "height": 1270,
+    "renderer": "printed-1",
+    "sample": true,
+    "receipt": {
+      "service": "collect",
+      "title": "Payment received",
+      "status": "success",
+      "amount": "\u20a625,000.00",
+      "subtitle": "Added to your FirstOption balance",
+      "details": [
+        [
+          "From",
+          "08000000001"
+        ],
+        [
+          "For",
+          "Order 104"
+        ]
+      ],
+      "amounts": [
+        [
+          "Payment received",
+          "\u20a625,000.00"
+        ]
+      ],
+      "total_label": "You received",
+      "total": "\u20a625,000.00",
+      "reference": "DEMO-ORDER-104",
+      "date": "18 Sep 2026 \u00b7 09:41 WAT",
+      "contact": "09060689011"
+    }
+  },
+  "airtime": {
+    "src": "/demo-receipts/airtime.webp",
+    "width": 840,
+    "height": 1306,
+    "renderer": "printed-1",
+    "sample": true,
+    "receipt": {
+      "service": "airtime",
+      "title": "Airtime",
+      "status": "success",
+      "amount": "\u20a61,000.00",
+      "subtitle": "Airtime delivered",
+      "details": [
+        [
+          "Recipient phone",
+          "08000000000"
+        ],
+        [
+          "Network",
+          "MTN"
+        ]
+      ],
+      "amounts": [
+        [
+          "Amount",
+          "\u20a61,000.00"
+        ],
+        [
+          "Fee",
+          "\u20a60.00"
+        ]
+      ],
+      "total_label": "Total paid",
+      "total": "\u20a61,000.00",
+      "reference": "DEMO-AIRTIME-104",
+      "date": "18 Sep 2026 \u00b7 09:41 WAT",
+      "contact": "09060689011"
+    }
+  },
+  "data": {
+    "src": "/demo-receipts/data.webp",
+    "width": 840,
+    "height": 1380,
+    "renderer": "printed-1",
+    "sample": true,
+    "receipt": {
+      "service": "data",
+      "title": "Data",
+      "status": "success",
+      "amount": "\u20a61,000.00",
+      "subtitle": "Data delivered",
+      "details": [
+        [
+          "Recipient phone",
+          "08000000000"
+        ],
+        [
+          "Network",
+          "MTN"
+        ],
+        [
+          "Plan",
+          "Example data plan"
+        ]
+      ],
+      "amounts": [
+        [
+          "Amount",
+          "\u20a61,000.00"
+        ],
+        [
+          "Fee",
+          "\u20a60.00"
+        ]
+      ],
+      "total_label": "Total paid",
+      "total": "\u20a61,000.00",
+      "reference": "DEMO-DATA-104",
+      "date": "18 Sep 2026 \u00b7 09:41 WAT",
+      "contact": "09060689011"
+    }
+  },
+  "electricity": {
+    "src": "/demo-receipts/electricity.webp",
+    "width": 840,
+    "height": 1380,
+    "renderer": "printed-1",
+    "sample": true,
+    "receipt": {
+      "service": "electricity",
+      "title": "Electricity",
+      "status": "success",
+      "amount": "\u20a65,000.00",
+      "subtitle": "Electricity payment",
+      "details": [
+        [
+          "Meter number",
+          "00000000001"
+        ],
+        [
+          "Customer",
+          "Ada Okafor"
+        ],
+        [
+          "Meter type",
+          "Prepaid"
+        ]
+      ],
+      "amounts": [
+        [
+          "Amount",
+          "\u20a65,000.00"
+        ],
+        [
+          "Fee",
+          "\u20a60.00"
+        ]
+      ],
+      "total_label": "Total paid",
+      "total": "\u20a65,000.00",
+      "reference": "DEMO-BILL-104",
+      "date": "18 Sep 2026 \u00b7 09:41 WAT",
+      "contact": "09060689011"
+    }
+  }
+}

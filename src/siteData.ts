@@ -210,7 +210,7 @@ export const GUIDE_PAGES: Guide[] = [
   {
     path: "/guides/fund-your-wallet-before-paying-bills",
     title: "How to add money to FirstOption",
-    summary: "Create your permanent Paga account from a service webview and transfer to it whenever you need.",
+    summary: "Create your permanent funding account from a payment or service screen, then transfer to it whenever you need.",
   },
   {
     path: "/guides/buy-exam-pins-whatsapp-nigeria",
